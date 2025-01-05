@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>My Site</title>
+  <link rel="stylesheet" href="https://brackenlo.github.io/style.css?h=f4c37b130c92d4c51638">
+</head>
+
+<body>
+  <div class="body_column">
+    <header>
+      <h1>Portfolio</h1>
+      <div class="nav_links">
+        <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/">Home</a>
+        <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/projects">All Projects</a>
+        <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags">Tags</a>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container">
+        
+  <hr>
+  <div class="title_block">
+    
+      <img class="title_image" src ="
+  
+    
+  
+
+  
+  
+
+  &#x2F;projects&#x2F;ik-creatures&#x2F;tile_but_smol.gif
+"/>
+    
+
+    <div class="title_content">
+      <h1 class="title">
+        Inverse Kinematic Creatures
+      </h1>
+      <p class="subtitle"><strong></strong></p>
+  
+      <div class="nav_links">
+        
+  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/rust">Rust</a>
+                  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/wgpu">Wgpu</a>
+                  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/graphics">Graphics</a>
+                  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/physics">Physics</a>
+                  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/featured">Featured</a>
+                  
+        
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  
+  <div class="content_block">
+    <h2 id="project-demo">Project Demo</h2>
+<div class="wasm_example" id="roots_app">
+
+    <button id="roots_app_button" class="button">Run Example</button>
+
+    <script type="module">
+        import init from "https://brackenlo.github.io/projects/ik-creatures/dev/ik_creatures_v2.js";
+
+        var btn_name = "roots_app_button";        
+        var btn = document.getElementById(btn_name);
+
+        document.getElementById(btn_name).onclick = function() {
+            btn.remove();
+
+            init().then(() => {
+                console.log("WASM Loaded");
+            });
+            
+            /*init().then(
+                () => {
+                    console.log("WASM Loaded");
+                }, 
+                () => {
+                    console.log("Failed to run example");
+
+                    var container = document.getElementById("roots_app");
+                    container.lastElementChild.remove();
+
+                    const warning = document.createTextNode("Failed to run example. Is your browser compatible?");
+                    container.appendChild(warning);
+                }
+            );*/
+        };
+        
+    </script>
+
+</div>
+
+<p>If this demo doesn't load, try using a different browser.</p>
+<p>This example is not compatible with touch screen devices.</p>
+<h3 id="the-making-of-this-project-or-something">The making of this project or something</h3>
+<p>I started working on this project after seeing this video on youtube:</p>
+<div class = "youtube-embed">
+    <iframe
+        src="https://www.youtube.com/embed/qlfh_rv6khY"
+        webkitallowfullscreen
+        mozallowfullscreen
+        allowfullscreen>
+    </iframe>
+</div>
+
+
+  </div>
+
+
+      </div>
+    </section>
+  </div>
+</body>
