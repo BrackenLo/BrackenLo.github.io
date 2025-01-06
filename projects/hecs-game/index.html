@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Portfolio - Ben Roberts</title>
+  <link rel="stylesheet" href="https://brackenlo.github.io/style.css?h=3b0f88c9cb3103de819a">
+</head>
+
+<body>
+  <div class="body_column">
+    <header>
+      <h1>Portfolio</h1>
+      <div class="nav_links">
+        <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/">Home</a>
+        <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/projects">All Projects</a>
+        <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags">Tags</a>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container">
+        
+  <hr>
+  <div class="title_block">
+    
+
+    <div class="title_content">
+      <h1 class="title">
+        Hecs Game&#x2F;Demo + Engine
+      </h1>
+      
+        <p class="subtitle"><strong>2024</strong></p>
+      
+  
+      <div class="nav_links">
+        
+  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/rust">Rust</a>
+                  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/wgpu">Wgpu</a>
+                  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/graphics">Graphics</a>
+                  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/physics">Physics</a>
+                  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/featured">Featured</a>
+                  
+        
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  
+  <div class="content_block">
+    <p><a href="https://github.com/BrackenLo/hecs_game">Find the demo here</a> and <a href="https://github.com/BrackenLo/hecs_engine">Find the engine here</a></p>
+<h2 id="project-demo">Project Demo</h2>
+<p>WASD + space to move. Mouse to look around and scroll wheel to zoom.</p>
+<p>Appologies for any jank with the html canvas. I don't have a huge amount of Html/Css experience.</p>
+<div class="wasm_example" id="hecs_engine_wasm">
+
+    <button id="hecs_engine_wasm_button" class="button">Run Example</button>
+
+    <script type="module">
+        import init from "https://brackenlo.github.io/projects/hecs-game/dev/hecs_game.js";
+
+        var btn_name = "hecs_engine_wasm_button";        
+        var btn = document.getElementById(btn_name);
+
+        document.getElementById(btn_name).onclick = function() {
+            btn.remove();
+
+            init().then(() => {
+                console.log("WASM Loaded");
+            });
+            
+            /*init().then(
+                () => {
+                    console.log("WASM Loaded");
+                }, 
+                () => {
+                    console.log("Failed to run example");
+
+                    var container = document.getElementById("hecs_engine_wasm");
+                    container.lastElementChild.remove();
+
+                    const warning = document.createTextNode("Failed to run example. Is your browser compatible?");
+                    container.appendChild(warning);
+                }
+            );*/
+        };
+        
+    </script>
+
+</div>
+
+<p>This demo may not work, or have missing features on certain browsers. This example is not compatible with touch screen devices.</p>
+<p><br><br><br></p>
+<h2 id="dependencies">Dependencies</h2>
+<p>This project was made using the <a href="https://github.com/Ralith/hecs">Hecs ECS library</a></p>
+<h2 id="physics">Physics</h2>
+
+  </div>
+
+
+      </div>
+    </section>
+  </div>
+</body>
