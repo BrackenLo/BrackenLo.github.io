@@ -25,6 +25,20 @@
   <hr>
   <div class="title_block">
     
+      <img class="title_image" src ="
+  
+    
+  
+
+  
+  
+    
+    
+  
+
+  https:&#x2F;&#x2F;brackenlo.github.io&#x2F;processed_images&#x2F;icon.7d414013a5dd777d.png
+"/>
+    
 
     <div class="title_content">
       <h1 class="title">
@@ -119,11 +133,82 @@
   <hr>
   
   <div class="content_block">
-    <h1 id="you-are-here-already">You are here already</h1>
-<p><a href="https://github.com/BrackenLo/portfolio_zola">Find the code here</a></p>
+    <p><a href="https://github.com/BrackenLo/portfolio_zola">Find the code here</a></p>
 <p><a href="https://github.com/BrackenLo/BrackenLo.github.io">And the built site here</a></p>
+<h1 id="you-are-here-already">You are here already</h1>
+<p>This is a statically generated site using the <a href="https://www.getzola.org/">zola static site engine</a>.</p>
+<p>I've used Zola once previously a few years ago and it is written in Rust so maybe I am a little biased
+but it does mean that if anything goes wrong, I have a higher chance of being able to fix it (and I
+also should have all of its dependencies and toolchains already if needed).</p>
+<blockquote>
+<p><strong>p.s</strong>. No Rust was written in the making of this project. Just Html, Css, and Markdown</p>
+</blockquote>
+<p>While Zola <a href="https://www.getzola.org/themes/">does provide templates</a>, I felt like I needed something more
+specific/tailored and so created this site from scratch.</p>
+<p>Html and Css are not languages i've spent a lot of time with in the past and so this site is a little bit
+of a crash course in how you probably shouldn't design a website but I have done anyway. In the future I
+might include toggles for light themes and stuff but it's not really needed right now.</p>
+<p>The bulk of the Html goes through the <a href="https://www.getzola.org/themes/">Tera template engine</a> which is
+relatively easy to use but finding whether it has certain features or not and then implementing them was
+a little difficult sometimes.</p>
+<p>projects_list.html</p>
+<pre data-lang="html" style="background-color:#2b303b;color:#c0c5ce;" class="language-html "><code class="language-html" data-lang="html"><span>{% extends &quot;base.html&quot; %}
+</span><span>{% import &quot;macros.html&quot; as macros %}
+</span><span>
+</span><span>{% block content %}
+</span><span>
+</span><span>  &lt;</span><span style="color:#bf616a;">div </span><span style="color:#d08770;">class</span><span>=&quot;</span><span style="color:#a3be8c;">intro_block</span><span>&quot;&gt;
+</span><span>    &lt;</span><span style="color:#bf616a;">h1 </span><span style="color:#d08770;">class</span><span>=&quot;</span><span style="color:#a3be8c;">title</span><span>&quot;&gt;
+</span><span>      {{ section.title }}
+</span><span>    &lt;/</span><span style="color:#bf616a;">h1</span><span>&gt;
+</span><span>  &lt;/</span><span style="color:#bf616a;">div</span><span>&gt;
+</span><span>
+</span><span>  &lt;</span><span style="color:#bf616a;">div </span><span style="color:#d08770;">class</span><span>=&quot;</span><span style="color:#a3be8c;">tiles_block</span><span>&quot;&gt;
+</span><span>    &lt;</span><span style="color:#bf616a;">div </span><span style="color:#d08770;">class</span><span>=&quot;</span><span style="color:#a3be8c;">tile_area</span><span>&quot;&gt;
+</span><span>      {% for page in section.pages %}
+</span><span>        {% include &quot;tile.html&quot; %}
+</span><span>      {% endfor %}
+</span><span>    &lt;</span><span style="color:#bf616a;">div</span><span>&gt;
+</span><span>  &lt;/</span><span style="color:#bf616a;">div</span><span>&gt;
+</span><span>
+</span><span>{% endblock content %}
+</span></code></pre>
+<p>tile.html</p>
+<pre data-lang="html" style="background-color:#2b303b;color:#c0c5ce;" class="language-html "><code class="language-html" data-lang="html"><span>{% if page.extra.img %}
+</span><span>  {% set image_path = page.path ~ page.extra.img %}
+</span><span>{% elif page.extra.img_static %}
+</span><span>  {% set image_path = page.extra.img_static %}
+</span><span>{% else %}
+</span><span>  {% set image_path = &quot;default.png&quot; %}
+</span><span>{% endif %}
+</span><span>
+</span><span>{% set meta = get_image_metadata(path=image_path) %}
+</span><span>{% if meta.format != &quot;gif&quot; %}
+</span><span>  {% set image = resize_image(path=image_path, width=250, height=250, op=&quot;fill&quot;) %}
+</span><span>  {% set image_path = image.url %}
+</span><span>{% endif %}
+</span><span>
+</span><span>&lt;</span><span style="color:#bf616a;">div </span><span style="color:#d08770;">class</span><span>=&quot;</span><span style="color:#a3be8c;">tile</span><span>&quot;&gt;
+</span><span>  &lt;</span><span style="color:#bf616a;">a </span><span style="color:#d08770;">href</span><span>=&quot;</span><span style="color:#a3be8c;">{{ page.permalink | safe }}</span><span>&quot;&gt;
+</span><span>    &lt;</span><span style="color:#bf616a;">figure</span><span>&gt;
+</span><span>      &lt;</span><span style="color:#bf616a;">img </span><span style="color:#d08770;">width</span><span>=</span><span style="color:#a3be8c;">200 </span><span style="color:#d08770;">height</span><span>=</span><span style="color:#a3be8c;">200 </span><span style="color:#d08770;">src</span><span>=&quot;</span><span style="color:#a3be8c;">{{ image_path }}</span><span>&quot; </span><span style="color:#d08770;">alt</span><span>=&quot;</span><span style="color:#a3be8c;">{{ page.title }}</span><span>&quot;/&gt;
+</span><span>      &lt;</span><span style="color:#bf616a;">figcaption</span><span>&gt;{{ page.title }}&lt;/</span><span style="color:#bf616a;">figcaption</span><span>&gt;
+</span><span>      {% if page.extra.date %}
+</span><span>        &lt;</span><span style="color:#bf616a;">figcaption </span><span style="color:#d08770;">class</span><span>=&quot;</span><span style="color:#a3be8c;">date</span><span>&quot;&gt;{{ page.extra.date }}&lt;/</span><span style="color:#bf616a;">figcaption</span><span>&gt;
+</span><span>      {% endif %}
+</span><span>      
+</span><span>    &lt;/</span><span style="color:#bf616a;">figure</span><span>&gt;
+</span><span>  &lt;/</span><span style="color:#bf616a;">a</span><span>&gt;
+</span><span>&lt;/</span><span style="color:#bf616a;">div</span><span>&gt;
+</span></code></pre>
 <p><br><br></p>
-<h2 id="wip-sorry">WIP (Sorry)</h2>
+<h3 id="yes-i-did-take-multiple-screenshots-for-this-thumbnail-even-if-it-s-too-small-to-notice-on-the-projects-page">Yes I did take multiple screenshots for this thumbnail (even if it's too small to notice on the projects page)</h3>
+<img src = "icon.png">
+<br>
+<h3 id="no-thumbnail-available">No thumbnail available</h3>
+<p>If you're confused by seeing this image around the site, it's the default image I've been using as
+placeholder until I can properly fill out a page.</p>
+<img src = "/default.png">
 
   </div>
 
