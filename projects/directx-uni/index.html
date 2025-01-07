@@ -25,13 +25,27 @@
   <hr>
   <div class="title_block">
     
+      <img class="title_image" src ="
+  
+    
+  
+
+  
+  
+    
+    
+  
+
+  https:&#x2F;&#x2F;brackenlo.github.io&#x2F;processed_images&#x2F;icon.542d9681623266c1.png
+"/>
+    
 
     <div class="title_content">
       <h1 class="title">
-        Unity Parkour Game
+        DirectX Uni
       </h1>
       
-        <p class="subtitle"><strong>2019</strong></p>
+        <p class="subtitle"><strong>2022</strong></p>
       
   
       <div class="nav_links">
@@ -45,73 +59,7 @@
           
           
             
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/unity">Unity</a>
-                  
-        
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/csharp">CSharp</a>
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/cpp">CPP</a>
                   
         
           
@@ -145,31 +93,7 @@
           
           
             
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-            
-          
-          
-            
-              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/team-project">Team Project</a>
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/graphics">Graphics</a>
                   
         
           
@@ -245,23 +169,59 @@
   <hr>
   
   <div class="content_block">
-    <p>A good example of what happens when you group 6 programmers, who most have never used Unity
-or C# before, and ask them to make a parkour game.</p>
+    <p>"Graphics 1" university module learning DirectX 11. There's nothing too much here
+outside of course content with the final assessment being a demonstration of standard
+Blinn-Phong lighting and a basic scene graph.</p>
 <div class = "youtube-embed">
     <iframe
-        src="https://www.youtube.com/embed/dWXk7-UVdcI"
+        src="https://www.youtube.com/embed/aO8zsbYcrlQ"
         webkitallowfullscreen
         mozallowfullscreen
         allowfullscreen>
     </iframe>
 </div>
 
-<p>I don't have access to any of the code from this project, just the trailer we needed to put
-together for it. Without any artists or anyone with experience in that area, it is far from
-good looking.</p>
-<p>Far from one of my best works, I like to include it anyway. I implemented most of the level
-features such as timers, checkpoints, spawning and finishing and stuff like that. In hindsight,
-it doesn't seem like very complex stuff but was very new to me at the time.</p>
+<div class = "youtube-embed">
+    <iframe
+        src="https://www.youtube.com/embed/sQBKHE6Gvc4"
+        webkitallowfullscreen
+        mozallowfullscreen
+        allowfullscreen>
+    </iframe>
+</div>
+
+<p>The only thing of mine to really note was the university provided a DirectX project
+template which setup and window and DirectX context for us. I wanted to create my own
+version to get an understanding of how the project was structured and what did what.</p>
+<p>While I never got far enough in to implement shaders and actually see it work, it still
+helped to get an understanding DirectX.
+It also would have been ineligile for the assessment criteria requiring the provided code.</p>
+<figure>
+  <img src = "DirectXUniProvided.png">
+  <figcaption>The Universities provided structure</figcaption>
+</figure>
+<figure>
+  <img src = "DirectXMine.png">
+  <figcaption>My own attepmted implementation</figcaption>
+</figure>
+<figure>
+  <a href = "DirectXUniVsMine.png"><img src = "DirectXUniVsMine.png"></a>
+  <figcaption>
+    Uni (left) vs Mine (right) main header file layout. I tried to include WndProc directly
+    into my code as I didn't like the concept of having the main input loop outside of the 
+    main class and couldn't understand why you wouldn't keep everything together.
+    <br>Also sorry about img size/formatting (css is still relatively new to me).
+  </figcaption>
+</figure>
+<figure>
+  <a href = "DirectXUniVsMineWndProc.png"><img src = "DirectXUniVsMineWndProc.png"></a>
+  <figcaption>
+    Uni (left) vs Mine (right) main input loop with WndProc. The provided code uses a pointer
+    in the global scope to the main class which I didn't really like which is why I wanted to
+    see if I could remove that element however just adds a lot of complexity I didn't know
+    enough about at the time.
+  </figcaption>
+</figure>
 
   </div>
 
