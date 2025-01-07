@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>Portfolio - Ben Roberts</title>
-  <link rel="stylesheet" href="https://brackenlo.github.io/style.css?h=3b0f88c9cb3103de819a">
+  <link rel="stylesheet" href="https://brackenlo.github.io/style.css?h=97b2ca3f169f34f054bc">
 </head>
 
 <body>
@@ -15,6 +15,7 @@
         <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/">Home</a>
         <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/projects">All Projects</a>
         <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags">Tags</a>
+        <a class="button" href = "https://github.com/BrackenLo">Github</a>
       </div>
     </header>
 
@@ -41,7 +42,7 @@
 
     <div class="title_content">
       <h1 class="title">
-        Roots - Rust Engine
+        Roots - Game Engine
       </h1>
       
         <p class="subtitle"><strong>2021 - 2024</strong></p>
@@ -243,26 +244,51 @@
   
   <div class="content_block">
     <p><a href="https://github.com/BrackenLo/roots">Find the code here</a></p>
+<h1 id="what-is-roots">What is Roots?</h1>
+<p>Roots is the current culmination of two to three years of learning Rust with Wgpu. While still missing features present
+in previous projects, my goal with Roots is to be used in any of my future projects, being the roots that they may stem
+from.</p>
+<p>Over the years of discovering, learning and tinkering with both the concepts of low level graphics, Wgpu and Rust, I've
+found myself reinventing the wheel time and time again in the search for the best way to implement features.</p>
+<p>Roots is different from my previous projects listed below as it is what many of them should have been from the start.
+Previous attempts to create a library for use in multiple projects kept turning into full on game engines, handling many
+of the core required feature such as rendering, physics, asset loading.</p>
+<p>While I am very pleased with these works, they were not compatible with all the projects I wanted to work on and at times
+made implementing new features incredibly complicated. As such, I've tried to make Roots independant from functionality
+not suitable for all projects (e.g. Entity Component Systems and game loops) and be fairly easy to extend and expand.</p>
 <br>
-<p>Roots is the current culmination of two to three years of learning Rust with Wgpu.</p>
+<h3 id="most-of-my-previous-engines-versions">Most of my previous engines/versions</h3>
+<p>These repos are all projects that implement the Wgpu library themselves, implementing all functionality for rendering.</p>
+<p>Please note that the latest commit for some of these repos may not be in working states.</p>
+<table><thead><tr><th>Date</th><th>Project</th><th>Repo</th><th>Description</th></tr></thead><tbody>
+<tr><td>nov 24</td><td><a href="https://brackenlo.github.io/projects/hecs-game/">hecs_engine</a></td><td><a href="https://github.com/BrackenLo/hecs_engine">repo</a></td><td>A more traditional game engine, provinding the used a 'state' each from that can be used to manipulate the engine</td></tr>
+<tr><td>nov 24</td><td>turnbase</td><td><a href="https://github.com/BrackenLo/turnbase_0">repo</a></td><td>A turnbased game using sprites and text in 3d space.</td></tr>
+<tr><td>oct 24</td><td>feathered</td><td><a href="https://github.com/BrackenLo/feathered">repo</a></td><td>A remaster of cabat with additional features such as GJK physics.</td></tr>
+<tr><td>sept 24</td><td>cabat</td><td><a href="https://github.com/BrackenLo/cabat">repo</a></td><td>An attepted expandable library turned <a href="https://github.com/leudz/shipyard">ECS</a> based game engine. Used to make <a href="https://brackenlo.github.io/projects/image-manager/">image viewer</a>.</td></tr>
+<tr><td>aug 24</td><td><a href="https://brackenlo.github.io/projects/ik-creatures/">ik_creatures_v1</a></td><td><a href="https://github.com/BrackenLo/ik_creatures">repo</a></td><td>The first version of inverse kinematic creatures used Wgpu seperately</td></tr>
+<tr><td>apr 23</td><td>roots_old</td><td><a href="https://github.com/BrackenLo/brackens_roots_old">repo</a></td><td>My first proper game engine - provides seperate functionality in modules</td></tr>
+<tr><td>july 22</td><td><a href="https://brackenlo.github.io/projects/notpong/">pong clone</a></td><td><a href="https://github.com/BrackenLo/not_pong">repo</a></td><td>One of my first projects learning Wgpu - unfinished</td></tr>
+<tr><td>apr 22</td><td><a href="https://brackenlo.github.io/projects/cube-world/">cube worlds</a></td><td><a href="https://github.com/BrackenLo/cube_worlds">repo</a></td><td>One of my first projects learning Wgpu - unfinished</td></tr>
+</tbody></table>
 <br>
-<h4 id="most-previous-engines-versions">Most previous engines/versions</h4>
-<p><a href="https://github.com/BrackenLo/hecs_engine">nov 24 - hecs_engine</a></p>
-<p><a href="https://github.com/BrackenLo/turnbase_0">nov 24 - turnbase</a></p>
-<p><a href="https://github.com/BrackenLo/feathered">oct 24 - feathered</a></p>
-<p><a href="https://github.com/BrackenLo/cabat">sept 24 - cabat</a></p>
-<p><a href="https://github.com/BrackenLo/ik_creatures">aug 24 - ik_creatures_v1</a></p>
-<p><a href="https://github.com/BrackenLo/brackens_roots_old">apr 23 - roots_old</a></p>
-<p><a href="https://github.com/BrackenLo/cube_worlds">apr 22 - cube worlds</a></p>
-<h3 id="reasons-for-creating-and-previous-iterations">Reasons for creating and previous iterations</h3>
-<p>Over the years of discovering, learning and tinkering with both the concepts of low level graphics and Wgpu,
-I've found myself reinventing the wheel time and time again in the search of the best way to implement features.</p>
-<p>All of the above repositories are re-implementations of the Wgpu graphics library, each doing something different
-each time, each time improving or doing something in a more specific way.</p>
-<p>My most prominent attempts closely interlinked the <a href="https://github.com/leudz/shipyard">Shipyard ECS crate</a> to create
-a partial game engine such as roots_old, cabat, feathered. Each time it felt like it made so much sense to implement
-these features directly into an ECS environment, it made it so much harder</p>
-<h2 id="the-rust-langauge">The Rust Langauge</h2>
+<h2 id="the-rust-langauge-why-rust">The Rust Langauge - Why Rust?</h2>
+<p>I have a love/hate relationship with the Rust language. It's a really nice language to write in. It's really easy to setup
+projects, write and debug and when your code compiles, your program usually just works. As well as a bunch of other stuff
+like first class support for features other languages like C++ have tacked on.</p>
+<p>However, it's promise of memory and thread safety is also great and saves so many headaches you might have in other languages
+while causing so many headaches you wouldn't have in other languages. The inability to access, store or alter references to
+variables makes actually making games much harder and is why the Entity Component System paradigm is so common in Rust.</p>
+<p>There's a saying or a joke in the Rust community along the lines of "why are there so many game engines written in Rust but
+hardly any games?" and it's easy to see why. Rust is great for making robust, fast systems but when you need the freedom to
+just throw variables around, have mutable and immutable references across multiple parts of your code, it's much more difficult.</p>
+<p>There's a reason why C/C++ is the undisputed champion of game development and I find myself longing for it more frequently and
+wanting to continue graphics programming with something like OpenGL or Vulkan. Unfortunatly past and current experiences with
+the C build tools such as cmake make it harder to get started.</p>
+<br>
+<h2 id="web-assembly">Web Assembly</h2>
+<p>Back onto the fun stuff, Rust has first class support for Web Assembly and as such, Roots was made with the option of making
+web builds from the start. It's one of the reasons the <a href="https://brackenlo.github.io/projects/ik-creatures/">IK Creatures</a> demo is available even
+if the web support needs a little more work.</p>
 <p><br><br></p>
 <h1 id="wip-sorry">WIP (sorry)</h1>
 
