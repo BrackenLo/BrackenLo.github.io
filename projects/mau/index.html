@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <title>Portfolio - Ben Roberts</title>
-  <link rel="stylesheet" href="https://brackenlo.github.io/style.css?h=188b88e52a5d8bc20989">
+  <link rel="stylesheet" href="https://brackenlo.github.io/style.css?h=1078e384f8f47e7466e6">
+  <script tyoe="text/javascript" src="https://brackenlo.github.io/expandable_block.js" defer></script>
 </head>
 
 <body>
@@ -288,17 +289,1465 @@
 Modelling, and Animation (CGMA) sudents into a single 'company', unlike previous years. As such, the team was
 split into smaller sub-groups, each with a group lead.</p>
 <h1 id="the-game">The game</h1>
-<p>Mau is a boomer shooter game about the player who had their cat stolen by aliens and ventures out to get them back.</p>
-<p>It was initially created using Unreal Engine 5.3 however was later ported to Unreal Engine 5.2</p>
-<p>Due to licensing issues and uncertainty with the University, I am unable to provide a copy of the game, its assets or
+<p>Mau is a <a href="https://www.inverse.com/gaming/boomer-shooter-definition-origin">boomer shooter game</a> about the player
+who had their cat stolen by aliens and ventures out to get them back.</p>
+<p>It was initially created using Unreal Engine 5.3 however was later ported to Unreal Engine 5.2 due to issues with the
+University lab computers.</p>
+<p>Due to uncertainty with licensing issues with the University, I am unable to provide a copy of the game, its assets or
 source code.</p>
 <h2 id="group-leader">Group leader</h2>
 <p>With some of the most programming experience, I was made a lead for a group of 6 other programmers.</p>
-<p>As one of the only members with Git experience, I volunteered to setup, manage, and maintain a Github repository
-while teaching Git to the other programmers and some of the CGMA students. Due to inexperience amongst programmers,</p>
-<p>Additionally, as one of the only members with Unreal c++ experience, I assisted with teaching many of the CGP
+<p>Also as one of the only members with Git experience, I volunteered to setup, manage, and maintain a Github repository
+while teaching Git to the other programmers and some of the CGMA students. Due to inexperience amongst programmers,
+there were more than a few occasions that I had to completely rebuild branches or rebase or reset comits due to misuse
+and misunderstanding.</p>
+<p>And also as one of the only members with Unreal c++ experience, I assisted with teaching many of the CGP
 students with writing various systems in c++ such as health management, gun systems, vehicle movement with splines, enemy
 navigation with visualisation and more.</p>
+<h2 id="produced-work">Produced work</h2>
+<h4 id="base-enemy-class-ai-management-systems-and-ai-token-system">Base Enemy Class, AI Management Systems and AI Token System</h4>
+<p>At the start of the project, I helmed a lot of the base AI functionality while the rest of my team created the the AI
+and functionality for the enemies. This included a base class for enemy characters, pawns and AI controllers as well as a
+level game mode for monitoring AIs.</p>
+<p>As a boomer shooter, we also decided to explore the idea of a <a href="https://youtu.be/2KQNpQD8Ayo?feature=shared&amp;t=2502">Doom like AI token system</a>.
+I implemented this into the level game mode alongside the monitoring systems, and into the base enemy ai controllers with
+easy blueprint access. See the ai_director_gamemode header and class files below for the implementations but the essential
+functionality was the gamemode would assign tokens to each player registered (we kept our options open for multiplayer early
+on) and the each enemy, when planning to attack, would request a token. If obtained, could attack and if not, would do something
+else.</p>
+<p>While not ultimatly used in the final product, the implementation remained all the same.</p>
+<blockquote>
+<p>Most of this code was following the Epic Games c++ style however has since been through a formatter when porting here
+which has altered line spacing, bracket placement, pointer and reference placement , etc.</p>
+</blockquote>
+<br>
+<button type="button" class="collapsible button">Toggle &quot;ai_director_gamemode.h</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#pragma</span><span> once
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode.generated.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">AIDirectorResources.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">CoreMinimal.h</span><span>&quot;
+</span></td></tr><tr><td>8</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">GameFramework/GameModeBase.h</span><span>&quot;
+</span></td></tr><tr><td>9</td><td><span>
+</span></td></tr><tr><td>10</td><td><span style="color:#bf616a;">DECLARE_LOG_CATEGORY_EXTERN</span><span>(LogTokenSystem, Log, All);
+</span></td></tr><tr><td>11</td><td><span>
+</span></td></tr><tr><td>12</td><td><span style="color:#b48ead;">const float</span><span> TOKEN_TIMEOUT = </span><span style="color:#d08770;">10.0</span><span style="color:#b48ead;">f</span><span>;
+</span></td></tr><tr><td>13</td><td><span style="color:#65737e;">// Change this to a difficulty option later
+</span></td></tr><tr><td>14</td><td><span style="color:#b48ead;">const float</span><span> TOKEN_COOLDOWN = </span><span style="color:#d08770;">1.5</span><span style="color:#b48ead;">f</span><span>;
+</span></td></tr><tr><td>15</td><td><span>
+</span></td></tr><tr><td>16</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>17</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>18</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>19</td><td><span style="color:#bf616a;">UCLASS</span><span>(ClassGroup = (AIDirector), Blueprintable, BlueprintType)
+</span></td></tr><tr><td>20</td><td><span style="color:#b48ead;">class</span><span> CATBOOMERSHOOTER_API AAIDirectorGameMode : public </span><span style="color:#bf616a;">AGameModeBase </span><span>{
+</span></td></tr><tr><td>21</td><td><span>    </span><span style="color:#bf616a;">GENERATED_BODY</span><span>()
+</span></td></tr><tr><td>22</td><td><span>
+</span></td></tr><tr><td>23</td><td><span>    </span><span style="color:#65737e;">// Enemy Tracking stuff
+</span></td></tr><tr><td>24</td><td><span>private:
+</span></td></tr><tr><td>25</td><td><span>    </span><span style="color:#65737e;">// We may need to disable VisibleAnywhere at a later date if it starts lagging the editor
+</span></td></tr><tr><td>26</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, Category = &quot;</span><span style="color:#a3be8c;">EnemyTracking</span><span>&quot;)
+</span></td></tr><tr><td>27</td><td><span>    FEnemyCollection Enemies;
+</span></td></tr><tr><td>28</td><td><span>
+</span></td></tr><tr><td>29</td><td><span>public:
+</span></td></tr><tr><td>30</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">EnemyTracking</span><span>&quot;)
+</span></td></tr><tr><td>31</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">RegisterEnemy</span><span>(AActor* EnemyActor);
+</span></td></tr><tr><td>32</td><td><span>
+</span></td></tr><tr><td>33</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">EnemyTracking</span><span>&quot;)
+</span></td></tr><tr><td>34</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">RemoveEnemy</span><span>(AActor* EnemyActor);
+</span></td></tr><tr><td>35</td><td><span>
+</span></td></tr><tr><td>36</td><td><span>    </span><span style="color:#65737e;">/** Get all enemies. */
+</span></td></tr><tr><td>37</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">EnemyTracking</span><span>&quot;)
+</span></td></tr><tr><td>38</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">GetEnemyActors</span><span>(TArray&lt;AActor*&gt;&amp; EnemyActors);
+</span></td></tr><tr><td>39</td><td><span>
+</span></td></tr><tr><td>40</td><td><span>    </span><span style="color:#65737e;">/** Get all enemies of a given type. */
+</span></td></tr><tr><td>41</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">EnemyTracking</span><span>&quot;)
+</span></td></tr><tr><td>42</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">GetEnemyActorsTyped</span><span>(</span><span style="color:#b48ead;">const</span><span> EEnemyType EnemyType, TArray&lt;AActor*&gt;&amp; EnemyActors);
+</span></td></tr><tr><td>43</td><td><span>
+</span></td></tr><tr><td>44</td><td><span>    </span><span style="color:#65737e;">/** Get all enemies in range of origin.
+</span></td></tr><tr><td>45</td><td><span style="color:#65737e;">     *	If setting origin to GetActorLocation, increase min radius to exclude that actor. */
+</span></td></tr><tr><td>46</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">EnemyTracking</span><span>&quot;)
+</span></td></tr><tr><td>47</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">GetEnemyActorsInRange</span><span>(</span><span style="color:#b48ead;">const</span><span> FVector Origin, </span><span style="color:#b48ead;">const float</span><span> MinRadius, </span><span style="color:#b48ead;">const float</span><span> MaxRadius, </span><span style="color:#b48ead;">const</span><span> TArray&lt;AActor*&gt; ActorsToIgnore, TArray&lt;AActor*&gt;&amp; EnemyActors);
+</span></td></tr><tr><td>48</td><td><span>
+</span></td></tr><tr><td>49</td><td><span>    </span><span style="color:#65737e;">/** Get all enemies of a given type in range of origin.
+</span></td></tr><tr><td>50</td><td><span style="color:#65737e;">     *	If setting origin to GetActorLocation, increase min radius to exclude that actor. */
+</span></td></tr><tr><td>51</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">EnemyTracking</span><span>&quot;)
+</span></td></tr><tr><td>52</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">GetEnemyActorsInRangeTyped</span><span>(</span><span style="color:#b48ead;">const</span><span> FVector Origin, </span><span style="color:#b48ead;">const float</span><span> MinRadius, </span><span style="color:#b48ead;">const float</span><span> MaxRadius, </span><span style="color:#b48ead;">const</span><span> EEnemyType EnemyType, </span><span style="color:#b48ead;">const</span><span> TArray&lt;AActor*&gt; ActorsToIgnore, TArray&lt;AActor*&gt;&amp; EnemyActors);
+</span></td></tr><tr><td>53</td><td><span>
+</span></td></tr><tr><td>54</td><td><span>    </span><span style="color:#65737e;">// Token Stuff
+</span></td></tr><tr><td>55</td><td><span>private:
+</span></td></tr><tr><td>56</td><td><span>    </span><span style="color:#65737e;">/** All current tokens and their assigned characters */
+</span></td></tr><tr><td>57</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, Category = &quot;</span><span style="color:#a3be8c;">Tokens</span><span>&quot;)
+</span></td></tr><tr><td>58</td><td><span>    TMap&lt;AActor*, FActorTokensCollection&gt; ActorTokens;
+</span></td></tr><tr><td>59</td><td><span>
+</span></td></tr><tr><td>60</td><td><span>public:
+</span></td></tr><tr><td>61</td><td><span>    </span><span style="color:#65737e;">/** Requests an enemy token of a given type.
+</span></td></tr><tr><td>62</td><td><span style="color:#65737e;">     *	Token Priority is currently unimplemented. */
+</span></td></tr><tr><td>63</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">Tokens</span><span>&quot;)
+</span></td></tr><tr><td>64</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">RequestToken</span><span>(</span><span style="color:#b48ead;">class</span><span> AAIEnemyBaseController* EnemyController, </span><span style="color:#b48ead;">const</span><span> AActor* TargetActor, </span><span style="color:#b48ead;">const</span><span> ETokenType TokenType, </span><span style="color:#b48ead;">const</span><span> ETokenPriority TokenPriority, UEnemyToken*&amp; Token, </span><span style="color:#b48ead;">bool</span><span>&amp; Success);
+</span></td></tr><tr><td>65</td><td><span>
+</span></td></tr><tr><td>66</td><td><span>    </span><span style="color:#65737e;">/** Returns a token from being used by an enemy */
+</span></td></tr><tr><td>67</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">Tokens</span><span>&quot;)
+</span></td></tr><tr><td>68</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">ReleaseToken</span><span>(UEnemyToken* Token, </span><span style="color:#b48ead;">const float</span><span> CustomCooldown = -</span><span style="color:#d08770;">1.0</span><span style="color:#b48ead;">f</span><span>);
+</span></td></tr><tr><td>69</td><td><span>
+</span></td></tr><tr><td>70</td><td><span>    </span><span style="color:#65737e;">/** Adds a set amount of tokens to an actor  */
+</span></td></tr><tr><td>71</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">Tokens</span><span>&quot;)
+</span></td></tr><tr><td>72</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">AddTokensToActor</span><span>(AActor* TargetActor, ETokenType TokenType, </span><span style="color:#b48ead;">int</span><span> Amount);
+</span></td></tr><tr><td>73</td><td><span>
+</span></td></tr><tr><td>74</td><td><span>    </span><span style="color:#65737e;">/** Adds the default amount of tokens to an actor based on current difficulty */
+</span></td></tr><tr><td>75</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">Tokens</span><span>&quot;)
+</span></td></tr><tr><td>76</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">AddDefaultTokensToActor</span><span>(AActor* TargetActor);
+</span></td></tr><tr><td>77</td><td><span>
+</span></td></tr><tr><td>78</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable, Category = &quot;</span><span style="color:#a3be8c;">Tokens</span><span>&quot;)
+</span></td></tr><tr><td>79</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">SetTokensLocked</span><span>(AActor* TargetActor, </span><span style="color:#b48ead;">bool</span><span> Locked);
+</span></td></tr><tr><td>80</td><td><span>
+</span></td></tr><tr><td>81</td><td><span>private:
+</span></td></tr><tr><td>82</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">TokenTimeout</span><span>(UEnemyToken* Token);
+</span></td></tr><tr><td>83</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">TokenCooldownEnd</span><span>(UEnemyToken* Token);
+</span></td></tr><tr><td>84</td><td><span>
+</span></td></tr><tr><td>85</td><td><span>protected:
+</span></td></tr><tr><td>86</td><td><span>    </span><span style="color:#b48ead;">virtual void </span><span style="color:#bf616a;">StartPlay</span><span>() override;
+</span></td></tr><tr><td>87</td><td><span>};
+</span></td></tr><tr><td>88</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<button type="button" class="collapsible button">Toggle &quot;ai_director_gamemode.cpp</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">../AIEnemyBaseController.h</span><span>&quot;
+</span></td></tr><tr><td>4</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">../EnemyBase.h</span><span>&quot;
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">../TeamsProjectSettings.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Kismet/KismetSystemLibrary.h</span><span>&quot;
+</span></td></tr><tr><td>8</td><td><span>
+</span></td></tr><tr><td>9</td><td><span style="color:#bf616a;">DEFINE_LOG_CATEGORY</span><span>(LogTokenSystem);
+</span></td></tr><tr><td>10</td><td><span style="color:#b48ead;">#define </span><span>DEFAULT_LOG_LEVEL Verbose
+</span></td></tr><tr><td>11</td><td><span>
+</span></td></tr><tr><td>12</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">RegisterEnemy</span><span>(AActor* </span><span style="color:#bf616a;">EnemyActor</span><span>)
+</span></td></tr><tr><td>13</td><td><span>{
+</span></td></tr><tr><td>14</td><td><span>    </span><span style="color:#65737e;">// Check that Enemy Actor isn&#39;t null or pending removal
+</span></td></tr><tr><td>15</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">IsValid</span><span>(EnemyActor)) {
+</span></td></tr><tr><td>16</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTemp, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIDirectorGameMode::RegisterEnemy: Invalid enemy actor provided.</span><span>&quot;));
+</span></td></tr><tr><td>17</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>18</td><td><span>    }
+</span></td></tr><tr><td>19</td><td><span>
+</span></td></tr><tr><td>20</td><td><span>    </span><span style="color:#65737e;">// Check that Enemy Actor implements enemy interface
+</span></td></tr><tr><td>21</td><td><span>    IEnemyBase* Enemy = </span><span style="color:#bf616a;">Cast</span><span>&lt;IEnemyBase&gt;(EnemyActor);
+</span></td></tr><tr><td>22</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(Enemy == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>23</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTemp, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIDirectorGameMode::RegisterEnemy:: Provided actor doesn&#39;t implement enemy interface.</span><span>&quot;));
+</span></td></tr><tr><td>24</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>25</td><td><span>    }
+</span></td></tr><tr><td>26</td><td><span>
+</span></td></tr><tr><td>27</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>28</td><td><span>        LogTemp, Verbose,
+</span></td></tr><tr><td>29</td><td><span>        </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">Registering new enemy: </span><span style="color:#d08770;">%d %s</span><span>&quot;),
+</span></td></tr><tr><td>30</td><td><span>        EnemyActor-&gt;</span><span style="color:#bf616a;">GetUniqueID</span><span>(),
+</span></td></tr><tr><td>31</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(EnemyActor));
+</span></td></tr><tr><td>32</td><td><span>
+</span></td></tr><tr><td>33</td><td><span>    </span><span style="color:#65737e;">// Add enemy to general array and enum type specific array
+</span></td></tr><tr><td>34</td><td><span>    Enemies.</span><span style="color:#bf616a;">Enemies</span><span>.</span><span style="color:#bf616a;">Add</span><span>(EnemyActor);
+</span></td></tr><tr><td>35</td><td><span>    Enemies.</span><span style="color:#bf616a;">GetCollectionOfType</span><span>(IEnemyBase::</span><span style="color:#bf616a;">Execute_GetEnemyType</span><span>(EnemyActor))-&gt;</span><span style="color:#bf616a;">Add</span><span>(EnemyActor);
+</span></td></tr><tr><td>36</td><td><span>}
+</span></td></tr><tr><td>37</td><td><span>
+</span></td></tr><tr><td>38</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">RemoveEnemy</span><span>(AActor* </span><span style="color:#bf616a;">EnemyActor</span><span>)
+</span></td></tr><tr><td>39</td><td><span>{
+</span></td></tr><tr><td>40</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(EnemyActor == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>41</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTemp, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIDirectorGameMode::RemoveEnemy: nullptr provided.</span><span>&quot;));
+</span></td></tr><tr><td>42</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>43</td><td><span>    }
+</span></td></tr><tr><td>44</td><td><span>
+</span></td></tr><tr><td>45</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>46</td><td><span>        LogTemp, Verbose,
+</span></td></tr><tr><td>47</td><td><span>        </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">Removing enemy: </span><span style="color:#d08770;">%d %s</span><span>&quot;),
+</span></td></tr><tr><td>48</td><td><span>        EnemyActor-&gt;</span><span style="color:#bf616a;">GetUniqueID</span><span>(),
+</span></td></tr><tr><td>49</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(EnemyActor));
+</span></td></tr><tr><td>50</td><td><span>
+</span></td></tr><tr><td>51</td><td><span>    </span><span style="color:#65737e;">// Remove enemy from general storage
+</span></td></tr><tr><td>52</td><td><span>    Enemies.</span><span style="color:#bf616a;">Enemies</span><span>.</span><span style="color:#bf616a;">Remove</span><span>(EnemyActor);
+</span></td></tr><tr><td>53</td><td><span>
+</span></td></tr><tr><td>54</td><td><span>    </span><span style="color:#65737e;">// Confirm enemy implements enemy interface
+</span></td></tr><tr><td>55</td><td><span>    IEnemyBase* Enemy = </span><span style="color:#bf616a;">Cast</span><span>&lt;IEnemyBase&gt;(EnemyActor);
+</span></td></tr><tr><td>56</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(Enemy == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>57</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>58</td><td><span>            LogTemp, Warning,
+</span></td></tr><tr><td>59</td><td><span>            </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIDirectorGameMode::RemoveEnemy:: Provided actor </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> doesn&#39;t implement enemy interface.</span><span>&quot;),
+</span></td></tr><tr><td>60</td><td><span>            *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(EnemyActor));
+</span></td></tr><tr><td>61</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>62</td><td><span>    }
+</span></td></tr><tr><td>63</td><td><span>
+</span></td></tr><tr><td>64</td><td><span>    </span><span style="color:#65737e;">// Remove enemy from type specific storage
+</span></td></tr><tr><td>65</td><td><span>    Enemies.</span><span style="color:#bf616a;">GetCollectionOfType</span><span>(IEnemyBase::</span><span style="color:#bf616a;">Execute_GetEnemyType</span><span>(EnemyActor))-&gt;</span><span style="color:#bf616a;">Remove</span><span>(EnemyActor);
+</span></td></tr><tr><td>66</td><td><span>}
+</span></td></tr><tr><td>67</td><td><span>
+</span></td></tr><tr><td>68</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">GetEnemyActors</span><span>(TArray&lt;AActor*&gt;&amp; </span><span style="color:#bf616a;">EnemyActors</span><span>)
+</span></td></tr><tr><td>69</td><td><span>{
+</span></td></tr><tr><td>70</td><td><span>    EnemyActors = Enemies.</span><span style="color:#bf616a;">Enemies</span><span>;
+</span></td></tr><tr><td>71</td><td><span>}
+</span></td></tr><tr><td>72</td><td><span>
+</span></td></tr><tr><td>73</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">GetEnemyActorsTyped</span><span>(</span><span style="color:#b48ead;">const</span><span> EEnemyType </span><span style="color:#bf616a;">EnemyType</span><span>, TArray&lt;AActor*&gt;&amp; </span><span style="color:#bf616a;">EnemyActors</span><span>)
+</span></td></tr><tr><td>74</td><td><span>{
+</span></td></tr><tr><td>75</td><td><span>    EnemyActors = *Enemies.</span><span style="color:#bf616a;">GetCollectionOfType</span><span>(EnemyType);
+</span></td></tr><tr><td>76</td><td><span>}
+</span></td></tr><tr><td>77</td><td><span>
+</span></td></tr><tr><td>78</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">GetEnemyActorsInRange</span><span>(</span><span style="color:#b48ead;">const</span><span> FVector </span><span style="color:#bf616a;">Origin</span><span>, </span><span style="color:#b48ead;">const float </span><span style="color:#bf616a;">MinRadius</span><span>, </span><span style="color:#b48ead;">const float </span><span style="color:#bf616a;">MaxRadius</span><span>, </span><span style="color:#b48ead;">const</span><span> TArray&lt;AActor*&gt; </span><span style="color:#bf616a;">ActorsToIgnore</span><span>, TArray&lt;AActor*&gt;&amp; </span><span style="color:#bf616a;">EnemyActors</span><span>)
+</span></td></tr><tr><td>79</td><td><span>{
+</span></td></tr><tr><td>80</td><td><span>    </span><span style="color:#b48ead;">for </span><span>(AActor*&amp; Enemy : Enemies.</span><span style="color:#bf616a;">Enemies</span><span>) {
+</span></td></tr><tr><td>81</td><td><span>        </span><span style="color:#b48ead;">float</span><span> Distance = FVector::</span><span style="color:#bf616a;">Distance</span><span>(Origin, Enemy-&gt;</span><span style="color:#bf616a;">GetActorLocation</span><span>());
+</span></td></tr><tr><td>82</td><td><span>
+</span></td></tr><tr><td>83</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(MinRadius &lt;= Distance &amp;&amp; Distance &lt; MaxRadius &amp;&amp; !ActorsToIgnore.</span><span style="color:#bf616a;">Contains</span><span>(Enemy)) {
+</span></td></tr><tr><td>84</td><td><span>
+</span></td></tr><tr><td>85</td><td><span>            EnemyActors.</span><span style="color:#bf616a;">Add</span><span>(Enemy);
+</span></td></tr><tr><td>86</td><td><span>        }
+</span></td></tr><tr><td>87</td><td><span>    }
+</span></td></tr><tr><td>88</td><td><span>}
+</span></td></tr><tr><td>89</td><td><span>
+</span></td></tr><tr><td>90</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">GetEnemyActorsInRangeTyped</span><span>(</span><span style="color:#b48ead;">const</span><span> FVector </span><span style="color:#bf616a;">Origin</span><span>, </span><span style="color:#b48ead;">const float </span><span style="color:#bf616a;">MinRadius</span><span>, </span><span style="color:#b48ead;">const float </span><span style="color:#bf616a;">MaxRadius</span><span>, </span><span style="color:#b48ead;">const</span><span> EEnemyType </span><span style="color:#bf616a;">EnemyType</span><span>, </span><span style="color:#b48ead;">const</span><span> TArray&lt;AActor*&gt; </span><span style="color:#bf616a;">ActorsToIgnore</span><span>, TArray&lt;AActor*&gt;&amp; </span><span style="color:#bf616a;">EnemyActors</span><span>)
+</span></td></tr><tr><td>91</td><td><span>{
+</span></td></tr><tr><td>92</td><td><span>    </span><span style="color:#b48ead;">for </span><span>(AActor*&amp; Enemy : *Enemies.</span><span style="color:#bf616a;">GetCollectionOfType</span><span>(EnemyType)) {
+</span></td></tr><tr><td>93</td><td><span>        </span><span style="color:#b48ead;">float</span><span> Distance = FVector::</span><span style="color:#bf616a;">Distance</span><span>(Origin, Enemy-&gt;</span><span style="color:#bf616a;">GetActorLocation</span><span>());
+</span></td></tr><tr><td>94</td><td><span>
+</span></td></tr><tr><td>95</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(MinRadius &lt;= Distance &amp;&amp; Distance &lt; MaxRadius &amp;&amp; !ActorsToIgnore.</span><span style="color:#bf616a;">Contains</span><span>(Enemy)) {
+</span></td></tr><tr><td>96</td><td><span>            EnemyActors.</span><span style="color:#bf616a;">Add</span><span>(Enemy);
+</span></td></tr><tr><td>97</td><td><span>        }
+</span></td></tr><tr><td>98</td><td><span>    }
+</span></td></tr><tr><td>99</td><td><span>}
+</span></td></tr><tr><td>100</td><td><span>
+</span></td></tr><tr><td>101</td><td><span style="color:#65737e;">// FEnemyToken AAIDirectorGameMode::RequestToken(ETokenType TokenType, AAIEnemyBaseController* EnemyController, AActor* TargetActor)
+</span></td></tr><tr><td>102</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">RequestToken</span><span>(AAIEnemyBaseController* </span><span style="color:#bf616a;">EnemyController</span><span>, </span><span style="color:#b48ead;">const</span><span> AActor* </span><span style="color:#bf616a;">TargetActor</span><span>, </span><span style="color:#b48ead;">const</span><span> ETokenType </span><span style="color:#bf616a;">TokenType</span><span>, </span><span style="color:#b48ead;">const</span><span> ETokenPriority </span><span style="color:#bf616a;">TokenPriority</span><span>, UEnemyToken*&amp; </span><span style="color:#bf616a;">Token</span><span>, </span><span style="color:#b48ead;">bool</span><span>&amp; </span><span style="color:#bf616a;">Success</span><span>)
+</span></td></tr><tr><td>103</td><td><span>{
+</span></td></tr><tr><td>104</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">IsValid</span><span>(EnemyController)) {
+</span></td></tr><tr><td>105</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::RequestToken: Invalid Enemy controller provided.</span><span>&quot;));
+</span></td></tr><tr><td>106</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>107</td><td><span>    }
+</span></td></tr><tr><td>108</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">IsValid</span><span>(TargetActor)) {
+</span></td></tr><tr><td>109</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::RequestToken: Invalid target actor provided.</span><span>&quot;));
+</span></td></tr><tr><td>110</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>111</td><td><span>    }
+</span></td></tr><tr><td>112</td><td><span>
+</span></td></tr><tr><td>113</td><td><span>    </span><span style="color:#65737e;">// Get storage for target actor
+</span></td></tr><tr><td>114</td><td><span>    FActorTokensCollection* TargetTokens = ActorTokens.</span><span style="color:#bf616a;">Find</span><span>(TargetActor);
+</span></td></tr><tr><td>115</td><td><span>
+</span></td></tr><tr><td>116</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(TargetTokens == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>117</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::RequestToken: Target actor doesn&#39;t have any associated tokens.</span><span>&quot;));
+</span></td></tr><tr><td>118</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>119</td><td><span>    }
+</span></td></tr><tr><td>120</td><td><span>
+</span></td></tr><tr><td>121</td><td><span>    </span><span style="color:#65737e;">// Don&#39;t allow tokens to be taken out if locked
+</span></td></tr><tr><td>122</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(TargetTokens-&gt;</span><span style="color:#bf616a;">Locked</span><span>)
+</span></td></tr><tr><td>123</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>124</td><td><span>
+</span></td></tr><tr><td>125</td><td><span>    </span><span style="color:#65737e;">// Get storage of token type for target actor
+</span></td></tr><tr><td>126</td><td><span>    FTokenCollection* TokenCollection = TargetTokens-&gt;</span><span style="color:#bf616a;">GetCollectionOfType</span><span>(TokenType);
+</span></td></tr><tr><td>127</td><td><span>
+</span></td></tr><tr><td>128</td><td><span>    </span><span style="color:#65737e;">// There is a valid token that can be claimed
+</span></td></tr><tr><td>129</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(TokenCollection-&gt;</span><span style="color:#bf616a;">FreeTokens</span><span>.</span><span style="color:#bf616a;">Num</span><span>() &gt; </span><span style="color:#d08770;">0</span><span>) {
+</span></td></tr><tr><td>130</td><td><span>        UEnemyToken* ClaimedToken = TokenCollection-&gt;</span><span style="color:#bf616a;">FreeTokens</span><span>.</span><span style="color:#bf616a;">Pop</span><span>();
+</span></td></tr><tr><td>131</td><td><span>        ClaimedToken-&gt;</span><span style="color:#bf616a;">ClaimedBy </span><span>= EnemyController;
+</span></td></tr><tr><td>132</td><td><span>
+</span></td></tr><tr><td>133</td><td><span>        TokenCollection-&gt;</span><span style="color:#bf616a;">ClaimedTokens</span><span>.</span><span style="color:#bf616a;">Add</span><span>(ClaimedToken);
+</span></td></tr><tr><td>134</td><td><span>
+</span></td></tr><tr><td>135</td><td><span>        FTimerDelegate TimerDelegate;
+</span></td></tr><tr><td>136</td><td><span>        TimerDelegate.</span><span style="color:#bf616a;">BindUObject</span><span>(</span><span style="color:#bf616a;">this</span><span>, &amp;AAIDirectorGameMode::TokenTimeout, ClaimedToken);
+</span></td></tr><tr><td>137</td><td><span>        </span><span style="color:#65737e;">// Do we really need to check if timer manager is valid???
+</span></td></tr><tr><td>138</td><td><span>        </span><span style="color:#bf616a;">GetWorldTimerManager</span><span>().</span><span style="color:#bf616a;">SetTimer</span><span>(ClaimedToken-&gt;</span><span style="color:#bf616a;">TimerHandle</span><span>, TimerDelegate, TOKEN_TIMEOUT, </span><span style="color:#d08770;">false</span><span>);
+</span></td></tr><tr><td>139</td><td><span>
+</span></td></tr><tr><td>140</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>141</td><td><span>            LogTokenSystem, DEFAULT_LOG_LEVEL,
+</span></td></tr><tr><td>142</td><td><span>            </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::RequestToken: Enemy </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> claimed token </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> of type </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> and priority </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> against actor </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">.</span><span>&quot;),
+</span></td></tr><tr><td>143</td><td><span>            *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(EnemyController),
+</span></td></tr><tr><td>144</td><td><span>            *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(ClaimedToken),
+</span></td></tr><tr><td>145</td><td><span>            *UEnum::</span><span style="color:#bf616a;">GetValueAsString</span><span>(TokenType),
+</span></td></tr><tr><td>146</td><td><span>            *UEnum::</span><span style="color:#bf616a;">GetValueAsString</span><span>(TokenPriority),
+</span></td></tr><tr><td>147</td><td><span>            *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(TargetActor));
+</span></td></tr><tr><td>148</td><td><span>
+</span></td></tr><tr><td>149</td><td><span>        Success = </span><span style="color:#d08770;">true</span><span>;
+</span></td></tr><tr><td>150</td><td><span>        Token = ClaimedToken;
+</span></td></tr><tr><td>151</td><td><span>    }
+</span></td></tr><tr><td>152</td><td><span>
+</span></td></tr><tr><td>153</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(TokenPriority == ETokenPriority::High) {
+</span></td></tr><tr><td>154</td><td><span>        UEnemyToken* TokenToTake = </span><span style="color:#d08770;">nullptr</span><span>;
+</span></td></tr><tr><td>155</td><td><span>        </span><span style="color:#b48ead;">bool</span><span> Found = </span><span style="color:#d08770;">false</span><span>;
+</span></td></tr><tr><td>156</td><td><span>
+</span></td></tr><tr><td>157</td><td><span>        </span><span style="color:#b48ead;">for </span><span>(UEnemyToken*&amp; ClaimedToken : TokenCollection-&gt;</span><span style="color:#bf616a;">ClaimedTokens</span><span>) {
+</span></td></tr><tr><td>158</td><td><span>            </span><span style="color:#b48ead;">if </span><span>(ClaimedToken-&gt;</span><span style="color:#bf616a;">ClaimPriority </span><span>== ETokenPriority::Low) {
+</span></td></tr><tr><td>159</td><td><span>                TokenToTake = ClaimedToken;
+</span></td></tr><tr><td>160</td><td><span>                Found = </span><span style="color:#d08770;">true</span><span>;
+</span></td></tr><tr><td>161</td><td><span>                </span><span style="color:#b48ead;">break</span><span>;
+</span></td></tr><tr><td>162</td><td><span>            }
+</span></td></tr><tr><td>163</td><td><span>        }
+</span></td></tr><tr><td>164</td><td><span>
+</span></td></tr><tr><td>165</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(Found) {
+</span></td></tr><tr><td>166</td><td><span>            AAIEnemyBaseController* PreviousOwner = TokenToTake-&gt;</span><span style="color:#bf616a;">ClaimedBy</span><span>;
+</span></td></tr><tr><td>167</td><td><span>
+</span></td></tr><tr><td>168</td><td><span>            PreviousOwner-&gt;</span><span style="color:#bf616a;">TokenRetracted</span><span>(TokenToTake);
+</span></td></tr><tr><td>169</td><td><span>
+</span></td></tr><tr><td>170</td><td><span>            TokenToTake-&gt;</span><span style="color:#bf616a;">ClaimedBy </span><span>= EnemyController;
+</span></td></tr><tr><td>171</td><td><span>            TokenToTake-&gt;</span><span style="color:#bf616a;">ClaimPriority </span><span>= ETokenPriority::High;
+</span></td></tr><tr><td>172</td><td><span>
+</span></td></tr><tr><td>173</td><td><span>            FTimerDelegate TimerDelegate;
+</span></td></tr><tr><td>174</td><td><span>            TimerDelegate.</span><span style="color:#bf616a;">BindUObject</span><span>(</span><span style="color:#bf616a;">this</span><span>, &amp;AAIDirectorGameMode::TokenTimeout, TokenToTake);
+</span></td></tr><tr><td>175</td><td><span>            </span><span style="color:#65737e;">// Do we really need to check if timer manager is valid???
+</span></td></tr><tr><td>176</td><td><span>            </span><span style="color:#bf616a;">GetWorldTimerManager</span><span>().</span><span style="color:#bf616a;">SetTimer</span><span>(TokenToTake-&gt;</span><span style="color:#bf616a;">TimerHandle</span><span>, TimerDelegate, TOKEN_TIMEOUT, </span><span style="color:#d08770;">false</span><span>);
+</span></td></tr><tr><td>177</td><td><span>
+</span></td></tr><tr><td>178</td><td><span>            </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>179</td><td><span>                LogTokenSystem, DEFAULT_LOG_LEVEL,
+</span></td></tr><tr><td>180</td><td><span>                </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::RequestToken: Enemy </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> took token </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> of type </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> from </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">.</span><span>&quot;),
+</span></td></tr><tr><td>181</td><td><span>                *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(EnemyController),
+</span></td></tr><tr><td>182</td><td><span>                *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(TokenToTake),
+</span></td></tr><tr><td>183</td><td><span>                *UEnum::</span><span style="color:#bf616a;">GetValueAsString</span><span>(TokenType),
+</span></td></tr><tr><td>184</td><td><span>                *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(PreviousOwner));
+</span></td></tr><tr><td>185</td><td><span>
+</span></td></tr><tr><td>186</td><td><span>            Success = </span><span style="color:#d08770;">true</span><span>;
+</span></td></tr><tr><td>187</td><td><span>            Token = TokenToTake;
+</span></td></tr><tr><td>188</td><td><span>        }
+</span></td></tr><tr><td>189</td><td><span>    }
+</span></td></tr><tr><td>190</td><td><span>}
+</span></td></tr><tr><td>191</td><td><span>
+</span></td></tr><tr><td>192</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">ReleaseToken</span><span>(UEnemyToken* </span><span style="color:#bf616a;">ReleasedToken</span><span>, </span><span style="color:#b48ead;">const float </span><span style="color:#bf616a;">CustomCooldown</span><span>)
+</span></td></tr><tr><td>193</td><td><span>{
+</span></td></tr><tr><td>194</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(ReleasedToken == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>195</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIDirectorGameMode::ReleaseToken: nullptr provided for token.</span><span>&quot;));
+</span></td></tr><tr><td>196</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>197</td><td><span>    }
+</span></td></tr><tr><td>198</td><td><span>
+</span></td></tr><tr><td>199</td><td><span>    </span><span style="color:#65737e;">// Get storage for token owner
+</span></td></tr><tr><td>200</td><td><span>    FActorTokensCollection* TargetTokens = ActorTokens.</span><span style="color:#bf616a;">Find</span><span>(ReleasedToken-&gt;</span><span style="color:#bf616a;">Owner</span><span>);
+</span></td></tr><tr><td>201</td><td><span>
+</span></td></tr><tr><td>202</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(TargetTokens == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>203</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIDirectorGameMode::ReleaseToken: Released token doesn&#39;t have a valid owner.</span><span>&quot;));
+</span></td></tr><tr><td>204</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>205</td><td><span>    }
+</span></td></tr><tr><td>206</td><td><span>
+</span></td></tr><tr><td>207</td><td><span>    </span><span style="color:#65737e;">// Get storege of token type for target actor
+</span></td></tr><tr><td>208</td><td><span>    FTokenCollection* TokenCollection = TargetTokens-&gt;</span><span style="color:#bf616a;">GetCollectionOfType</span><span>(ReleasedToken-&gt;</span><span style="color:#bf616a;">TokenType</span><span>);
+</span></td></tr><tr><td>209</td><td><span>
+</span></td></tr><tr><td>210</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(TokenCollection-&gt;</span><span style="color:#bf616a;">ClaimedTokens</span><span>.</span><span style="color:#bf616a;">Remove</span><span>(ReleasedToken) == </span><span style="color:#d08770;">0</span><span>) {
+</span></td></tr><tr><td>211</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIDirectorGameMode::ReleaseToken: Could not find claimed token to release.</span><span>&quot;));
+</span></td></tr><tr><td>212</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>213</td><td><span>    }
+</span></td></tr><tr><td>214</td><td><span>
+</span></td></tr><tr><td>215</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>216</td><td><span>        LogTokenSystem, DEFAULT_LOG_LEVEL,
+</span></td></tr><tr><td>217</td><td><span>        </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::ReleaseToken: Enemy </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> released a token against actor </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">.</span><span>&quot;),
+</span></td></tr><tr><td>218</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(ReleasedToken-&gt;</span><span style="color:#bf616a;">ClaimedBy</span><span>),
+</span></td></tr><tr><td>219</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(ReleasedToken-&gt;</span><span style="color:#bf616a;">Owner</span><span>));
+</span></td></tr><tr><td>220</td><td><span>
+</span></td></tr><tr><td>221</td><td><span>    </span><span style="color:#65737e;">// Stop token timeout
+</span></td></tr><tr><td>222</td><td><span>    </span><span style="color:#bf616a;">GetWorldTimerManager</span><span>().</span><span style="color:#bf616a;">ClearTimer</span><span>(ReleasedToken-&gt;</span><span style="color:#bf616a;">TimerHandle</span><span>);
+</span></td></tr><tr><td>223</td><td><span>
+</span></td></tr><tr><td>224</td><td><span>    </span><span style="color:#b48ead;">float</span><span> Cooldown = CustomCooldown &lt; </span><span style="color:#d08770;">0.0</span><span style="color:#b48ead;">f </span><span>? TOKEN_COOLDOWN : CustomCooldown;
+</span></td></tr><tr><td>225</td><td><span>
+</span></td></tr><tr><td>226</td><td><span>    </span><span style="color:#65737e;">// We want the token to go straight back to the pool
+</span></td></tr><tr><td>227</td><td><span>    </span><span style="color:#65737e;">// Reset it&#39;s values to default then return it to free tokens
+</span></td></tr><tr><td>228</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(Cooldown == </span><span style="color:#d08770;">0</span><span>) {
+</span></td></tr><tr><td>229</td><td><span>        ReleasedToken-&gt;</span><span style="color:#bf616a;">ClaimedBy </span><span>= </span><span style="color:#d08770;">nullptr</span><span>;
+</span></td></tr><tr><td>230</td><td><span>        ReleasedToken-&gt;</span><span style="color:#bf616a;">ClaimPriority </span><span>= ETokenPriority::Low;
+</span></td></tr><tr><td>231</td><td><span>        TokenCollection-&gt;</span><span style="color:#bf616a;">FreeTokens</span><span>.</span><span style="color:#bf616a;">Add</span><span>(ReleasedToken);
+</span></td></tr><tr><td>232</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>233</td><td><span>    }
+</span></td></tr><tr><td>234</td><td><span>
+</span></td></tr><tr><td>235</td><td><span>    </span><span style="color:#65737e;">// UE_LOG(LogTokenSystem, Verbose, TEXT(&quot;AIDirectorGameMode::ReleaseToken: Token on cooldown for %f seconds.&quot;), Cooldown);
+</span></td></tr><tr><td>236</td><td><span>
+</span></td></tr><tr><td>237</td><td><span>    </span><span style="color:#65737e;">// We want the token to be temporarily unavailable
+</span></td></tr><tr><td>238</td><td><span>    FTimerDelegate TimerDelegate;
+</span></td></tr><tr><td>239</td><td><span>    TimerDelegate.</span><span style="color:#bf616a;">BindUObject</span><span>(</span><span style="color:#bf616a;">this</span><span>, &amp;AAIDirectorGameMode::TokenCooldownEnd, ReleasedToken);
+</span></td></tr><tr><td>240</td><td><span>    </span><span style="color:#65737e;">// Do we really need to check if timer manager is valid???
+</span></td></tr><tr><td>241</td><td><span>    </span><span style="color:#bf616a;">GetWorldTimerManager</span><span>().</span><span style="color:#bf616a;">SetTimer</span><span>(ReleasedToken-&gt;</span><span style="color:#bf616a;">TimerHandle</span><span>, TimerDelegate, Cooldown, </span><span style="color:#d08770;">false</span><span>);
+</span></td></tr><tr><td>242</td><td><span>
+</span></td></tr><tr><td>243</td><td><span>    TokenCollection-&gt;</span><span style="color:#bf616a;">CooldownTokens</span><span>.</span><span style="color:#bf616a;">Add</span><span>(ReleasedToken);
+</span></td></tr><tr><td>244</td><td><span>}
+</span></td></tr><tr><td>245</td><td><span>
+</span></td></tr><tr><td>246</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">TokenTimeout</span><span>(UEnemyToken* </span><span style="color:#bf616a;">Token</span><span>)
+</span></td></tr><tr><td>247</td><td><span>{
+</span></td></tr><tr><td>248</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(Token == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>249</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Error, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::TokenTimeout: Token is invalid</span><span>&quot;));
+</span></td></tr><tr><td>250</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>251</td><td><span>    }
+</span></td></tr><tr><td>252</td><td><span>
+</span></td></tr><tr><td>253</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>254</td><td><span>        LogTokenSystem, Warning,
+</span></td></tr><tr><td>255</td><td><span>        </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::TokenTimeout: Token </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> (owned by </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">) has timed out while being held by </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">.</span><span>&quot;),
+</span></td></tr><tr><td>256</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(Token),
+</span></td></tr><tr><td>257</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(Token-&gt;</span><span style="color:#bf616a;">Owner</span><span>),
+</span></td></tr><tr><td>258</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(Token-&gt;</span><span style="color:#bf616a;">ClaimedBy</span><span>));
+</span></td></tr><tr><td>259</td><td><span>
+</span></td></tr><tr><td>260</td><td><span>    </span><span style="color:#65737e;">// Token-&gt;ClaimedBy-&gt;TokenRetracted(Token);
+</span></td></tr><tr><td>261</td><td><span>    </span><span style="color:#bf616a;">ReleaseToken</span><span>(Token);
+</span></td></tr><tr><td>262</td><td><span>}
+</span></td></tr><tr><td>263</td><td><span>
+</span></td></tr><tr><td>264</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">TokenCooldownEnd</span><span>(UEnemyToken* </span><span style="color:#bf616a;">Token</span><span>)
+</span></td></tr><tr><td>265</td><td><span>{
+</span></td></tr><tr><td>266</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(Token == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>267</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Error, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::TokenCooldownEnd: Token is invalid</span><span>&quot;));
+</span></td></tr><tr><td>268</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>269</td><td><span>    }
+</span></td></tr><tr><td>270</td><td><span>
+</span></td></tr><tr><td>271</td><td><span>    </span><span style="color:#65737e;">// Get storage for token owner
+</span></td></tr><tr><td>272</td><td><span>    FActorTokensCollection* TargetTokens = ActorTokens.</span><span style="color:#bf616a;">Find</span><span>(Token-&gt;</span><span style="color:#bf616a;">Owner</span><span>);
+</span></td></tr><tr><td>273</td><td><span>
+</span></td></tr><tr><td>274</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(TargetTokens == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>275</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIDirectorGameMode::TokenCooldownEnd: Released token doesn&#39;t have a valid owner.</span><span>&quot;));
+</span></td></tr><tr><td>276</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>277</td><td><span>    }
+</span></td></tr><tr><td>278</td><td><span>
+</span></td></tr><tr><td>279</td><td><span>    </span><span style="color:#65737e;">// Get storege of token type for target actor
+</span></td></tr><tr><td>280</td><td><span>    FTokenCollection* TokenCollection = TargetTokens-&gt;</span><span style="color:#bf616a;">GetCollectionOfType</span><span>(Token-&gt;</span><span style="color:#bf616a;">TokenType</span><span>);
+</span></td></tr><tr><td>281</td><td><span>
+</span></td></tr><tr><td>282</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(TokenCollection-&gt;</span><span style="color:#bf616a;">CooldownTokens</span><span>.</span><span style="color:#bf616a;">Remove</span><span>(Token) == </span><span style="color:#d08770;">0</span><span>) {
+</span></td></tr><tr><td>283</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIDirectorGameMode::TokenCooldownEnd: Token was not marked as on cooldown.</span><span>&quot;));
+</span></td></tr><tr><td>284</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>285</td><td><span>    }
+</span></td></tr><tr><td>286</td><td><span>
+</span></td></tr><tr><td>287</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>288</td><td><span>        LogTokenSystem, DEFAULT_LOG_LEVEL,
+</span></td></tr><tr><td>289</td><td><span>        </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::TokenCooldownEnd: Token </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> (owned by </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">) has finished cooldown after being held by </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">.</span><span>&quot;),
+</span></td></tr><tr><td>290</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(Token),
+</span></td></tr><tr><td>291</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(Token-&gt;</span><span style="color:#bf616a;">Owner</span><span>),
+</span></td></tr><tr><td>292</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(Token-&gt;</span><span style="color:#bf616a;">ClaimedBy</span><span>));
+</span></td></tr><tr><td>293</td><td><span>
+</span></td></tr><tr><td>294</td><td><span>    Token-&gt;</span><span style="color:#bf616a;">ClaimedBy </span><span>= </span><span style="color:#d08770;">nullptr</span><span>;
+</span></td></tr><tr><td>295</td><td><span>    Token-&gt;</span><span style="color:#bf616a;">ClaimPriority </span><span>= ETokenPriority::Low;
+</span></td></tr><tr><td>296</td><td><span>    TokenCollection-&gt;</span><span style="color:#bf616a;">FreeTokens</span><span>.</span><span style="color:#bf616a;">Add</span><span>(Token);
+</span></td></tr><tr><td>297</td><td><span>}
+</span></td></tr><tr><td>298</td><td><span>
+</span></td></tr><tr><td>299</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">AddTokensToActor</span><span>(AActor* </span><span style="color:#bf616a;">TargetActor</span><span>, ETokenType </span><span style="color:#bf616a;">TokenType</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">Amount</span><span>)
+</span></td></tr><tr><td>300</td><td><span>{
+</span></td></tr><tr><td>301</td><td><span>    </span><span style="color:#65737e;">// Only accept positive number of tokens
+</span></td></tr><tr><td>302</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(Amount &lt;= </span><span style="color:#d08770;">0</span><span>) {
+</span></td></tr><tr><td>303</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>304</td><td><span>            LogTokenSystem, Warning,
+</span></td></tr><tr><td>305</td><td><span>            </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::AddTokensToActor: Invalid number of tokens (</span><span style="color:#d08770;">%d</span><span style="color:#a3be8c;">) requested to add to actor </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">.</span><span>&quot;),
+</span></td></tr><tr><td>306</td><td><span>            Amount, *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(TargetActor));
+</span></td></tr><tr><td>307</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>308</td><td><span>    }
+</span></td></tr><tr><td>309</td><td><span>
+</span></td></tr><tr><td>310</td><td><span>    </span><span style="color:#65737e;">// Check if actor is pending destroy or pointer invalid
+</span></td></tr><tr><td>311</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">IsValid</span><span>(TargetActor)) {
+</span></td></tr><tr><td>312</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::AddTokensToActor: Invalid target actor provided.</span><span>&quot;));
+</span></td></tr><tr><td>313</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>314</td><td><span>    }
+</span></td></tr><tr><td>315</td><td><span>
+</span></td></tr><tr><td>316</td><td><span>    FActorTokensCollection* TargetTokens = ActorTokens.</span><span style="color:#bf616a;">Find</span><span>(TargetActor);
+</span></td></tr><tr><td>317</td><td><span>
+</span></td></tr><tr><td>318</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(TargetTokens == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>319</td><td><span>        </span><span style="color:#65737e;">// Actor Tokens don&#39;t exist. Create a new collection and store it.
+</span></td></tr><tr><td>320</td><td><span>        FActorTokensCollection NewActorTokens;
+</span></td></tr><tr><td>321</td><td><span>        ActorTokens.</span><span style="color:#bf616a;">Add</span><span>(TargetActor, NewActorTokens);
+</span></td></tr><tr><td>322</td><td><span>        </span><span style="color:#65737e;">// Get pointer to new tokens
+</span></td></tr><tr><td>323</td><td><span>        TargetTokens = ActorTokens.</span><span style="color:#bf616a;">Find</span><span>(TargetActor);
+</span></td></tr><tr><td>324</td><td><span>
+</span></td></tr><tr><td>325</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>326</td><td><span>            LogTokenSystem, Log,
+</span></td></tr><tr><td>327</td><td><span>            </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::AddTokensToActor: Added new actor (</span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">) to ActorTokens.</span><span>&quot;),
+</span></td></tr><tr><td>328</td><td><span>            *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(TargetActor));
+</span></td></tr><tr><td>329</td><td><span>    }
+</span></td></tr><tr><td>330</td><td><span>
+</span></td></tr><tr><td>331</td><td><span>    </span><span style="color:#65737e;">// Get the collection for tokens of requested type
+</span></td></tr><tr><td>332</td><td><span>    FTokenCollection* TokenCollection = TargetTokens-&gt;</span><span style="color:#bf616a;">GetCollectionOfType</span><span>(TokenType);
+</span></td></tr><tr><td>333</td><td><span>
+</span></td></tr><tr><td>334</td><td><span>    </span><span style="color:#b48ead;">for </span><span>(</span><span style="color:#b48ead;">int</span><span> i = </span><span style="color:#d08770;">0</span><span>; i &lt; Amount; i++) {
+</span></td></tr><tr><td>335</td><td><span>        </span><span style="color:#65737e;">// Create new token to add to token array
+</span></td></tr><tr><td>336</td><td><span>        UEnemyToken* NewToken = </span><span style="color:#bf616a;">NewObject</span><span>&lt;UEnemyToken&gt;();
+</span></td></tr><tr><td>337</td><td><span>        NewToken-&gt;</span><span style="color:#bf616a;">Owner </span><span>= TargetActor;
+</span></td></tr><tr><td>338</td><td><span>        NewToken-&gt;</span><span style="color:#bf616a;">TokenType </span><span>= TokenType;
+</span></td></tr><tr><td>339</td><td><span>
+</span></td></tr><tr><td>340</td><td><span>        </span><span style="color:#65737e;">// Add &quot;amount&quot; number of tokens
+</span></td></tr><tr><td>341</td><td><span>        TokenCollection-&gt;</span><span style="color:#bf616a;">FreeTokens</span><span>.</span><span style="color:#bf616a;">Add</span><span>(NewToken);
+</span></td></tr><tr><td>342</td><td><span>    }
+</span></td></tr><tr><td>343</td><td><span>
+</span></td></tr><tr><td>344</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>345</td><td><span>        LogTokenSystem, DEFAULT_LOG_LEVEL,
+</span></td></tr><tr><td>346</td><td><span>        </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::AddTokensToActor: Added </span><span style="color:#d08770;">%d</span><span style="color:#a3be8c;"> tokens of type </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> to actor </span><span style="color:#d08770;">%s</span><span>&quot;),
+</span></td></tr><tr><td>347</td><td><span>        Amount, *UEnum::</span><span style="color:#bf616a;">GetValueAsString</span><span>(TokenType), *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(TargetActor));
+</span></td></tr><tr><td>348</td><td><span>}
+</span></td></tr><tr><td>349</td><td><span>
+</span></td></tr><tr><td>350</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">AddDefaultTokensToActor</span><span>(AActor* </span><span style="color:#bf616a;">TargetActor</span><span>)
+</span></td></tr><tr><td>351</td><td><span>{
+</span></td></tr><tr><td>352</td><td><span>    </span><span style="color:#65737e;">// Check if actor is pending destroy or pointer invalid
+</span></td></tr><tr><td>353</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">IsValid</span><span>(TargetActor)) {
+</span></td></tr><tr><td>354</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::AddDefaultTokensToActor: Invalid target actor provided.</span><span>&quot;));
+</span></td></tr><tr><td>355</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>356</td><td><span>    }
+</span></td></tr><tr><td>357</td><td><span>
+</span></td></tr><tr><td>358</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>359</td><td><span>        LogTokenSystem, Log,
+</span></td></tr><tr><td>360</td><td><span>        </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::AddDefaultTokensToActor: Adding default tokens to actor </span><span style="color:#d08770;">%s</span><span>&quot;),
+</span></td></tr><tr><td>361</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(TargetActor));
+</span></td></tr><tr><td>362</td><td><span>
+</span></td></tr><tr><td>363</td><td><span>    </span><span style="color:#bf616a;">AddTokensToActor</span><span>(TargetActor, ETokenType::Normal, </span><span style="color:#d08770;">3</span><span>);
+</span></td></tr><tr><td>364</td><td><span>    </span><span style="color:#bf616a;">AddTokensToActor</span><span>(TargetActor, ETokenType::Heavy, </span><span style="color:#d08770;">1</span><span>);
+</span></td></tr><tr><td>365</td><td><span>}
+</span></td></tr><tr><td>366</td><td><span>
+</span></td></tr><tr><td>367</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">SetTokensLocked</span><span>(AActor* </span><span style="color:#bf616a;">TargetActor</span><span>, </span><span style="color:#b48ead;">bool </span><span style="color:#bf616a;">Locked</span><span>)
+</span></td></tr><tr><td>368</td><td><span>{
+</span></td></tr><tr><td>369</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">IsValid</span><span>(TargetActor)) {
+</span></td></tr><tr><td>370</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::SetTokensLocked: Invalid target actor provided.</span><span>&quot;));
+</span></td></tr><tr><td>371</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>372</td><td><span>    }
+</span></td></tr><tr><td>373</td><td><span>
+</span></td></tr><tr><td>374</td><td><span>    </span><span style="color:#65737e;">// Get storage for target actor
+</span></td></tr><tr><td>375</td><td><span>    FActorTokensCollection* TargetTokens = ActorTokens.</span><span style="color:#bf616a;">Find</span><span>(TargetActor);
+</span></td></tr><tr><td>376</td><td><span>
+</span></td></tr><tr><td>377</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(TargetTokens == </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>378</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTokenSystem, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::SetTokensLocked: Target actor doesn&#39;t have any associated tokens.</span><span>&quot;));
+</span></td></tr><tr><td>379</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>380</td><td><span>    }
+</span></td></tr><tr><td>381</td><td><span>
+</span></td></tr><tr><td>382</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>383</td><td><span>        LogTokenSystem, Log,
+</span></td></tr><tr><td>384</td><td><span>        </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::SetTokensLocked: Set tokens locked state for target </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> to </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">.</span><span>&quot;),
+</span></td></tr><tr><td>385</td><td><span>        *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(TargetActor),
+</span></td></tr><tr><td>386</td><td><span>        Locked ? </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">true</span><span>&quot;) : </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">false</span><span>&quot;));
+</span></td></tr><tr><td>387</td><td><span>
+</span></td></tr><tr><td>388</td><td><span>    TargetTokens-&gt;</span><span style="color:#bf616a;">Locked </span><span>= Locked;
+</span></td></tr><tr><td>389</td><td><span>}
+</span></td></tr><tr><td>390</td><td><span>
+</span></td></tr><tr><td>391</td><td><span style="color:#b48ead;">void </span><span>AAIDirectorGameMode::</span><span style="color:#8fa1b3;">StartPlay</span><span>()
+</span></td></tr><tr><td>392</td><td><span>{
+</span></td></tr><tr><td>393</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTemp, Log, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIDirectorGameMode::StartPlay: Start Play</span><span>&quot;));
+</span></td></tr><tr><td>394</td><td><span>    FGenericTeamId::</span><span style="color:#bf616a;">SetAttitudeSolver</span><span>(&amp;UTeamsProjectSettings::GetAttitude);
+</span></td></tr><tr><td>395</td><td><span>
+</span></td></tr><tr><td>396</td><td><span>    Super::</span><span style="color:#bf616a;">StartPlay</span><span>();
+</span></td></tr><tr><td>397</td><td><span>}
+</span></td></tr><tr><td>398</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<br>
+<button type="button" class="collapsible button">Toggle &quot;ai_director_resources.h</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#pragma</span><span> once
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">AIDirectorResources.generated.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">CoreMinimal.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span>
+</span></td></tr><tr><td>8</td><td><span style="color:#65737e;">// Forward declare EnemyBase.h enum
+</span></td></tr><tr><td>9</td><td><span style="color:#b48ead;">enum class </span><span>EEnemyType : </span><span style="color:#a3be8c;">uint8</span><span>;
+</span></td></tr><tr><td>10</td><td><span>
+</span></td></tr><tr><td>11</td><td><span style="color:#bf616a;">USTRUCT</span><span>(BlueprintType)
+</span></td></tr><tr><td>12</td><td><span style="color:#b48ead;">struct </span><span>CATBOOMERSHOOTER_API FEnemyCollection {
+</span></td></tr><tr><td>13</td><td><span>    </span><span style="color:#bf616a;">GENERATED_BODY</span><span>()
+</span></td></tr><tr><td>14</td><td><span>
+</span></td></tr><tr><td>15</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>16</td><td><span>    TArray&lt;AActor*&gt; Enemies;
+</span></td></tr><tr><td>17</td><td><span>
+</span></td></tr><tr><td>18</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>19</td><td><span>    TArray&lt;AActor*&gt; SwarmEnemies;
+</span></td></tr><tr><td>20</td><td><span>
+</span></td></tr><tr><td>21</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>22</td><td><span>    TArray&lt;AActor*&gt; RangedEnemies;
+</span></td></tr><tr><td>23</td><td><span>
+</span></td></tr><tr><td>24</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>25</td><td><span>    TArray&lt;AActor*&gt; TankEnemies;
+</span></td></tr><tr><td>26</td><td><span>
+</span></td></tr><tr><td>27</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>28</td><td><span>    TArray&lt;AActor*&gt; BossEnemies;
+</span></td></tr><tr><td>29</td><td><span>
+</span></td></tr><tr><td>30</td><td><span>    </span><span style="color:#65737e;">/** Get the correct array based on the enum value */
+</span></td></tr><tr><td>31</td><td><span>    TArray&lt;AActor*&gt;* </span><span style="color:#8fa1b3;">GetCollectionOfType</span><span>(EEnemyType </span><span style="color:#bf616a;">EnemyType</span><span>);
+</span></td></tr><tr><td>32</td><td><span>};
+</span></td></tr><tr><td>33</td><td><span>
+</span></td></tr><tr><td>34</td><td><span style="color:#65737e;">// Token system references
+</span></td></tr><tr><td>35</td><td><span style="color:#65737e;">// https://www.gamedeveloper.com/design/cyber-demons-the-ai-of-doom-2016-
+</span></td></tr><tr><td>36</td><td><span style="color:#65737e;">// https://youtu.be/2KQNpQD8Ayo?si=zc6b-AJQagwvrBvr&amp;t=2503
+</span></td></tr><tr><td>37</td><td><span>
+</span></td></tr><tr><td>38</td><td><span style="color:#65737e;">/** Type of attack a token is used for.
+</span></td></tr><tr><td>39</td><td><span style="color:#65737e;"> *	Currently just a concept.
+</span></td></tr><tr><td>40</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>41</td><td><span style="color:#bf616a;">UENUM</span><span>(BlueprintType)
+</span></td></tr><tr><td>42</td><td><span style="color:#b48ead;">enum class </span><span>ETokenType : </span><span style="color:#a3be8c;">uint8 </span><span>{
+</span></td></tr><tr><td>43</td><td><span>    Normal,
+</span></td></tr><tr><td>44</td><td><span>    Heavy
+</span></td></tr><tr><td>45</td><td><span>    </span><span style="color:#65737e;">// Boss
+</span></td></tr><tr><td>46</td><td><span>};
+</span></td></tr><tr><td>47</td><td><span>
+</span></td></tr><tr><td>48</td><td><span style="color:#65737e;">/** Low priority tokens may be able to be taken by enemies with
+</span></td></tr><tr><td>49</td><td><span style="color:#65737e;"> *	high priority.
+</span></td></tr><tr><td>50</td><td><span style="color:#65737e;"> *	Currently just a concept.
+</span></td></tr><tr><td>51</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>52</td><td><span style="color:#bf616a;">UENUM</span><span>(BlueprintType)
+</span></td></tr><tr><td>53</td><td><span style="color:#b48ead;">enum class </span><span>ETokenPriority : </span><span style="color:#a3be8c;">uint8 </span><span>{
+</span></td></tr><tr><td>54</td><td><span>    Low,
+</span></td></tr><tr><td>55</td><td><span>    High
+</span></td></tr><tr><td>56</td><td><span>};
+</span></td></tr><tr><td>57</td><td><span>
+</span></td></tr><tr><td>58</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>59</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>60</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>61</td><td><span style="color:#bf616a;">UCLASS</span><span>(BlueprintType)
+</span></td></tr><tr><td>62</td><td><span style="color:#b48ead;">class </span><span style="color:#eff1f5;">CATBOOMERSHOOTER_API </span><span style="color:#ebcb8b;">UEnemyToken </span><span style="color:#eff1f5;">: </span><span style="color:#b48ead;">public </span><span style="color:#a3be8c;">UObject </span><span style="color:#eff1f5;">{
+</span></td></tr><tr><td>63</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">GENERATED_BODY</span><span style="color:#eff1f5;">()
+</span></td></tr><tr><td>64</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>65</td><td><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>66</td><td><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// Will usually be a player
+</span></td></tr><tr><td>67</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>68</td><td><span style="color:#eff1f5;">    AActor</span><span>*</span><span style="color:#eff1f5;"> Owner;
+</span></td></tr><tr><td>69</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>70</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>71</td><td><span style="color:#eff1f5;">    ETokenType TokenType;
+</span></td></tr><tr><td>72</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>73</td><td><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// Enemy/Actor who is using the token
+</span></td></tr><tr><td>74</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>75</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;"> AAIEnemyBaseController</span><span>*</span><span style="color:#eff1f5;"> ClaimedBy;
+</span></td></tr><tr><td>76</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>77</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(VisibleAnywhere, BlueprintReadWrite)
+</span></td></tr><tr><td>78</td><td><span style="color:#eff1f5;">    ETokenPriority ClaimPriority;
+</span></td></tr><tr><td>79</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>80</td><td><span style="color:#eff1f5;">    FTimerHandle TimerHandle;
+</span></td></tr><tr><td>81</td><td><span style="color:#eff1f5;">}</span><span>;
+</span></td></tr><tr><td>82</td><td><span>
+</span></td></tr><tr><td>83</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>84</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>85</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>86</td><td><span style="color:#bf616a;">USTRUCT</span><span>(BlueprintType)
+</span></td></tr><tr><td>87</td><td><span style="color:#b48ead;">struct </span><span>CATBOOMERSHOOTER_API FTokenCollection {
+</span></td></tr><tr><td>88</td><td><span>    </span><span style="color:#bf616a;">GENERATED_BODY</span><span>()
+</span></td></tr><tr><td>89</td><td><span>
+</span></td></tr><tr><td>90</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>91</td><td><span>    TArray&lt;UEnemyToken*&gt; FreeTokens;
+</span></td></tr><tr><td>92</td><td><span>
+</span></td></tr><tr><td>93</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>94</td><td><span>    TArray&lt;UEnemyToken*&gt; ClaimedTokens;
+</span></td></tr><tr><td>95</td><td><span>
+</span></td></tr><tr><td>96</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>97</td><td><span>    TArray&lt;UEnemyToken*&gt; CooldownTokens;
+</span></td></tr><tr><td>98</td><td><span>};
+</span></td></tr><tr><td>99</td><td><span>
+</span></td></tr><tr><td>100</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>101</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>102</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>103</td><td><span style="color:#bf616a;">USTRUCT</span><span>(BlueprintType)
+</span></td></tr><tr><td>104</td><td><span style="color:#b48ead;">struct </span><span>CATBOOMERSHOOTER_API FActorTokensCollection {
+</span></td></tr><tr><td>105</td><td><span>    </span><span style="color:#bf616a;">GENERATED_BODY</span><span>()
+</span></td></tr><tr><td>106</td><td><span>
+</span></td></tr><tr><td>107</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>108</td><td><span>    FTokenCollection NormalTokens;
+</span></td></tr><tr><td>109</td><td><span>
+</span></td></tr><tr><td>110</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>111</td><td><span>    FTokenCollection HeavyTokens;
+</span></td></tr><tr><td>112</td><td><span>
+</span></td></tr><tr><td>113</td><td><span>    </span><span style="color:#65737e;">/** Get the correct FTokenCollection based on the enum value */
+</span></td></tr><tr><td>114</td><td><span>    FTokenCollection* </span><span style="color:#8fa1b3;">GetCollectionOfType</span><span>(ETokenType </span><span style="color:#bf616a;">TokenType</span><span>);
+</span></td></tr><tr><td>115</td><td><span>
+</span></td></tr><tr><td>116</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>117</td><td><span>    </span><span style="color:#b48ead;">bool</span><span> Locked = </span><span style="color:#d08770;">false</span><span>;
+</span></td></tr><tr><td>118</td><td><span>};
+</span></td></tr><tr><td>119</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<button type="button" class="collapsible button">Toggle &quot;ai_director_resources.cpp</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">../EnemyBase.h</span><span>&quot;
+</span></td></tr><tr><td>4</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">AIDirectorResources.h</span><span>&quot;
+</span></td></tr><tr><td>5</td><td><span>
+</span></td></tr><tr><td>6</td><td><span>TArray&lt;AActor*&gt;* FEnemyCollection::</span><span style="color:#8fa1b3;">GetCollectionOfType</span><span>(EEnemyType </span><span style="color:#bf616a;">EnemyType</span><span>)
+</span></td></tr><tr><td>7</td><td><span>{
+</span></td></tr><tr><td>8</td><td><span>    </span><span style="color:#b48ead;">switch </span><span>(EnemyType) {
+</span></td></tr><tr><td>9</td><td><span>    </span><span style="color:#b48ead;">case</span><span> EEnemyType::Swarm:
+</span></td></tr><tr><td>10</td><td><span>        </span><span style="color:#b48ead;">return </span><span>&amp;SwarmEnemies;
+</span></td></tr><tr><td>11</td><td><span>    </span><span style="color:#b48ead;">case</span><span> EEnemyType::Ranged:
+</span></td></tr><tr><td>12</td><td><span>        </span><span style="color:#b48ead;">return </span><span>&amp;RangedEnemies;
+</span></td></tr><tr><td>13</td><td><span>    </span><span style="color:#b48ead;">case</span><span> EEnemyType::Tank:
+</span></td></tr><tr><td>14</td><td><span>        </span><span style="color:#b48ead;">return </span><span>&amp;TankEnemies;
+</span></td></tr><tr><td>15</td><td><span>    </span><span style="color:#b48ead;">case</span><span> EEnemyType::Boss:
+</span></td></tr><tr><td>16</td><td><span>        </span><span style="color:#b48ead;">return </span><span>&amp;BossEnemies;
+</span></td></tr><tr><td>17</td><td><span>    </span><span style="color:#b48ead;">default</span><span>:
+</span></td></tr><tr><td>18</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTemp, Error, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">FActorTokensCollection::GetCollectionOfType: Invalid Token Type provided.</span><span>&quot;));
+</span></td></tr><tr><td>19</td><td><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">nullptr</span><span>;
+</span></td></tr><tr><td>20</td><td><span>    }
+</span></td></tr><tr><td>21</td><td><span>}
+</span></td></tr><tr><td>22</td><td><span>
+</span></td></tr><tr><td>23</td><td><span>FTokenCollection* FActorTokensCollection::</span><span style="color:#8fa1b3;">GetCollectionOfType</span><span>(ETokenType </span><span style="color:#bf616a;">TokenType</span><span>)
+</span></td></tr><tr><td>24</td><td><span>{
+</span></td></tr><tr><td>25</td><td><span>    </span><span style="color:#b48ead;">switch </span><span>(TokenType) {
+</span></td></tr><tr><td>26</td><td><span>    </span><span style="color:#b48ead;">case</span><span> ETokenType::Normal:
+</span></td></tr><tr><td>27</td><td><span>        </span><span style="color:#b48ead;">return </span><span>&amp;NormalTokens;
+</span></td></tr><tr><td>28</td><td><span>    </span><span style="color:#b48ead;">case</span><span> ETokenType::Heavy:
+</span></td></tr><tr><td>29</td><td><span>        </span><span style="color:#b48ead;">return </span><span>&amp;HeavyTokens;
+</span></td></tr><tr><td>30</td><td><span>    </span><span style="color:#b48ead;">default</span><span>:
+</span></td></tr><tr><td>31</td><td><span>        </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTemp, Error, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">FActorTokensCollection::GetCollectionOfType: Invalid Token Type provided.</span><span>&quot;));
+</span></td></tr><tr><td>32</td><td><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">nullptr</span><span>;
+</span></td></tr><tr><td>33</td><td><span>    }
+</span></td></tr><tr><td>34</td><td><span>}
+</span></td></tr><tr><td>35</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<br>
+<button type="button" class="collapsible button">Toggle &quot;ai_enemy_base_controller.h</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#pragma</span><span> once
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">AIController.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">AIEnemyBaseController.generated.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">CoreMinimal.h</span><span>&quot;
+</span></td></tr><tr><td>8</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">GameTeams.h</span><span>&quot;
+</span></td></tr><tr><td>9</td><td><span>
+</span></td></tr><tr><td>10</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>11</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>12</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>13</td><td><span style="color:#bf616a;">UCLASS</span><span>()
+</span></td></tr><tr><td>14</td><td><span style="color:#b48ead;">class </span><span style="color:#eff1f5;">CATBOOMERSHOOTER_API </span><span style="color:#ebcb8b;">AAIEnemyBaseController </span><span style="color:#eff1f5;">: </span><span style="color:#b48ead;">public </span><span style="color:#a3be8c;">AAIController </span><span style="color:#eff1f5;">{
+</span></td></tr><tr><td>15</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">GENERATED_BODY</span><span style="color:#eff1f5;">()
+</span></td></tr><tr><td>16</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>17</td><td><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>18</td><td><span style="color:#eff1f5;">    </span><span style="color:#8fa1b3;">AAIEnemyBaseController</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> FObjectInitializer</span><span>&amp; </span><span style="color:#bf616a;">ObjectInitializer </span><span>= </span><span style="color:#eff1f5;">FObjectInitializer::</span><span style="color:#bf616a;">Get</span><span style="color:#eff1f5;">());
+</span></td></tr><tr><td>19</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>20</td><td><span style="color:#b48ead;">protected</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>21</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">BeginPlay</span><span style="color:#eff1f5;">() </span><span style="color:#b48ead;">override</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>22</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>23</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(EditDefaultsOnly, Category </span><span>= &quot;</span><span style="color:#a3be8c;">EnemyBase</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>24</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;"> UBehaviorTree</span><span>*</span><span style="color:#eff1f5;"> DefaultBehaviorTree;
+</span></td></tr><tr><td>25</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>26</td><td><span style="color:#b48ead;">private</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>27</td><td><span style="color:#eff1f5;">    </span><span style="color:#65737e;">/** Requests an enemy token of a given type.
+</span></td></tr><tr><td>28</td><td><span style="color:#65737e;">     *	Token Priority is currently unimplemented. */
+</span></td></tr><tr><td>29</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UFUNCTION</span><span style="color:#eff1f5;">(BlueprintCallable, Category </span><span>= &quot;</span><span style="color:#a3be8c;">Tokens</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>30</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">RequestToken</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> AActor</span><span>* </span><span style="color:#bf616a;">TargetActor</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> ETokenType </span><span style="color:#bf616a;">TokenType</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> ETokenPriority </span><span style="color:#bf616a;">TokenPriority</span><span style="color:#eff1f5;">, UEnemyToken</span><span>*&amp; </span><span style="color:#bf616a;">Token</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">bool</span><span>&amp; </span><span style="color:#bf616a;">Success</span><span style="color:#eff1f5;">);
+</span></td></tr><tr><td>31</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>32</td><td><span style="color:#eff1f5;">    </span><span style="color:#65737e;">/** Returns a token from being used by an enemy */
+</span></td></tr><tr><td>33</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UFUNCTION</span><span style="color:#eff1f5;">(BlueprintCallable, Category </span><span>= &quot;</span><span style="color:#a3be8c;">Tokens</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>34</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">ReleaseToken</span><span style="color:#eff1f5;">(UEnemyToken</span><span>* </span><span style="color:#bf616a;">Token</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">const float </span><span style="color:#bf616a;">CustomCooldown </span><span>= -</span><span style="color:#d08770;">1.0</span><span style="color:#b48ead;">f</span><span style="color:#eff1f5;">);
+</span></td></tr><tr><td>35</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>36</td><td><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>37</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UFUNCTION</span><span style="color:#eff1f5;">(BlueprintNativeEvent, Category </span><span>= &quot;</span><span style="color:#a3be8c;">Tokens</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>38</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">TokenRetracted</span><span style="color:#eff1f5;">(UEnemyToken</span><span>* </span><span style="color:#bf616a;">Token</span><span style="color:#eff1f5;">);
+</span></td></tr><tr><td>39</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>40</td><td><span style="color:#eff1f5;">    ETeamAttitude::Type </span><span style="color:#8fa1b3;">GetTeamAttitudeTowards</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> AActor</span><span>&amp; </span><span style="color:#bf616a;">Other</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">const override</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>41</td><td><span style="color:#eff1f5;">}</span><span>;
+</span></td></tr><tr><td>42</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<button type="button" class="collapsible button">Toggle &quot;ai_enemy_base_controller.cpp</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">AIEnemyBaseController.h</span><span>&quot;
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">BehaviorTree/BlackboardComponent.h</span><span>&quot;
+</span></td></tr><tr><td>4</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Director/AIDirectorGameMode.h</span><span>&quot;
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Kismet/GameplayStatics.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Navigation/CrowdFollowingComponent.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span>
+</span></td></tr><tr><td>8</td><td><span>AAIEnemyBaseController::</span><span style="color:#8fa1b3;">AAIEnemyBaseController</span><span>(</span><span style="color:#b48ead;">const</span><span> FObjectInitializer&amp; </span><span style="color:#bf616a;">ObjectInitializer</span><span>)
+</span></td></tr><tr><td>9</td><td><span>    : </span><span style="color:#bf616a;">Super</span><span>(ObjectInitializer.</span><span style="color:#bf616a;">SetDefaultSubobjectClass</span><span>&lt;UCrowdFollowingComponent&gt;(</span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">PathFollowingComponent</span><span>&quot;)))
+</span></td></tr><tr><td>10</td><td><span>{
+</span></td></tr><tr><td>11</td><td><span>}
+</span></td></tr><tr><td>12</td><td><span>
+</span></td></tr><tr><td>13</td><td><span style="color:#b48ead;">void </span><span>AAIEnemyBaseController::</span><span style="color:#8fa1b3;">BeginPlay</span><span>()
+</span></td></tr><tr><td>14</td><td><span>{
+</span></td></tr><tr><td>15</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(DefaultBehaviorTree != </span><span style="color:#d08770;">nullptr</span><span>) {
+</span></td></tr><tr><td>16</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">RunBehaviorTree</span><span>(DefaultBehaviorTree)) {
+</span></td></tr><tr><td>17</td><td><span>            </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTemp, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AIEnemyBaseController Constructor: Failed to run provided default behavior tree.</span><span>&quot;));
+</span></td></tr><tr><td>18</td><td><span>        }
+</span></td></tr><tr><td>19</td><td><span>    }
+</span></td></tr><tr><td>20</td><td><span>
+</span></td></tr><tr><td>21</td><td><span>    </span><span style="color:#bf616a;">SetGenericTeamId</span><span>(</span><span style="color:#bf616a;">uint8</span><span>(EGameTeam::Aliens));
+</span></td></tr><tr><td>22</td><td><span>
+</span></td></tr><tr><td>23</td><td><span>    Super::</span><span style="color:#bf616a;">BeginPlay</span><span>();
+</span></td></tr><tr><td>24</td><td><span>}
+</span></td></tr><tr><td>25</td><td><span>
+</span></td></tr><tr><td>26</td><td><span style="color:#b48ead;">void </span><span>AAIEnemyBaseController::</span><span style="color:#8fa1b3;">RequestToken</span><span>(</span><span style="color:#b48ead;">const</span><span> AActor* </span><span style="color:#bf616a;">TargetActor</span><span>, </span><span style="color:#b48ead;">const</span><span> ETokenType </span><span style="color:#bf616a;">TokenType</span><span>, </span><span style="color:#b48ead;">const</span><span> ETokenPriority </span><span style="color:#bf616a;">TokenPriority</span><span>, UEnemyToken*&amp; </span><span style="color:#bf616a;">Token</span><span>, </span><span style="color:#b48ead;">bool</span><span>&amp; </span><span style="color:#bf616a;">Success</span><span>)
+</span></td></tr><tr><td>27</td><td><span>{
+</span></td></tr><tr><td>28</td><td><span>    AGameModeBase* GameMode = UGameplayStatics::</span><span style="color:#bf616a;">GetGameMode</span><span>(</span><span style="color:#bf616a;">GetWorld</span><span>());
+</span></td></tr><tr><td>29</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(AAIDirectorGameMode* AIDirector = </span><span style="color:#bf616a;">Cast</span><span>&lt;AAIDirectorGameMode&gt;(GameMode)) {
+</span></td></tr><tr><td>30</td><td><span>        AIDirector-&gt;</span><span style="color:#bf616a;">RequestToken</span><span>(</span><span style="color:#bf616a;">this</span><span>, TargetActor, TokenType, TokenPriority, Token, Success);
+</span></td></tr><tr><td>31</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>32</td><td><span>    }
+</span></td></tr><tr><td>33</td><td><span>
+</span></td></tr><tr><td>34</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTemp, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIEnemyBaseController::RequestToken: Could not get AIDirector Gamemode from current Gamemode.</span><span>&quot;));
+</span></td></tr><tr><td>35</td><td><span>}
+</span></td></tr><tr><td>36</td><td><span>
+</span></td></tr><tr><td>37</td><td><span style="color:#b48ead;">void </span><span>AAIEnemyBaseController::</span><span style="color:#8fa1b3;">ReleaseToken</span><span>(UEnemyToken* </span><span style="color:#bf616a;">Token</span><span>, </span><span style="color:#b48ead;">const float </span><span style="color:#bf616a;">CustomCooldown</span><span>)
+</span></td></tr><tr><td>38</td><td><span>{
+</span></td></tr><tr><td>39</td><td><span>    AGameModeBase* GameMode = UGameplayStatics::</span><span style="color:#bf616a;">GetGameMode</span><span>(</span><span style="color:#bf616a;">GetWorld</span><span>());
+</span></td></tr><tr><td>40</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(AAIDirectorGameMode* AIDirector = </span><span style="color:#bf616a;">Cast</span><span>&lt;AAIDirectorGameMode&gt;(GameMode)) {
+</span></td></tr><tr><td>41</td><td><span>        AIDirector-&gt;</span><span style="color:#bf616a;">ReleaseToken</span><span>(Token, CustomCooldown);
+</span></td></tr><tr><td>42</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>43</td><td><span>    }
+</span></td></tr><tr><td>44</td><td><span>
+</span></td></tr><tr><td>45</td><td><span>    </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTemp, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AAIEnemyBaseController::ReleaseToken: Could not get AIDirector Gamemode from current Gamemode.</span><span>&quot;));
+</span></td></tr><tr><td>46</td><td><span>}
+</span></td></tr><tr><td>47</td><td><span>
+</span></td></tr><tr><td>48</td><td><span style="color:#b48ead;">void </span><span>AAIEnemyBaseController::</span><span style="color:#8fa1b3;">TokenRetracted_Implementation</span><span>(UEnemyToken* </span><span style="color:#bf616a;">Token</span><span>)
+</span></td></tr><tr><td>49</td><td><span>{
+</span></td></tr><tr><td>50</td><td><span>}
+</span></td></tr><tr><td>51</td><td><span>
+</span></td></tr><tr><td>52</td><td><span>ETeamAttitude::Type AAIEnemyBaseController::</span><span style="color:#8fa1b3;">GetTeamAttitudeTowards</span><span>(</span><span style="color:#b48ead;">const</span><span> AActor&amp; </span><span style="color:#bf616a;">Other</span><span>) </span><span style="color:#b48ead;">const
+</span></td></tr><tr><td>53</td><td><span>{
+</span></td></tr><tr><td>54</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#b48ead;">const</span><span> APawn* OtherPawn = </span><span style="color:#bf616a;">Cast</span><span>&lt;APawn&gt;(&amp;Other)) {
+</span></td></tr><tr><td>55</td><td><span>
+</span></td></tr><tr><td>56</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#b48ead;">const</span><span> IGenericTeamAgentInterface* TeamAgent = </span><span style="color:#bf616a;">Cast</span><span>&lt;IGenericTeamAgentInterface&gt;(OtherPawn-&gt;</span><span style="color:#bf616a;">GetController</span><span>())) {
+</span></td></tr><tr><td>57</td><td><span>            </span><span style="color:#b48ead;">return </span><span>Super::</span><span style="color:#bf616a;">GetTeamAttitudeTowards</span><span>(*OtherPawn-&gt;</span><span style="color:#bf616a;">GetController</span><span>());
+</span></td></tr><tr><td>58</td><td><span>        }
+</span></td></tr><tr><td>59</td><td><span>    }
+</span></td></tr><tr><td>60</td><td><span>
+</span></td></tr><tr><td>61</td><td><span>    </span><span style="color:#b48ead;">return</span><span> ETeamAttitude::Neutral;
+</span></td></tr><tr><td>62</td><td><span>}
+</span></td></tr><tr><td>63</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<br>
+<button type="button" class="collapsible button">Toggle &quot;enemy_base_character.h</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#pragma</span><span> once
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">CoreMinimal.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">EnemyBase.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">EnemyBaseCharacter.generated.h</span><span>&quot;
+</span></td></tr><tr><td>8</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">GameFramework/Character.h</span><span>&quot;
+</span></td></tr><tr><td>9</td><td><span>
+</span></td></tr><tr><td>10</td><td><span style="color:#bf616a;">UCLASS</span><span>()
+</span></td></tr><tr><td>11</td><td><span style="color:#b48ead;">class </span><span style="color:#eff1f5;">CATBOOMERSHOOTER_API </span><span style="color:#ebcb8b;">AEnemyBaseCharacter </span><span style="color:#eff1f5;">: </span><span style="color:#b48ead;">public </span><span style="color:#a3be8c;">ACharacter</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">public </span><span style="color:#a3be8c;">IEnemyBase </span><span style="color:#eff1f5;">{
+</span></td></tr><tr><td>12</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">GENERATED_BODY</span><span style="color:#eff1f5;">()
+</span></td></tr><tr><td>13</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>14</td><td><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>15</td><td><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// Sets default values for this character&#39;s properties
+</span></td></tr><tr><td>16</td><td><span style="color:#eff1f5;">    </span><span style="color:#8fa1b3;">AEnemyBaseCharacter</span><span style="color:#eff1f5;">();
+</span></td></tr><tr><td>17</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>18</td><td><span style="color:#b48ead;">protected</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>19</td><td><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// Called when the game starts or when spawned
+</span></td></tr><tr><td>20</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">BeginPlay</span><span style="color:#eff1f5;">() </span><span style="color:#b48ead;">override</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>21</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">EndPlay</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> EEndPlayReason::Type </span><span style="color:#bf616a;">EndPlayReason</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">override</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>22</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>23</td><td><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>24</td><td><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// Called every frame
+</span></td></tr><tr><td>25</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">Tick</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">float </span><span style="color:#bf616a;">DeltaTime</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">override</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>26</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>27</td><td><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// Called to bind functionality to input
+</span></td></tr><tr><td>28</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">SetupPlayerInputComponent</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;"> UInputComponent</span><span>* </span><span style="color:#bf616a;">PlayerInputComponent</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">override</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>29</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>30</td><td><span style="color:#b48ead;">protected</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>31</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(VisibleAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>32</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;"> UPatrolComponent</span><span>*</span><span style="color:#eff1f5;"> PatrolComponent;
+</span></td></tr><tr><td>33</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>34</td><td><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>35</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(EditAnywhere, BlueprintReadWrite, Category </span><span>= &quot;</span><span style="color:#a3be8c;">EnemyBase</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>36</td><td><span style="color:#eff1f5;">    EEnemySize EnemySize </span><span>=</span><span style="color:#eff1f5;"> EEnemySize::Medium;
+</span></td></tr><tr><td>37</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>38</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(EditDefaultsOnly, BlueprintReadOnly, Category </span><span>= &quot;</span><span style="color:#a3be8c;">EnemyBase</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>39</td><td><span style="color:#eff1f5;">    EEnemyType EnemyType </span><span>=</span><span style="color:#eff1f5;"> EEnemyType::Ranged;
+</span></td></tr><tr><td>40</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>41</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(EditAnywhere, BlueprintReadWrite, Category </span><span>= &quot;</span><span style="color:#a3be8c;">EnemyBase</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>42</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">float</span><span style="color:#eff1f5;"> WalkSpeed </span><span>= </span><span style="color:#d08770;">800.</span><span style="color:#b48ead;">f</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>43</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>44</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(EditAnywhere, BlueprintReadWrite, Category </span><span>= &quot;</span><span style="color:#a3be8c;">EnemyBase</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>45</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">float</span><span style="color:#eff1f5;"> RunSpeed </span><span>= </span><span style="color:#d08770;">1000.</span><span style="color:#b48ead;">f</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>46</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>47</td><td><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>48</td><td><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// Implement Interface Functions
+</span></td></tr><tr><td>49</td><td><span style="color:#eff1f5;">    EEnemySize </span><span style="color:#8fa1b3;">GetEnemySize_Implementation</span><span style="color:#eff1f5;">() </span><span style="color:#b48ead;">override</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>50</td><td><span style="color:#eff1f5;">    EEnemyType </span><span style="color:#8fa1b3;">GetEnemyType_Implementation</span><span style="color:#eff1f5;">() </span><span style="color:#b48ead;">override</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>51</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">float </span><span style="color:#8fa1b3;">GetMovementSpeed_Implementation</span><span style="color:#eff1f5;">(EMovementSpeed </span><span style="color:#bf616a;">MovementSpeed</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">override</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>52</td><td><span style="color:#eff1f5;">}</span><span>;
+</span></td></tr><tr><td>53</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<button type="button" class="collapsible button">Toggle &quot;enemy_base_character.cpp</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Director/AIDirectorGameMode.h</span><span>&quot;
+</span></td></tr><tr><td>4</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">EnemyBaseCharacter.h</span><span>&quot;
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Kismet/GameplayStatics.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Patrol/PatrolComponent.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span>
+</span></td></tr><tr><td>8</td><td><span style="color:#65737e;">// Sets default values
+</span></td></tr><tr><td>9</td><td><span>AEnemyBaseCharacter::</span><span style="color:#8fa1b3;">AEnemyBaseCharacter</span><span>()
+</span></td></tr><tr><td>10</td><td><span>{
+</span></td></tr><tr><td>11</td><td><span>    </span><span style="color:#65737e;">// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don&#39;t need it.
+</span></td></tr><tr><td>12</td><td><span>    PrimaryActorTick.</span><span style="color:#bf616a;">bCanEverTick </span><span>= </span><span style="color:#d08770;">true</span><span>;
+</span></td></tr><tr><td>13</td><td><span>
+</span></td></tr><tr><td>14</td><td><span>    Tags.</span><span style="color:#bf616a;">Add</span><span>(&quot;</span><span style="color:#a3be8c;">Enemy</span><span>&quot;);
+</span></td></tr><tr><td>15</td><td><span>
+</span></td></tr><tr><td>16</td><td><span>    PatrolComponent = </span><span style="color:#bf616a;">CreateDefaultSubobject</span><span>&lt;UPatrolComponent&gt;(</span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">PatrolComponent</span><span>&quot;));
+</span></td></tr><tr><td>17</td><td><span>}
+</span></td></tr><tr><td>18</td><td><span>
+</span></td></tr><tr><td>19</td><td><span style="color:#65737e;">// Called when the game starts or when spawned
+</span></td></tr><tr><td>20</td><td><span style="color:#b48ead;">void </span><span>AEnemyBaseCharacter::</span><span style="color:#8fa1b3;">BeginPlay</span><span>()
+</span></td></tr><tr><td>21</td><td><span>{
+</span></td></tr><tr><td>22</td><td><span>    Super::</span><span style="color:#bf616a;">BeginPlay</span><span>();
+</span></td></tr><tr><td>23</td><td><span>
+</span></td></tr><tr><td>24</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">HasAuthority</span><span>()) {
+</span></td></tr><tr><td>25</td><td><span>        AAIDirectorGameMode* AIDirector = </span><span style="color:#bf616a;">Cast</span><span>&lt;AAIDirectorGameMode&gt;(UGameplayStatics::</span><span style="color:#bf616a;">GetGameMode</span><span>(</span><span style="color:#bf616a;">GetWorld</span><span>()));
+</span></td></tr><tr><td>26</td><td><span>
+</span></td></tr><tr><td>27</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(!AIDirector) {
+</span></td></tr><tr><td>28</td><td><span>            </span><span style="color:#bf616a;">UE_LOG</span><span>(LogTemp, Warning, </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">AEnemyBaseCharacter::BeginPlay: Could not get AIDirector Game mode.</span><span>&quot;));
+</span></td></tr><tr><td>29</td><td><span>            </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>30</td><td><span>        }
+</span></td></tr><tr><td>31</td><td><span>
+</span></td></tr><tr><td>32</td><td><span>        AIDirector-&gt;</span><span style="color:#bf616a;">RegisterEnemy</span><span>(</span><span style="color:#bf616a;">this</span><span>);
+</span></td></tr><tr><td>33</td><td><span>    }
+</span></td></tr><tr><td>34</td><td><span>}
+</span></td></tr><tr><td>35</td><td><span>
+</span></td></tr><tr><td>36</td><td><span style="color:#b48ead;">void </span><span>AEnemyBaseCharacter::</span><span style="color:#8fa1b3;">EndPlay</span><span>(</span><span style="color:#b48ead;">const</span><span> EEndPlayReason::Type </span><span style="color:#bf616a;">EndPlayReason</span><span>)
+</span></td></tr><tr><td>37</td><td><span>{
+</span></td></tr><tr><td>38</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">HasAuthority</span><span>()) {
+</span></td></tr><tr><td>39</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(EndPlayReason == EEndPlayReason::Destroyed || EndPlayReason == EEndPlayReason::RemovedFromWorld) {
+</span></td></tr><tr><td>40</td><td><span>            AAIDirectorGameMode* AIDirector = </span><span style="color:#bf616a;">Cast</span><span>&lt;AAIDirectorGameMode&gt;(UGameplayStatics::</span><span style="color:#bf616a;">GetGameMode</span><span>(</span><span style="color:#bf616a;">GetWorld</span><span>()));
+</span></td></tr><tr><td>41</td><td><span>
+</span></td></tr><tr><td>42</td><td><span>            </span><span style="color:#b48ead;">if </span><span>(AIDirector)
+</span></td></tr><tr><td>43</td><td><span>                AIDirector-&gt;</span><span style="color:#bf616a;">RemoveEnemy</span><span>(</span><span style="color:#bf616a;">this</span><span>);
+</span></td></tr><tr><td>44</td><td><span>        }
+</span></td></tr><tr><td>45</td><td><span>    }
+</span></td></tr><tr><td>46</td><td><span>
+</span></td></tr><tr><td>47</td><td><span>    Super::</span><span style="color:#bf616a;">EndPlay</span><span>(EndPlayReason);
+</span></td></tr><tr><td>48</td><td><span>}
+</span></td></tr><tr><td>49</td><td><span>
+</span></td></tr><tr><td>50</td><td><span style="color:#65737e;">// Called every frame
+</span></td></tr><tr><td>51</td><td><span style="color:#b48ead;">void </span><span>AEnemyBaseCharacter::</span><span style="color:#8fa1b3;">Tick</span><span>(</span><span style="color:#b48ead;">float </span><span style="color:#bf616a;">DeltaTime</span><span>)
+</span></td></tr><tr><td>52</td><td><span>{
+</span></td></tr><tr><td>53</td><td><span>    Super::</span><span style="color:#bf616a;">Tick</span><span>(DeltaTime);
+</span></td></tr><tr><td>54</td><td><span>}
+</span></td></tr><tr><td>55</td><td><span>
+</span></td></tr><tr><td>56</td><td><span style="color:#65737e;">// Called to bind functionality to input
+</span></td></tr><tr><td>57</td><td><span style="color:#b48ead;">void </span><span>AEnemyBaseCharacter::</span><span style="color:#8fa1b3;">SetupPlayerInputComponent</span><span>(UInputComponent* </span><span style="color:#bf616a;">PlayerInputComponent</span><span>)
+</span></td></tr><tr><td>58</td><td><span>{
+</span></td></tr><tr><td>59</td><td><span>    Super::</span><span style="color:#bf616a;">SetupPlayerInputComponent</span><span>(PlayerInputComponent);
+</span></td></tr><tr><td>60</td><td><span>}
+</span></td></tr><tr><td>61</td><td><span>
+</span></td></tr><tr><td>62</td><td><span>EEnemySize AEnemyBaseCharacter::</span><span style="color:#8fa1b3;">GetEnemySize_Implementation</span><span>()
+</span></td></tr><tr><td>63</td><td><span>{
+</span></td></tr><tr><td>64</td><td><span>    </span><span style="color:#b48ead;">return</span><span> EnemySize;
+</span></td></tr><tr><td>65</td><td><span>}
+</span></td></tr><tr><td>66</td><td><span>
+</span></td></tr><tr><td>67</td><td><span>EEnemyType AEnemyBaseCharacter::</span><span style="color:#8fa1b3;">GetEnemyType_Implementation</span><span>()
+</span></td></tr><tr><td>68</td><td><span>{
+</span></td></tr><tr><td>69</td><td><span>    </span><span style="color:#b48ead;">return</span><span> EnemyType;
+</span></td></tr><tr><td>70</td><td><span>}
+</span></td></tr><tr><td>71</td><td><span>
+</span></td></tr><tr><td>72</td><td><span style="color:#b48ead;">float </span><span>AEnemyBaseCharacter::</span><span style="color:#8fa1b3;">GetMovementSpeed_Implementation</span><span>(EMovementSpeed </span><span style="color:#bf616a;">MovementSpeed</span><span>)
+</span></td></tr><tr><td>73</td><td><span>{
+</span></td></tr><tr><td>74</td><td><span>    </span><span style="color:#b48ead;">switch </span><span>(MovementSpeed) {
+</span></td></tr><tr><td>75</td><td><span>    </span><span style="color:#b48ead;">case</span><span> EMovementSpeed::Run:
+</span></td></tr><tr><td>76</td><td><span>        </span><span style="color:#b48ead;">return</span><span> RunSpeed;
+</span></td></tr><tr><td>77</td><td><span>    </span><span style="color:#b48ead;">case</span><span> EMovementSpeed::Walk:
+</span></td></tr><tr><td>78</td><td><span>        </span><span style="color:#b48ead;">return</span><span> WalkSpeed;
+</span></td></tr><tr><td>79</td><td><span>
+</span></td></tr><tr><td>80</td><td><span>    </span><span style="color:#b48ead;">default</span><span>:
+</span></td></tr><tr><td>81</td><td><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0.</span><span style="color:#b48ead;">f</span><span>;
+</span></td></tr><tr><td>82</td><td><span>    }
+</span></td></tr><tr><td>83</td><td><span>}
+</span></td></tr><tr><td>84</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<br>
+<button type="button" class="collapsible button">Toggle &quot;enemy_base.h</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#pragma</span><span> once
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">CoreMinimal.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">EnemyBase.generated.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span>
+</span></td></tr><tr><td>8</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>9</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>10</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>11</td><td><span style="color:#bf616a;">UENUM</span><span>(BlueprintType)
+</span></td></tr><tr><td>12</td><td><span style="color:#b48ead;">enum class </span><span>EEnemySize : </span><span style="color:#a3be8c;">uint8 </span><span>{
+</span></td></tr><tr><td>13</td><td><span>    Small,
+</span></td></tr><tr><td>14</td><td><span>    Medium,
+</span></td></tr><tr><td>15</td><td><span>    Large
+</span></td></tr><tr><td>16</td><td><span>};
+</span></td></tr><tr><td>17</td><td><span>
+</span></td></tr><tr><td>18</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>19</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>20</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>21</td><td><span style="color:#bf616a;">UENUM</span><span>(BlueprintType)
+</span></td></tr><tr><td>22</td><td><span style="color:#b48ead;">enum class </span><span>EEnemyType : </span><span style="color:#a3be8c;">uint8 </span><span>{
+</span></td></tr><tr><td>23</td><td><span>    Swarm,
+</span></td></tr><tr><td>24</td><td><span>    Ranged,
+</span></td></tr><tr><td>25</td><td><span>    Tank,
+</span></td></tr><tr><td>26</td><td><span>    Boss
+</span></td></tr><tr><td>27</td><td><span>};
+</span></td></tr><tr><td>28</td><td><span>
+</span></td></tr><tr><td>29</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>30</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>31</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>32</td><td><span style="color:#bf616a;">UENUM</span><span>(BlueprintType)
+</span></td></tr><tr><td>33</td><td><span style="color:#b48ead;">enum class </span><span>EMovementSpeed : </span><span style="color:#a3be8c;">uint8 </span><span>{
+</span></td></tr><tr><td>34</td><td><span>    Walk,
+</span></td></tr><tr><td>35</td><td><span>    Run
+</span></td></tr><tr><td>36</td><td><span>};
+</span></td></tr><tr><td>37</td><td><span>
+</span></td></tr><tr><td>38</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>39</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>40</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>41</td><td><span style="color:#bf616a;">UINTERFACE</span><span>(Blueprintable)
+</span></td></tr><tr><td>42</td><td><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">UEnemyBase </span><span style="color:#eff1f5;">: </span><span style="color:#b48ead;">public </span><span style="color:#a3be8c;">UInterface </span><span style="color:#eff1f5;">{
+</span></td></tr><tr><td>43</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">GENERATED_BODY</span><span style="color:#eff1f5;">()
+</span></td></tr><tr><td>44</td><td><span style="color:#eff1f5;">}</span><span>;
+</span></td></tr><tr><td>45</td><td><span>
+</span></td></tr><tr><td>46</td><td><span style="color:#65737e;">/**	Base Enemy Type
+</span></td></tr><tr><td>47</td><td><span style="color:#65737e;"> *	All enemy types should inherit this. Most enemies will inherit from EnemyBaseCharacter
+</span></td></tr><tr><td>48</td><td><span style="color:#65737e;"> *	which already inherits this. Any non-character enemies should make sure to implement this.
+</span></td></tr><tr><td>49</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>50</td><td><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">IEnemyBase </span><span style="color:#eff1f5;">{
+</span></td></tr><tr><td>51</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">GENERATED_BODY</span><span style="color:#eff1f5;">()
+</span></td></tr><tr><td>52</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>53</td><td><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>54</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UFUNCTION</span><span style="color:#eff1f5;">(BlueprintCallable, BlueprintNativeEvent, Category </span><span>= &quot;</span><span style="color:#a3be8c;">EnemyData</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>55</td><td><span style="color:#eff1f5;">    EEnemySize </span><span style="color:#8fa1b3;">GetEnemySize</span><span style="color:#eff1f5;">();
+</span></td></tr><tr><td>56</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>57</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UFUNCTION</span><span style="color:#eff1f5;">(BlueprintCallable, BlueprintNativeEvent, Category </span><span>= &quot;</span><span style="color:#a3be8c;">EnemyData</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>58</td><td><span style="color:#eff1f5;">    EEnemyType </span><span style="color:#8fa1b3;">GetEnemyType</span><span style="color:#eff1f5;">();
+</span></td></tr><tr><td>59</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>60</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UFUNCTION</span><span style="color:#eff1f5;">(BlueprintCallable, BlueprintNativeEvent, Category </span><span>= &quot;</span><span style="color:#a3be8c;">EnemyData</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>61</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">float </span><span style="color:#8fa1b3;">GetMovementSpeed</span><span style="color:#eff1f5;">(EMovementSpeed </span><span style="color:#bf616a;">MovementSpeed</span><span style="color:#eff1f5;">);
+</span></td></tr><tr><td>62</td><td><span style="color:#eff1f5;">}</span><span>;
+</span></td></tr><tr><td>63</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<br>
+<button type="button" class="collapsible button">Toggle &quot;game_teams.h</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#pragma</span><span> once
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">CoreMinimal.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">GameTeams.generated.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">GenericTeamAgentInterface.h</span><span>&quot;
+</span></td></tr><tr><td>8</td><td><span>
+</span></td></tr><tr><td>9</td><td><span style="color:#65737e;">// Source:
+</span></td></tr><tr><td>10</td><td><span style="color:#65737e;">// https://forums.unrealengine.com/t/how-do-i-use-the-ai-perception-teams/120837/2
+</span></td></tr><tr><td>11</td><td><span>
+</span></td></tr><tr><td>12</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>13</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>14</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>15</td><td><span style="color:#bf616a;">UENUM</span><span>(BlueprintType)
+</span></td></tr><tr><td>16</td><td><span style="color:#b48ead;">enum class </span><span>EGameTeam : </span><span style="color:#a3be8c;">uint8 </span><span>{
+</span></td></tr><tr><td>17</td><td><span>    Neutral,
+</span></td></tr><tr><td>18</td><td><span>    Aliens,
+</span></td></tr><tr><td>19</td><td><span>    Players
+</span></td></tr><tr><td>20</td><td><span>};
+</span></td></tr><tr><td>21</td><td><span>
+</span></td></tr><tr><td>22</td><td><span style="color:#65737e;">/**	Structure used in CustomProjectSettings to implement Array of Arrays (UE doesn&#39;t support 2d arrays)
+</span></td></tr><tr><td>23</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>24</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>25</td><td><span style="color:#bf616a;">USTRUCT</span><span>(BlueprintType)
+</span></td></tr><tr><td>26</td><td><span style="color:#b48ead;">struct </span><span>FTeamAttitude {
+</span></td></tr><tr><td>27</td><td><span>    </span><span style="color:#bf616a;">GENERATED_BODY</span><span>()
+</span></td></tr><tr><td>28</td><td><span>
+</span></td></tr><tr><td>29</td><td><span style="color:#b48ead;">public</span><span>:
+</span></td></tr><tr><td>30</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(BlueprintReadWrite, EditAnywhere)
+</span></td></tr><tr><td>31</td><td><span>    TArray&lt;TEnumAsByte&lt;ETeamAttitude::Type&gt;&gt; Attitude;
+</span></td></tr><tr><td>32</td><td><span>
+</span></td></tr><tr><td>33</td><td><span>    </span><span style="color:#8fa1b3;">FTeamAttitude</span><span>() {};
+</span></td></tr><tr><td>34</td><td><span>
+</span></td></tr><tr><td>35</td><td><span>    </span><span style="color:#8fa1b3;">FTeamAttitude</span><span>(std::initializer_list&lt;TEnumAsByte&lt;ETeamAttitude::Type&gt;&gt; </span><span style="color:#bf616a;">attitudes</span><span>)
+</span></td></tr><tr><td>36</td><td><span>        : </span><span style="color:#bf616a;">Attitude</span><span>(std::</span><span style="color:#bf616a;">move</span><span>(attitudes)) {};
+</span></td></tr><tr><td>37</td><td><span>};
+</span></td></tr><tr><td>38</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<button type="button" class="collapsible button">Toggle &quot;team_project_settings.h</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#pragma</span><span> once
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">CoreMinimal.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Engine/DeveloperSettings.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">GenericTeamAgentInterface.h</span><span>&quot;
+</span></td></tr><tr><td>8</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">TeamsProjectSettings.generated.h</span><span>&quot;
+</span></td></tr><tr><td>9</td><td><span>
+</span></td></tr><tr><td>10</td><td><span style="color:#65737e;">/** Custom project settings tab for managing/viewing teams used in game.
+</span></td></tr><tr><td>11</td><td><span style="color:#65737e;"> *	Primarily required to allow static access to teams.
+</span></td></tr><tr><td>12</td><td><span style="color:#65737e;"> *	Alternative: Make const/static function that just returns the data found in this class&#39; constructor
+</span></td></tr><tr><td>13</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>14</td><td><span style="color:#bf616a;">UCLASS</span><span>(Config = Game, DefaultConfig)
+</span></td></tr><tr><td>15</td><td><span style="color:#b48ead;">class </span><span style="color:#eff1f5;">CATBOOMERSHOOTER_API </span><span style="color:#ebcb8b;">UTeamsProjectSettings </span><span style="color:#eff1f5;">: </span><span style="color:#b48ead;">public </span><span style="color:#a3be8c;">UDeveloperSettings </span><span style="color:#eff1f5;">{
+</span></td></tr><tr><td>16</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">GENERATED_BODY</span><span style="color:#eff1f5;">()
+</span></td></tr><tr><td>17</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>18</td><td><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>19</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UPROPERTY</span><span style="color:#eff1f5;">(EditAnywhere, BlueprintReadOnly, Config, Category </span><span>= &quot;</span><span style="color:#a3be8c;">Teams</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>20</td><td><span style="color:#eff1f5;">    TArray&lt;</span><span style="color:#b48ead;">struct</span><span style="color:#eff1f5;"> FTeamAttitude&gt; TeamAttitudes;
+</span></td></tr><tr><td>21</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>22</td><td><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>23</td><td><span style="color:#eff1f5;">    </span><span style="color:#8fa1b3;">UTeamsProjectSettings</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> FObjectInitializer</span><span>&amp; </span><span style="color:#bf616a;">ObjectInitializer</span><span style="color:#eff1f5;">);
+</span></td></tr><tr><td>24</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>25</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">static const</span><span style="color:#eff1f5;"> UTeamsProjectSettings</span><span>* </span><span style="color:#8fa1b3;">Get</span><span style="color:#eff1f5;">();
+</span></td></tr><tr><td>26</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>27</td><td><span style="color:#eff1f5;">    </span><span style="color:#bf616a;">UFUNCTION</span><span style="color:#eff1f5;">(BlueprintPure, Category </span><span>= &quot;</span><span style="color:#a3be8c;">Teams</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span></td></tr><tr><td>28</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">static</span><span style="color:#eff1f5;"> ETeamAttitude::Type </span><span style="color:#8fa1b3;">GetAttitude</span><span style="color:#eff1f5;">(FGenericTeamId </span><span style="color:#bf616a;">Of</span><span style="color:#eff1f5;">, FGenericTeamId </span><span style="color:#bf616a;">Towards</span><span style="color:#eff1f5;">);
+</span></td></tr><tr><td>29</td><td><span style="color:#eff1f5;">}</span><span>;
+</span></td></tr><tr><td>30</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<button type="button" class="collapsible button">Toggle &quot;team_project_settings.cpp</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">GameTeams.h</span><span>&quot;
+</span></td></tr><tr><td>4</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">TeamsProjectSettings.h</span><span>&quot;
+</span></td></tr><tr><td>5</td><td><span>
+</span></td></tr><tr><td>6</td><td><span>UTeamsProjectSettings::</span><span style="color:#8fa1b3;">UTeamsProjectSettings</span><span>(</span><span style="color:#b48ead;">const</span><span> FObjectInitializer&amp; </span><span style="color:#bf616a;">ObjectInitializer</span><span>)
+</span></td></tr><tr><td>7</td><td><span>    : </span><span style="color:#bf616a;">Super</span><span>(ObjectInitializer)
+</span></td></tr><tr><td>8</td><td><span>{
+</span></td></tr><tr><td>9</td><td><span>    </span><span style="color:#b48ead;">typedef</span><span> ETeamAttitude::Type EA;
+</span></td></tr><tr><td>10</td><td><span>    TeamAttitudes = {
+</span></td></tr><tr><td>11</td><td><span>        </span><span style="color:#65737e;">// Neutral		// Aliens		// Players
+</span></td></tr><tr><td>12</td><td><span>        { EA::Friendly, EA::Neutral, EA::Neutral }, </span><span style="color:#65737e;">// Neutral
+</span></td></tr><tr><td>13</td><td><span>        { EA::Neutral, EA::Friendly, EA::Hostile }, </span><span style="color:#65737e;">// Aliens
+</span></td></tr><tr><td>14</td><td><span>        { EA::Neutral, EA::Hostile, EA::Friendly } </span><span style="color:#65737e;">// Players
+</span></td></tr><tr><td>15</td><td><span>    };
+</span></td></tr><tr><td>16</td><td><span>}
+</span></td></tr><tr><td>17</td><td><span>
+</span></td></tr><tr><td>18</td><td><span style="color:#b48ead;">const</span><span> UTeamsProjectSettings* UTeamsProjectSettings::</span><span style="color:#8fa1b3;">Get</span><span>()
+</span></td></tr><tr><td>19</td><td><span>{
+</span></td></tr><tr><td>20</td><td><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">GetDefault</span><span>&lt;UTeamsProjectSettings&gt;();
+</span></td></tr><tr><td>21</td><td><span>}
+</span></td></tr><tr><td>22</td><td><span>
+</span></td></tr><tr><td>23</td><td><span>ETeamAttitude::Type UTeamsProjectSettings::</span><span style="color:#8fa1b3;">GetAttitude</span><span>(FGenericTeamId </span><span style="color:#bf616a;">Of</span><span>, FGenericTeamId </span><span style="color:#bf616a;">Towards</span><span>)
+</span></td></tr><tr><td>24</td><td><span>{
+</span></td></tr><tr><td>25</td><td><span>    TArray&lt;FTeamAttitude&gt; TeamAttitudes = UTeamsProjectSettings::</span><span style="color:#bf616a;">Get</span><span>()-&gt;</span><span style="color:#bf616a;">TeamAttitudes</span><span>;
+</span></td></tr><tr><td>26</td><td><span>
+</span></td></tr><tr><td>27</td><td><span>    </span><span style="color:#b48ead;">bool</span><span> OfValid = TeamAttitudes.</span><span style="color:#bf616a;">IsValidIndex</span><span>(Of.</span><span style="color:#bf616a;">GetId</span><span>());
+</span></td></tr><tr><td>28</td><td><span>    </span><span style="color:#b48ead;">bool</span><span> TowardsValid = TeamAttitudes.</span><span style="color:#bf616a;">IsValidIndex</span><span>(Towards.</span><span style="color:#bf616a;">GetId</span><span>());
+</span></td></tr><tr><td>29</td><td><span>
+</span></td></tr><tr><td>30</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(OfValid &amp;&amp; TowardsValid) {
+</span></td></tr><tr><td>31</td><td><span>        </span><span style="color:#b48ead;">auto</span><span>&amp; Attitudes = TeamAttitudes[Of.</span><span style="color:#bf616a;">GetId</span><span>()].</span><span style="color:#bf616a;">Attitude</span><span>;
+</span></td></tr><tr><td>32</td><td><span>
+</span></td></tr><tr><td>33</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(Attitudes.</span><span style="color:#bf616a;">IsValidIndex</span><span>(Towards.</span><span style="color:#bf616a;">GetId</span><span>())) {
+</span></td></tr><tr><td>34</td><td><span>            </span><span style="color:#b48ead;">return</span><span> Attitudes[Towards.</span><span style="color:#bf616a;">GetId</span><span>()];
+</span></td></tr><tr><td>35</td><td><span>        }
+</span></td></tr><tr><td>36</td><td><span>    }
+</span></td></tr><tr><td>37</td><td><span>    </span><span style="color:#b48ead;">return</span><span> ETeamAttitude::Neutral;
+</span></td></tr><tr><td>38</td><td><span>}
+</span></td></tr><tr><td>39</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<br>
+<p>Some of this code was written in a seperate editor module which added debugging and visualisation functionality to the
+editor.</p>
+<button type="button" class="collapsible button">Toggle &quot;patrol_component.h</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#pragma</span><span> once
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Components/ActorComponent.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">CoreMinimal.h</span><span>&quot;
+</span></td></tr><tr><td>7</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">PatrolComponent.generated.h</span><span>&quot;
+</span></td></tr><tr><td>8</td><td><span>
+</span></td></tr><tr><td>9</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>10</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>11</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>12</td><td><span style="color:#bf616a;">USTRUCT</span><span>(BlueprintType)
+</span></td></tr><tr><td>13</td><td><span style="color:#b48ead;">struct </span><span>CATBOOMERSHOOTER_API FPatrolData {
+</span></td></tr><tr><td>14</td><td><span>    </span><span style="color:#bf616a;">GENERATED_BODY</span><span>()
+</span></td></tr><tr><td>15</td><td><span>
+</span></td></tr><tr><td>16</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>17</td><td><span>    </span><span style="color:#b48ead;">class</span><span> APatrolPoint* PatrolPoint;
+</span></td></tr><tr><td>18</td><td><span>
+</span></td></tr><tr><td>19</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>20</td><td><span>    </span><span style="color:#b48ead;">float</span><span> PatrolPointRange = </span><span style="color:#d08770;">50.0</span><span style="color:#b48ead;">f</span><span>;
+</span></td></tr><tr><td>21</td><td><span>
+</span></td></tr><tr><td>22</td><td><span>    </span><span style="color:#65737e;">// Use Patrol Point Rotation
+</span></td></tr><tr><td>23</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>24</td><td><span>    </span><span style="color:#b48ead;">bool</span><span> UsePatrolPointRotation = </span><span style="color:#d08770;">true</span><span>;
+</span></td></tr><tr><td>25</td><td><span>
+</span></td></tr><tr><td>26</td><td><span>    </span><span style="color:#65737e;">// Random angle variance when facing patrol point direction on arival
+</span></td></tr><tr><td>27</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>28</td><td><span>    </span><span style="color:#b48ead;">float</span><span> RotationVariance = </span><span style="color:#d08770;">10.</span><span style="color:#b48ead;">f</span><span>;
+</span></td></tr><tr><td>29</td><td><span>
+</span></td></tr><tr><td>30</td><td><span>    </span><span style="color:#65737e;">// Wait Time
+</span></td></tr><tr><td>31</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>32</td><td><span>    </span><span style="color:#b48ead;">float</span><span> WaitTime = </span><span style="color:#d08770;">1.0</span><span style="color:#b48ead;">f</span><span>;
+</span></td></tr><tr><td>33</td><td><span>
+</span></td></tr><tr><td>34</td><td><span>    </span><span style="color:#65737e;">// Wait Time Variance
+</span></td></tr><tr><td>35</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadOnly)
+</span></td></tr><tr><td>36</td><td><span>    </span><span style="color:#b48ead;">float</span><span> WaitTimeVariance = </span><span style="color:#d08770;">0.0</span><span style="color:#b48ead;">f</span><span>;
+</span></td></tr><tr><td>37</td><td><span>};
+</span></td></tr><tr><td>38</td><td><span>
+</span></td></tr><tr><td>39</td><td><span style="color:#65737e;">/**
+</span></td></tr><tr><td>40</td><td><span style="color:#65737e;"> *
+</span></td></tr><tr><td>41</td><td><span style="color:#65737e;"> */
+</span></td></tr><tr><td>42</td><td><span style="color:#bf616a;">UCLASS</span><span>(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+</span></td></tr><tr><td>43</td><td><span style="color:#b48ead;">class</span><span> CATBOOMERSHOOTER_API UPatrolComponent : public </span><span style="color:#bf616a;">UActorComponent </span><span>{
+</span></td></tr><tr><td>44</td><td><span>    </span><span style="color:#bf616a;">GENERATED_BODY</span><span>()
+</span></td></tr><tr><td>45</td><td><span>
+</span></td></tr><tr><td>46</td><td><span>public:
+</span></td></tr><tr><td>47</td><td><span>    </span><span style="color:#65737e;">// Sets default values for this component&#39;s properties
+</span></td></tr><tr><td>48</td><td><span>    </span><span style="color:#bf616a;">UPatrolComponent</span><span>();
+</span></td></tr><tr><td>49</td><td><span>
+</span></td></tr><tr><td>50</td><td><span>    </span><span style="color:#b48ead;">virtual void </span><span style="color:#bf616a;">BeginPlay</span><span>() override;
+</span></td></tr><tr><td>51</td><td><span>
+</span></td></tr><tr><td>52</td><td><span>public:
+</span></td></tr><tr><td>53</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadWrite, Category = &quot;</span><span style="color:#a3be8c;">Patrol</span><span>&quot;)
+</span></td></tr><tr><td>54</td><td><span>    TArray&lt;FPatrolData&gt; PatrolPoints;
+</span></td></tr><tr><td>55</td><td><span>
+</span></td></tr><tr><td>56</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadWrite, Category = &quot;</span><span style="color:#a3be8c;">Patrol</span><span>&quot;)
+</span></td></tr><tr><td>57</td><td><span>    </span><span style="color:#b48ead;">int</span><span> CurrentPatrolIndex = </span><span style="color:#d08770;">0</span><span>;
+</span></td></tr><tr><td>58</td><td><span>
+</span></td></tr><tr><td>59</td><td><span>    </span><span style="color:#65737e;">// Set on BeginPlay - Where the actor spawned
+</span></td></tr><tr><td>60</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(VisibleAnywhere, BlueprintReadOnly, Category = &quot;</span><span style="color:#a3be8c;">Patrol</span><span>&quot;)
+</span></td></tr><tr><td>61</td><td><span>    FVector ActorSpawnPoint;
+</span></td></tr><tr><td>62</td><td><span>
+</span></td></tr><tr><td>63</td><td><span>    </span><span style="color:#65737e;">// If no patrol points set, actor will wander around randomly
+</span></td></tr><tr><td>64</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadWrite, Category = &quot;</span><span style="color:#a3be8c;">Patrol</span><span>&quot;)
+</span></td></tr><tr><td>65</td><td><span>    </span><span style="color:#b48ead;">bool</span><span> WanderRandomly = </span><span style="color:#d08770;">false</span><span>;
+</span></td></tr><tr><td>66</td><td><span>
+</span></td></tr><tr><td>67</td><td><span>    </span><span style="color:#65737e;">/* If wander randomly is set and no patrol point are set, actor
+</span></td></tr><tr><td>68</td><td><span style="color:#65737e;">       will wander around their spawn point randomly. */
+</span></td></tr><tr><td>69</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadWrite, Category = &quot;</span><span style="color:#a3be8c;">Patrol</span><span>&quot;)
+</span></td></tr><tr><td>70</td><td><span>    </span><span style="color:#b48ead;">bool</span><span> WanderAroundSpawnPoint = </span><span style="color:#d08770;">false</span><span>;
+</span></td></tr><tr><td>71</td><td><span>
+</span></td></tr><tr><td>72</td><td><span>    </span><span style="color:#65737e;">// How far the actor will wander from their location (or around spawn if set)
+</span></td></tr><tr><td>73</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadWrite, Category = &quot;</span><span style="color:#a3be8c;">Patrol</span><span>&quot;)
+</span></td></tr><tr><td>74</td><td><span>    </span><span style="color:#b48ead;">float</span><span> WanderRange = </span><span style="color:#d08770;">500.</span><span style="color:#b48ead;">f</span><span>;
+</span></td></tr><tr><td>75</td><td><span>
+</span></td></tr><tr><td>76</td><td><span>    </span><span style="color:#65737e;">// How long the actor will wait between wandering
+</span></td></tr><tr><td>77</td><td><span>    </span><span style="color:#bf616a;">UPROPERTY</span><span>(EditAnywhere, BlueprintReadWrite, Category = &quot;</span><span style="color:#a3be8c;">Patrol</span><span>&quot;)
+</span></td></tr><tr><td>78</td><td><span>    </span><span style="color:#b48ead;">float</span><span> WanderCooldown = </span><span style="color:#d08770;">2.</span><span style="color:#b48ead;">f</span><span>;
+</span></td></tr><tr><td>79</td><td><span>
+</span></td></tr><tr><td>80</td><td><span>public:
+</span></td></tr><tr><td>81</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable)
+</span></td></tr><tr><td>82</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">GetCurrentPatrolPoint</span><span>(FPatrolData&amp; PatrolData, </span><span style="color:#b48ead;">bool</span><span>&amp; IsValid);
+</span></td></tr><tr><td>83</td><td><span>
+</span></td></tr><tr><td>84</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable)
+</span></td></tr><tr><td>85</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">IterPatrolPointIndex</span><span>();
+</span></td></tr><tr><td>86</td><td><span>
+</span></td></tr><tr><td>87</td><td><span>    </span><span style="color:#bf616a;">UFUNCTION</span><span>(BlueprintCallable)
+</span></td></tr><tr><td>88</td><td><span>    </span><span style="color:#b48ead;">void </span><span style="color:#bf616a;">SetPatrolPointIndex</span><span>(</span><span style="color:#b48ead;">int</span><span> NewIndex);
+</span></td></tr><tr><td>89</td><td><span>};
+</span></td></tr><tr><td>90</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<button type="button" class="collapsible button">Toggle &quot;patrol_component.cpp</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Kismet/KismetSystemLibrary.h</span><span>&quot;
+</span></td></tr><tr><td>4</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">PatrolComponent.h</span><span>&quot;
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">PatrolPoint.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span>
+</span></td></tr><tr><td>7</td><td><span style="color:#65737e;">// Sets default values for this component&#39;s properties
+</span></td></tr><tr><td>8</td><td><span>UPatrolComponent::</span><span style="color:#8fa1b3;">UPatrolComponent</span><span>()
+</span></td></tr><tr><td>9</td><td><span>{
+</span></td></tr><tr><td>10</td><td><span>    </span><span style="color:#65737e;">// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+</span></td></tr><tr><td>11</td><td><span>    </span><span style="color:#65737e;">// off to improve performance if you don&#39;t need them.
+</span></td></tr><tr><td>12</td><td><span>    PrimaryComponentTick.</span><span style="color:#bf616a;">bCanEverTick </span><span>= </span><span style="color:#d08770;">false</span><span>;
+</span></td></tr><tr><td>13</td><td><span>
+</span></td></tr><tr><td>14</td><td><span>    </span><span style="color:#65737e;">// ...
+</span></td></tr><tr><td>15</td><td><span>}
+</span></td></tr><tr><td>16</td><td><span>
+</span></td></tr><tr><td>17</td><td><span style="color:#b48ead;">void </span><span>UPatrolComponent::</span><span style="color:#8fa1b3;">BeginPlay</span><span>()
+</span></td></tr><tr><td>18</td><td><span>{
+</span></td></tr><tr><td>19</td><td><span>    Super::</span><span style="color:#bf616a;">BeginPlay</span><span>();
+</span></td></tr><tr><td>20</td><td><span>    </span><span style="color:#65737e;">// Iterate patrol points and remove invalid/unset ones
+</span></td></tr><tr><td>21</td><td><span>    </span><span style="color:#b48ead;">for </span><span>(</span><span style="color:#b48ead;">int</span><span> x = PatrolPoints.</span><span style="color:#bf616a;">Num</span><span>() - </span><span style="color:#d08770;">1</span><span>; x &gt;= </span><span style="color:#d08770;">0</span><span>; x--) {
+</span></td></tr><tr><td>22</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">IsValid</span><span>(PatrolPoints[x].</span><span style="color:#bf616a;">PatrolPoint</span><span>)) {
+</span></td></tr><tr><td>23</td><td><span>            PatrolPoints.</span><span style="color:#bf616a;">RemoveAt</span><span>(x);
+</span></td></tr><tr><td>24</td><td><span>            </span><span style="color:#bf616a;">UE_LOG</span><span>(
+</span></td></tr><tr><td>25</td><td><span>                LogTemp, Warning,
+</span></td></tr><tr><td>26</td><td><span>                </span><span style="color:#bf616a;">TEXT</span><span>(&quot;</span><span style="color:#a3be8c;">Patrol enemy </span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;"> has an invalid patrol point set.</span><span>&quot;),
+</span></td></tr><tr><td>27</td><td><span>                *UKismetSystemLibrary::</span><span style="color:#bf616a;">GetDisplayName</span><span>(</span><span style="color:#bf616a;">GetOwner</span><span>()));
+</span></td></tr><tr><td>28</td><td><span>        }
+</span></td></tr><tr><td>29</td><td><span>    }
+</span></td></tr><tr><td>30</td><td><span>
+</span></td></tr><tr><td>31</td><td><span>    CurrentPatrolIndex = FMath::</span><span style="color:#bf616a;">Clamp</span><span>(CurrentPatrolIndex, </span><span style="color:#d08770;">0</span><span>, PatrolPoints.</span><span style="color:#bf616a;">Num</span><span>() - </span><span style="color:#d08770;">1</span><span>);
+</span></td></tr><tr><td>32</td><td><span>
+</span></td></tr><tr><td>33</td><td><span>    ActorSpawnPoint = </span><span style="color:#bf616a;">GetOwner</span><span>()-&gt;</span><span style="color:#bf616a;">GetActorLocation</span><span>();
+</span></td></tr><tr><td>34</td><td><span>}
+</span></td></tr><tr><td>35</td><td><span>
+</span></td></tr><tr><td>36</td><td><span style="color:#b48ead;">void </span><span>UPatrolComponent::</span><span style="color:#8fa1b3;">GetCurrentPatrolPoint</span><span>(FPatrolData&amp; </span><span style="color:#bf616a;">PatrolData</span><span>, </span><span style="color:#b48ead;">bool</span><span>&amp; </span><span style="color:#bf616a;">IsValid</span><span>)
+</span></td></tr><tr><td>37</td><td><span>{
+</span></td></tr><tr><td>38</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(PatrolPoints.</span><span style="color:#bf616a;">IsValidIndex</span><span>(CurrentPatrolIndex)) {
+</span></td></tr><tr><td>39</td><td><span>        IsValid = </span><span style="color:#d08770;">true</span><span>;
+</span></td></tr><tr><td>40</td><td><span>        PatrolData = PatrolPoints[CurrentPatrolIndex];
+</span></td></tr><tr><td>41</td><td><span>    }
+</span></td></tr><tr><td>42</td><td><span>}
+</span></td></tr><tr><td>43</td><td><span>
+</span></td></tr><tr><td>44</td><td><span style="color:#b48ead;">void </span><span>UPatrolComponent::</span><span style="color:#8fa1b3;">IterPatrolPointIndex</span><span>()
+</span></td></tr><tr><td>45</td><td><span>{
+</span></td></tr><tr><td>46</td><td><span>    CurrentPatrolIndex = (CurrentPatrolIndex + </span><span style="color:#d08770;">1</span><span>) % PatrolPoints.</span><span style="color:#bf616a;">Num</span><span>();
+</span></td></tr><tr><td>47</td><td><span>}
+</span></td></tr><tr><td>48</td><td><span>
+</span></td></tr><tr><td>49</td><td><span style="color:#b48ead;">void </span><span>UPatrolComponent::</span><span style="color:#8fa1b3;">SetPatrolPointIndex</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">NewIndex</span><span>)
+</span></td></tr><tr><td>50</td><td><span>{
+</span></td></tr><tr><td>51</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(PatrolPoints.</span><span style="color:#bf616a;">IsValidIndex</span><span>(NewIndex)) {
+</span></td></tr><tr><td>52</td><td><span>        CurrentPatrolIndex = NewIndex;
+</span></td></tr><tr><td>53</td><td><span>    }
+</span></td></tr><tr><td>54</td><td><span>}
+</span></td></tr><tr><td>55</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<button type="button" class="collapsible button">Toggle &quot;patrol_visualizer.h</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#pragma</span><span> once
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">ComponentVisualizer.h</span><span>&gt;
+</span></td></tr><tr><td>6</td><td><span>
+</span></td></tr><tr><td>7</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">CatBoomerShooter/AI/Patrol/PatrolComponent.h</span><span>&quot;
+</span></td></tr><tr><td>8</td><td><span>
+</span></td></tr><tr><td>9</td><td><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">FPatrolVisualizer </span><span style="color:#eff1f5;">: </span><span style="color:#b48ead;">public </span><span style="color:#a3be8c;">FComponentVisualizer </span><span style="color:#eff1f5;">{
+</span></td></tr><tr><td>10</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>11</td><td><span style="color:#b48ead;">private</span><span style="color:#eff1f5;">:
+</span></td></tr><tr><td>12</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">DrawVisualization</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> UActorComponent</span><span>* </span><span style="color:#bf616a;">Component</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> FSceneView</span><span>* </span><span style="color:#bf616a;">View</span><span style="color:#eff1f5;">, FPrimitiveDrawInterface</span><span>* </span><span style="color:#bf616a;">PDI</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">override</span><span style="color:#eff1f5;">;
+</span></td></tr><tr><td>13</td><td><span style="color:#eff1f5;">
+</span></td></tr><tr><td>14</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">DrawPatrol</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">const class</span><span style="color:#eff1f5;"> UPatrolComponent</span><span>* </span><span style="color:#bf616a;">PatrolComponent</span><span style="color:#eff1f5;">, FPrimitiveDrawInterface</span><span>* </span><span style="color:#bf616a;">PDI</span><span style="color:#eff1f5;">);
+</span></td></tr><tr><td>15</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">DrawPoint</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> FPatrolData </span><span style="color:#bf616a;">Point</span><span style="color:#eff1f5;">, FPrimitiveDrawInterface</span><span>* </span><span style="color:#bf616a;">PDI</span><span style="color:#eff1f5;">);
+</span></td></tr><tr><td>16</td><td><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">DrawConnection</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">const class</span><span style="color:#eff1f5;"> APatrolPoint</span><span>* </span><span style="color:#bf616a;">StartPoint</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">const class</span><span style="color:#eff1f5;"> APatrolPoint</span><span>* </span><span style="color:#bf616a;">EndPoint</span><span style="color:#eff1f5;">, FPrimitiveDrawInterface</span><span>* </span><span style="color:#bf616a;">PDI</span><span style="color:#eff1f5;">);
+</span></td></tr><tr><td>17</td><td><span style="color:#eff1f5;">}</span><span>;
+</span></td></tr><tr><td>18</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<button type="button" class="collapsible button">Toggle &quot;patrol_visualizer.cpp</button>
+<pre data-linenos data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><table><tbody><tr><td>1</td><td><span style="color:#65737e;">// Fill out your copyright notice in the Description page of Project Settings.
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">PatrolVisualizer.h</span><span>&quot;
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">Kismet/KismetMathLibrary.h</span><span>&quot;
+</span></td></tr><tr><td>6</td><td><span>
+</span></td></tr><tr><td>7</td><td><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">CatBoomerShooter/AI/Patrol/PatrolPoint.h</span><span>&quot;
+</span></td></tr><tr><td>8</td><td><span>
+</span></td></tr><tr><td>9</td><td><span style="color:#b48ead;">void </span><span>FPatrolVisualizer::</span><span style="color:#8fa1b3;">DrawVisualization</span><span>(</span><span style="color:#b48ead;">const</span><span> UActorComponent* </span><span style="color:#bf616a;">Component</span><span>, </span><span style="color:#b48ead;">const</span><span> FSceneView* </span><span style="color:#bf616a;">View</span><span>, FPrimitiveDrawInterface* </span><span style="color:#bf616a;">PDI</span><span>)
+</span></td></tr><tr><td>10</td><td><span>{
+</span></td></tr><tr><td>11</td><td><span>    </span><span style="color:#b48ead;">const</span><span> UPatrolComponent* Patrol = </span><span style="color:#bf616a;">Cast</span><span>&lt;UPatrolComponent&gt;(Component);
+</span></td></tr><tr><td>12</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(!Patrol)
+</span></td></tr><tr><td>13</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>14</td><td><span>
+</span></td></tr><tr><td>15</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(Patrol-&gt;</span><span style="color:#bf616a;">PatrolPoints</span><span>.</span><span style="color:#bf616a;">Num</span><span>() &gt; </span><span style="color:#d08770;">1</span><span>) {
+</span></td></tr><tr><td>16</td><td><span>        </span><span style="color:#bf616a;">DrawPatrol</span><span>(Patrol, PDI);
+</span></td></tr><tr><td>17</td><td><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span></td></tr><tr><td>18</td><td><span>    }
+</span></td></tr><tr><td>19</td><td><span>
+</span></td></tr><tr><td>20</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(Patrol-&gt;</span><span style="color:#bf616a;">WanderRandomly</span><span>) {
+</span></td></tr><tr><td>21</td><td><span>        FVector Origin;
+</span></td></tr><tr><td>22</td><td><span>        </span><span style="color:#b48ead;">switch </span><span>(Patrol-&gt;</span><span style="color:#bf616a;">WanderAroundSpawnPoint</span><span>) {
+</span></td></tr><tr><td>23</td><td><span>        </span><span style="color:#b48ead;">case </span><span style="color:#d08770;">true</span><span>: {
+</span></td></tr><tr><td>24</td><td><span>            </span><span style="color:#b48ead;">if </span><span>(UWorld* World = Component-&gt;</span><span style="color:#bf616a;">GetWorld</span><span>()) {
+</span></td></tr><tr><td>25</td><td><span>                </span><span style="color:#b48ead;">if </span><span>(World-&gt;</span><span style="color:#bf616a;">WorldType </span><span>!= EWorldType::Editor) {
+</span></td></tr><tr><td>26</td><td><span>                    Origin = Patrol-&gt;</span><span style="color:#bf616a;">ActorSpawnPoint </span><span>+ </span><span style="color:#bf616a;">FVector</span><span>(</span><span style="color:#d08770;">0.</span><span>, </span><span style="color:#d08770;">0.</span><span>, </span><span style="color:#d08770;">25.</span><span>);
+</span></td></tr><tr><td>27</td><td><span>                    </span><span style="color:#b48ead;">break</span><span>;
+</span></td></tr><tr><td>28</td><td><span>                }
+</span></td></tr><tr><td>29</td><td><span>            }
+</span></td></tr><tr><td>30</td><td><span>        }
+</span></td></tr><tr><td>31</td><td><span>        </span><span style="color:#b48ead;">case </span><span style="color:#d08770;">false</span><span>:
+</span></td></tr><tr><td>32</td><td><span>            Origin = Patrol-&gt;</span><span style="color:#bf616a;">GetOwner</span><span>()-&gt;</span><span style="color:#bf616a;">GetActorLocation</span><span>() + </span><span style="color:#bf616a;">FVector</span><span>(</span><span style="color:#d08770;">0.</span><span>, </span><span style="color:#d08770;">0.</span><span>, </span><span style="color:#d08770;">25.</span><span>);
+</span></td></tr><tr><td>33</td><td><span>            </span><span style="color:#b48ead;">break</span><span>;
+</span></td></tr><tr><td>34</td><td><span>        }
+</span></td></tr><tr><td>35</td><td><span>
+</span></td></tr><tr><td>36</td><td><span>        </span><span style="color:#bf616a;">DrawWireCylinder</span><span>(
+</span></td></tr><tr><td>37</td><td><span>            PDI,
+</span></td></tr><tr><td>38</td><td><span>            Origin,
+</span></td></tr><tr><td>39</td><td><span>            FVector::</span><span style="color:#bf616a;">UnitX</span><span>(),
+</span></td></tr><tr><td>40</td><td><span>            FVector::</span><span style="color:#bf616a;">UnitY</span><span>(),
+</span></td></tr><tr><td>41</td><td><span>            FVector::</span><span style="color:#bf616a;">UnitZ</span><span>(),
+</span></td></tr><tr><td>42</td><td><span>            FColorList::Red,
+</span></td></tr><tr><td>43</td><td><span>            Patrol-&gt;</span><span style="color:#bf616a;">WanderRange</span><span>,
+</span></td></tr><tr><td>44</td><td><span>            </span><span style="color:#d08770;">25.</span><span>, </span><span style="color:#65737e;">// Height
+</span></td></tr><tr><td>45</td><td><span>            </span><span style="color:#d08770;">6</span><span>, </span><span style="color:#65737e;">// Num sides
+</span></td></tr><tr><td>46</td><td><span>            </span><span style="color:#d08770;">100 </span><span style="color:#65737e;">// Depth Priority
+</span></td></tr><tr><td>47</td><td><span>        );
+</span></td></tr><tr><td>48</td><td><span>    }
+</span></td></tr><tr><td>49</td><td><span>}
+</span></td></tr><tr><td>50</td><td><span>
+</span></td></tr><tr><td>51</td><td><span style="color:#b48ead;">void </span><span>FPatrolVisualizer::</span><span style="color:#8fa1b3;">DrawPatrol</span><span>(</span><span style="color:#b48ead;">const</span><span> UPatrolComponent* </span><span style="color:#bf616a;">PatrolComponent</span><span>, FPrimitiveDrawInterface* </span><span style="color:#bf616a;">PDI</span><span>)
+</span></td></tr><tr><td>52</td><td><span>{
+</span></td></tr><tr><td>53</td><td><span>    </span><span style="color:#b48ead;">const</span><span> TArray&lt;FPatrolData&gt; PatrolPoints = PatrolComponent-&gt;</span><span style="color:#bf616a;">PatrolPoints</span><span>;
+</span></td></tr><tr><td>54</td><td><span>
+</span></td></tr><tr><td>55</td><td><span>    </span><span style="color:#b48ead;">for </span><span>(</span><span style="color:#b48ead;">int</span><span> x = </span><span style="color:#d08770;">0</span><span>; x &lt; PatrolPoints.</span><span style="color:#bf616a;">Num</span><span>() - </span><span style="color:#d08770;">1</span><span>; x++) {
+</span></td></tr><tr><td>56</td><td><span>        </span><span style="color:#b48ead;">const</span><span> FPatrolData PointData = PatrolPoints[x];
+</span></td></tr><tr><td>57</td><td><span>
+</span></td></tr><tr><td>58</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(!PointData.</span><span style="color:#bf616a;">PatrolPoint</span><span>)
+</span></td></tr><tr><td>59</td><td><span>            </span><span style="color:#b48ead;">continue</span><span>;
+</span></td></tr><tr><td>60</td><td><span>
+</span></td></tr><tr><td>61</td><td><span>        </span><span style="color:#bf616a;">DrawPoint</span><span>(PointData, PDI);
+</span></td></tr><tr><td>62</td><td><span>
+</span></td></tr><tr><td>63</td><td><span>        </span><span style="color:#65737e;">// Get next valid point
+</span></td></tr><tr><td>64</td><td><span>        </span><span style="color:#b48ead;">const</span><span> APatrolPoint* NextPoint = </span><span style="color:#d08770;">nullptr</span><span>;
+</span></td></tr><tr><td>65</td><td><span>        </span><span style="color:#b48ead;">while </span><span>(x &lt; PatrolPoints.</span><span style="color:#bf616a;">Num</span><span>() - </span><span style="color:#d08770;">1</span><span>) {
+</span></td></tr><tr><td>66</td><td><span>            NextPoint = PatrolPoints[x + </span><span style="color:#d08770;">1</span><span>].</span><span style="color:#bf616a;">PatrolPoint</span><span>;
+</span></td></tr><tr><td>67</td><td><span>            </span><span style="color:#b48ead;">if </span><span>(NextPoint)
+</span></td></tr><tr><td>68</td><td><span>                </span><span style="color:#b48ead;">break</span><span>;
+</span></td></tr><tr><td>69</td><td><span>
+</span></td></tr><tr><td>70</td><td><span>            x++;
+</span></td></tr><tr><td>71</td><td><span>        }
+</span></td></tr><tr><td>72</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(!NextPoint)
+</span></td></tr><tr><td>73</td><td><span>            </span><span style="color:#b48ead;">continue</span><span>;
+</span></td></tr><tr><td>74</td><td><span>
+</span></td></tr><tr><td>75</td><td><span>        </span><span style="color:#bf616a;">DrawConnection</span><span>(PointData.</span><span style="color:#bf616a;">PatrolPoint</span><span>, NextPoint, PDI);
+</span></td></tr><tr><td>76</td><td><span>    }
+</span></td></tr><tr><td>77</td><td><span>
+</span></td></tr><tr><td>78</td><td><span>    </span><span style="color:#b48ead;">const</span><span> APatrolPoint* FirstPoint = PatrolPoints[</span><span style="color:#d08770;">0</span><span>].</span><span style="color:#bf616a;">PatrolPoint</span><span>;
+</span></td></tr><tr><td>79</td><td><span>    </span><span style="color:#b48ead;">const</span><span> FPatrolData LastPointData = PatrolPoints.</span><span style="color:#bf616a;">Last</span><span>();
+</span></td></tr><tr><td>80</td><td><span>    </span><span style="color:#b48ead;">const</span><span> APatrolPoint* LastPoint = LastPointData.</span><span style="color:#bf616a;">PatrolPoint</span><span>;
+</span></td></tr><tr><td>81</td><td><span>
+</span></td></tr><tr><td>82</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(LastPoint) {
+</span></td></tr><tr><td>83</td><td><span>        </span><span style="color:#bf616a;">DrawPoint</span><span>(LastPointData, PDI);
+</span></td></tr><tr><td>84</td><td><span>        </span><span style="color:#b48ead;">if </span><span>(FirstPoint)
+</span></td></tr><tr><td>85</td><td><span>            </span><span style="color:#bf616a;">DrawConnection</span><span>(LastPoint, FirstPoint, PDI);
+</span></td></tr><tr><td>86</td><td><span>    }
+</span></td></tr><tr><td>87</td><td><span>}
+</span></td></tr><tr><td>88</td><td><span>
+</span></td></tr><tr><td>89</td><td><span style="color:#b48ead;">void </span><span>FPatrolVisualizer::</span><span style="color:#8fa1b3;">DrawPoint</span><span>(</span><span style="color:#b48ead;">const</span><span> FPatrolData </span><span style="color:#bf616a;">Point</span><span>, FPrimitiveDrawInterface* </span><span style="color:#bf616a;">PDI</span><span>)
+</span></td></tr><tr><td>90</td><td><span>{
+</span></td></tr><tr><td>91</td><td><span>    </span><span style="color:#b48ead;">const</span><span> FVector StartPos = Point.</span><span style="color:#bf616a;">PatrolPoint</span><span>-&gt;</span><span style="color:#bf616a;">GetActorLocation</span><span>() + </span><span style="color:#bf616a;">FVector</span><span>(</span><span style="color:#d08770;">0.</span><span>, </span><span style="color:#d08770;">0.</span><span>, </span><span style="color:#d08770;">25.</span><span>);
+</span></td></tr><tr><td>92</td><td><span>    </span><span style="color:#b48ead;">const</span><span> FRotator Rotation = Point.</span><span style="color:#bf616a;">PatrolPoint</span><span>-&gt;</span><span style="color:#bf616a;">GetActorRotation</span><span>();
+</span></td></tr><tr><td>93</td><td><span>    </span><span style="color:#b48ead;">float</span><span> Angle = Rotation.</span><span style="color:#bf616a;">Euler</span><span>().</span><span style="color:#bf616a;">Z</span><span>;
+</span></td></tr><tr><td>94</td><td><span>
+</span></td></tr><tr><td>95</td><td><span>    </span><span style="color:#bf616a;">DrawWireCylinder</span><span>(
+</span></td></tr><tr><td>96</td><td><span>        PDI,
+</span></td></tr><tr><td>97</td><td><span>        StartPos,
+</span></td></tr><tr><td>98</td><td><span>        FVector::</span><span style="color:#bf616a;">UnitX</span><span>(),
+</span></td></tr><tr><td>99</td><td><span>        FVector::</span><span style="color:#bf616a;">UnitY</span><span>(),
+</span></td></tr><tr><td>100</td><td><span>        FVector::</span><span style="color:#bf616a;">UnitZ</span><span>(),
+</span></td></tr><tr><td>101</td><td><span>        FColorList::Red,
+</span></td></tr><tr><td>102</td><td><span>        Point.</span><span style="color:#bf616a;">PatrolPointRange</span><span>,
+</span></td></tr><tr><td>103</td><td><span>        </span><span style="color:#d08770;">25.</span><span>, </span><span style="color:#65737e;">// Height
+</span></td></tr><tr><td>104</td><td><span>        </span><span style="color:#d08770;">6</span><span>, </span><span style="color:#65737e;">// Num sides
+</span></td></tr><tr><td>105</td><td><span>        </span><span style="color:#d08770;">100 </span><span style="color:#65737e;">// Depth Priority
+</span></td></tr><tr><td>106</td><td><span>    );
+</span></td></tr><tr><td>107</td><td><span>
+</span></td></tr><tr><td>108</td><td><span>    </span><span style="color:#b48ead;">if </span><span>(Point.</span><span style="color:#bf616a;">UsePatrolPointRotation</span><span>) {
+</span></td></tr><tr><td>109</td><td><span>        </span><span style="color:#bf616a;">DrawArc</span><span>(
+</span></td></tr><tr><td>110</td><td><span>            PDI,
+</span></td></tr><tr><td>111</td><td><span>            StartPos,
+</span></td></tr><tr><td>112</td><td><span>            FVector::</span><span style="color:#bf616a;">UnitX</span><span>(),
+</span></td></tr><tr><td>113</td><td><span>            FVector::</span><span style="color:#bf616a;">UnitY</span><span>(),
+</span></td></tr><tr><td>114</td><td><span>            Angle - Point.</span><span style="color:#bf616a;">RotationVariance</span><span>,
+</span></td></tr><tr><td>115</td><td><span>            Angle + Point.</span><span style="color:#bf616a;">RotationVariance</span><span>,
+</span></td></tr><tr><td>116</td><td><span>            Point.</span><span style="color:#bf616a;">PatrolPointRange </span><span>* </span><span style="color:#d08770;">0.8</span><span>,
+</span></td></tr><tr><td>117</td><td><span>            </span><span style="color:#d08770;">4</span><span>,
+</span></td></tr><tr><td>118</td><td><span>            FColorList::Blue,
+</span></td></tr><tr><td>119</td><td><span>            </span><span style="color:#d08770;">100</span><span>);
+</span></td></tr><tr><td>120</td><td><span>    }
+</span></td></tr><tr><td>121</td><td><span>}
+</span></td></tr><tr><td>122</td><td><span>
+</span></td></tr><tr><td>123</td><td><span style="color:#b48ead;">void </span><span>FPatrolVisualizer::</span><span style="color:#8fa1b3;">DrawConnection</span><span>(</span><span style="color:#b48ead;">const</span><span> APatrolPoint* </span><span style="color:#bf616a;">StartPoint</span><span>, </span><span style="color:#b48ead;">const</span><span> APatrolPoint* </span><span style="color:#bf616a;">EndPoint</span><span>, FPrimitiveDrawInterface* </span><span style="color:#bf616a;">PDI</span><span>)
+</span></td></tr><tr><td>124</td><td><span>{
+</span></td></tr><tr><td>125</td><td><span>    </span><span style="color:#b48ead;">const</span><span> FVector Start = StartPoint-&gt;</span><span style="color:#bf616a;">GetActorLocation</span><span>();
+</span></td></tr><tr><td>126</td><td><span>    </span><span style="color:#b48ead;">const</span><span> FVector End = EndPoint-&gt;</span><span style="color:#bf616a;">GetActorLocation</span><span>();
+</span></td></tr><tr><td>127</td><td><span>
+</span></td></tr><tr><td>128</td><td><span>    </span><span style="color:#b48ead;">const</span><span> FRotator Rotation = UKismetMathLibrary::</span><span style="color:#bf616a;">FindLookAtRotation</span><span>(Start, End);
+</span></td></tr><tr><td>129</td><td><span>    </span><span style="color:#b48ead;">const float</span><span> Distance = FVector::</span><span style="color:#bf616a;">Distance</span><span>(Start, End) * </span><span style="color:#d08770;">0.8</span><span style="color:#b48ead;">f</span><span>;
+</span></td></tr><tr><td>130</td><td><span>
+</span></td></tr><tr><td>131</td><td><span>    </span><span style="color:#b48ead;">const</span><span> FTransform Transform = </span><span style="color:#bf616a;">FTransform</span><span>(Rotation, Start + </span><span style="color:#bf616a;">FVector</span><span>(</span><span style="color:#d08770;">0.</span><span>, </span><span style="color:#d08770;">0.</span><span>, </span><span style="color:#d08770;">25.</span><span>), FVector::</span><span style="color:#bf616a;">One</span><span>());
+</span></td></tr><tr><td>132</td><td><span>
+</span></td></tr><tr><td>133</td><td><span>    Transform.</span><span style="color:#bf616a;">ToMatrixNoScale</span><span>();
+</span></td></tr><tr><td>134</td><td><span>
+</span></td></tr><tr><td>135</td><td><span>    </span><span style="color:#bf616a;">DrawDirectionalArrow</span><span>(
+</span></td></tr><tr><td>136</td><td><span>        PDI,
+</span></td></tr><tr><td>137</td><td><span>        Transform.</span><span style="color:#bf616a;">ToMatrixNoScale</span><span>(),
+</span></td></tr><tr><td>138</td><td><span>        FColorList::Orange,
+</span></td></tr><tr><td>139</td><td><span>        Distance,
+</span></td></tr><tr><td>140</td><td><span>        </span><span style="color:#d08770;">5.</span><span style="color:#b48ead;">f</span><span>, </span><span style="color:#65737e;">// Arrow Size
+</span></td></tr><tr><td>141</td><td><span>        </span><span style="color:#d08770;">100</span><span>, </span><span style="color:#65737e;">// Depth Priority
+</span></td></tr><tr><td>142</td><td><span>        </span><span style="color:#d08770;">5.</span><span style="color:#b48ead;">f </span><span style="color:#65737e;">// Thickness
+</span></td></tr><tr><td>143</td><td><span>    );
+</span></td></tr><tr><td>144</td><td><span>}
+</span></td></tr><tr><td>145</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<h4 id="boss-prototype">Boss prototype</h4>
+<p>Written in blueprint to show off ideas for boss ideas. Initial prototype included attacks for missiles,
+mortars, laser spin, ground pound/knockback, and a charge.</p>
+<h4 id="health-components">Health Components</h4>
+<h4 id="second-game-level">Second game level</h4>
+<p>I had worked quite closely alongside some of the CGMA level designers and was interested in the process of
+designing a level. As such, I spent a few evenings creating my own level using existing assets from one of
+the previous levels. When shown off, the level was accepted into the roster, passing into the hands of the
+level designers to be tailored, passing back to me on occasion.</p>
+<p>When initially designing the level, I used a very organized folder structure for all of the walls, floors,
+ceilings, and other props, all grouped again by section of the map. This approach was later used by some of
+the other level designers on their own levels.</p>
+<h2 id="downgrading-unreal-engine">Downgrading Unreal Engine</h2>
+<p>I spent more than a few hours working with University tech support across my last year due to University lab
+systems not compiling Unreal Engine c++ code. It was eventually discovered that in UE 5.3, compilation uses
+and edits some files found in the installation directory on the university c drive which students didn't have
+permission to edit.</p>
+<p>Due to this discovery, we were forced to convert about a months worth of project work from UE 5.3 to 5.2.
+We found that Unrealy engine files aren't backwards compatible, every asset, level and blueprint in the editor
+gone after the change. While I found some ways that we could edit the file in a hex editor to get them to work,
+it would be just as tedious as re-creating everything and could cause incompatibility issues later.</p>
+<p>As such, myself and one of the other CGMA leads spent a couple of days porting all of the assets, levels and
+blueprints to 5.2 so that the programmers could use c++ in the labs.</p>
+<figure>
+  <img src="downgrade.png">
+  <figcaption>Start on work change form 5.3 to 5.2</figcaption>
+</figure>
 <p><br><br></p>
 <h2 id="wip-sorry">WIP (Sorry)</h2>
 
