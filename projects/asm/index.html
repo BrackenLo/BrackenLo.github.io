@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Portfolio - Ben Roberts</title>
+  <link rel="stylesheet" href="https://brackenlo.github.io/style.css?h=1078e384f8f47e7466e6">
+  <script tyoe="text/javascript" src="https://brackenlo.github.io/expandable_block.js" defer></script>
+</head>
+
+<body>
+  <div class="body_column">
+    <header>
+      <h1>Portfolio</h1>
+      <div class="nav_links">
+        <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/">Home</a>
+        <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/projects">All Projects</a>
+        <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags">Tags</a>
+        <a class="button" href = "https://github.com/BrackenLo">Github</a>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container">
+        
+  <hr>
+  <div class="title_block">
+    
+      <img class="title_image" src ="
+  
+    
+  
+
+  
+  
+    
+    
+  
+
+  https:&#x2F;&#x2F;brackenlo.github.io&#x2F;processed_images&#x2F;icon.c5609834312f566c.png
+"/>
+    
+
+    <div class="title_content">
+      <h1 class="title">
+        Assembly Project
+      </h1>
+      
+        <p class="subtitle"><strong>2023</strong></p>
+      
+  
+      <div class="nav_links">
+        
+  
+        
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/asm">asm</a>
+                  
+        
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+              <a class="button" href = "https:&#x2F;&#x2F;brackenlo.github.io/tags/university">University</a>
+                  
+        
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  
+  <div class="content_block">
+    <p>A university assessment piece about creating a <a href="https://en.wikipedia.org/wiki/Hex_editor">hex reader</a>
+using assembly code. This was my first time using assembly code and scored 86/100 marks.</p>
+<p>I've included the code below.</p>
+<figure>
+  <img src = "icon.png">
+  <figcaption>
+    Screenshot of the final product viewing the end of it's code own in memory while higlighting
+    all instances of 'ector'
+  </figcaption>
+</figure>
+<br>
+<h2 id="project-code">Project Code</h2>
+<p>Makefile and pearl script used to build program. Both provided by the university.</p>
+<button type="button" class="collapsible button">Toggle &quot;Makefile</button>
+<pre data-linenos style="background-color:#2b303b;color:#c0c5ce;"><code><table><tbody><tr><td>1</td><td><span># Try to infer the correct TOOLPREFIX if not set
+</span></td></tr><tr><td>2</td><td><span>ifndef TOOLPREFIX
+</span></td></tr><tr><td>3</td><td><span>TOOLPREFIX := $(shell if i386-jos-elf-objdump -i 2&gt;&amp;1 | grep &#39;^elf32-i386$$&#39; &gt;/dev/null 2&gt;&amp;1; \
+</span></td></tr><tr><td>4</td><td><span>	then echo &#39;i386-jos-elf-&#39;; \
+</span></td></tr><tr><td>5</td><td><span>	elif objdump -i 2&gt;&amp;1 | grep &#39;elf32-i386&#39; &gt;/dev/null 2&gt;&amp;1; \
+</span></td></tr><tr><td>6</td><td><span>	then echo &#39;&#39;; \
+</span></td></tr><tr><td>7</td><td><span>	else echo &quot;***&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>8</td><td><span>	echo &quot;*** Error: Couldn&#39;t find an i386-*-elf version of GCC/binutils.&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>9</td><td><span>	echo &quot;*** Is the directory with i386-jos-elf-gcc in your PATH?&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>10</td><td><span>	echo &quot;*** If your i386-*-elf toolchain is installed with a command&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>11</td><td><span>	echo &quot;*** prefix other than &#39;i386-jos-elf-&#39;, set your TOOLPREFIX&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>12</td><td><span>	echo &quot;*** environment variable to that prefix and run &#39;make&#39; again.&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>13</td><td><span>	echo &quot;*** To turn off this error, run &#39;gmake TOOLPREFIX= ...&#39;.&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>14</td><td><span>	echo &quot;***&quot; 1&gt;&amp;2; exit 1; fi)
+</span></td></tr><tr><td>15</td><td><span>endif
+</span></td></tr><tr><td>16</td><td><span>
+</span></td></tr><tr><td>17</td><td><span># If the makefile can&#39;t find QEMU, specify its path here
+</span></td></tr><tr><td>18</td><td><span># QEMU = qemu-system-i386
+</span></td></tr><tr><td>19</td><td><span>
+</span></td></tr><tr><td>20</td><td><span># Try to infer the correct QEMU
+</span></td></tr><tr><td>21</td><td><span>ifndef QEMU
+</span></td></tr><tr><td>22</td><td><span>QEMU = $(shell if which qemu &gt; /dev/null; \
+</span></td></tr><tr><td>23</td><td><span>	then echo qemu; exit; \
+</span></td></tr><tr><td>24</td><td><span>	elif which qemu-system-i386 &gt; /dev/null; \
+</span></td></tr><tr><td>25</td><td><span>	then echo qemu-system-i386; exit; \
+</span></td></tr><tr><td>26</td><td><span>	elif which qemu-system-x86_64 &gt; /dev/null; \
+</span></td></tr><tr><td>27</td><td><span>	then echo qemu-system-x86_64; exit; \
+</span></td></tr><tr><td>28</td><td><span>	else \
+</span></td></tr><tr><td>29</td><td><span>	qemu=/Applications/Q.app/Contents/MacOS/i386-softmmu.app/Contents/MacOS/i386-softmmu; \
+</span></td></tr><tr><td>30</td><td><span>	if test -x $$qemu; then echo $$qemu; exit; fi; fi; \
+</span></td></tr><tr><td>31</td><td><span>	echo &quot;***&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>32</td><td><span>	echo &quot;*** Error: Couldn&#39;t find a working QEMU executable.&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>33</td><td><span>	echo &quot;*** Is the directory containing the qemu binary in your PATH&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>34</td><td><span>	echo &quot;*** or have you tried setting the QEMU variable in Makefile?&quot; 1&gt;&amp;2; \
+</span></td></tr><tr><td>35</td><td><span>	echo &quot;***&quot; 1&gt;&amp;2; exit 1)
+</span></td></tr><tr><td>36</td><td><span>endif
+</span></td></tr><tr><td>37</td><td><span>
+</span></td></tr><tr><td>38</td><td><span>CC = $(TOOLPREFIX)gcc
+</span></td></tr><tr><td>39</td><td><span>AS = $(TOOLPREFIX)gas
+</span></td></tr><tr><td>40</td><td><span>LD = $(TOOLPREFIX)ld
+</span></td></tr><tr><td>41</td><td><span>OBJCOPY = $(TOOLPREFIX)objcopy
+</span></td></tr><tr><td>42</td><td><span>OBJDUMP = $(TOOLPREFIX)objdump
+</span></td></tr><tr><td>43</td><td><span>CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer
+</span></td></tr><tr><td>44</td><td><span>CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null &gt;/dev/null 2&gt;&amp;1 &amp;&amp; echo -fno-stack-protector)
+</span></td></tr><tr><td>45</td><td><span>ASFLAGS = -m32 -gdwarf-2 -Wa,-divide
+</span></td></tr><tr><td>46</td><td><span># FreeBSD ld wants ``elf_i386_fbsd&#39;&#39;
+</span></td></tr><tr><td>47</td><td><span>LDFLAGS += -m $(shell $(LD) -V | grep elf_i386 2&gt;/dev/null | head -n 1)
+</span></td></tr><tr><td>48</td><td><span>
+</span></td></tr><tr><td>49</td><td><span># Disable PIE when possible (for Ubuntu 16.10 toolchain)
+</span></td></tr><tr><td>50</td><td><span>ifneq ($(shell $(CC) -dumpspecs 2&gt;/dev/null | grep -e &#39;[^f]no-pie&#39;),)
+</span></td></tr><tr><td>51</td><td><span>CFLAGS += -fno-pie -no-pie
+</span></td></tr><tr><td>52</td><td><span>endif
+</span></td></tr><tr><td>53</td><td><span>ifneq ($(shell $(CC) -dumpspecs 2&gt;/dev/null | grep -e &#39;[^f]nopie&#39;),)
+</span></td></tr><tr><td>54</td><td><span>CFLAGS += -fno-pie -nopie
+</span></td></tr><tr><td>55</td><td><span>endif
+</span></td></tr><tr><td>56</td><td><span>
+</span></td></tr><tr><td>57</td><td><span>xv6.img: bootblock2 bootblock
+</span></td></tr><tr><td>58</td><td><span>	dd if=/dev/zero of=xv6.img count=10000
+</span></td></tr><tr><td>59</td><td><span>	dd if=bootblock2 of=xv6.img seek=1 conv=notrunc
+</span></td></tr><tr><td>60</td><td><span>	dd if=bootblock of=xv6.img conv=notrunc
+</span></td></tr><tr><td>61</td><td><span>
+</span></td></tr><tr><td>62</td><td><span>bootblock: bootasm.S 
+</span></td></tr><tr><td>63</td><td><span>	$(CC) $(CFLAGS) -fno-pic -nostdinc -I. -c bootasm.S
+</span></td></tr><tr><td>64</td><td><span>	$(LD) $(LDFLAGS) -N -e start -Ttext 0x7C00 -o bootblock.o bootasm.o 
+</span></td></tr><tr><td>65</td><td><span>	$(OBJCOPY) -S -O binary -j .text bootblock.o bootblock
+</span></td></tr><tr><td>66</td><td><span>	./sign.pl bootblock
+</span></td></tr><tr><td>67</td><td><span>
+</span></td></tr><tr><td>68</td><td><span>bootblock2: bootasm2.S
+</span></td></tr><tr><td>69</td><td><span>	$(CC) $(CFLAGS) -fno-pic -nostdinc -I. -c bootasm2.S
+</span></td></tr><tr><td>70</td><td><span>	$(LD) $(LDFLAGS) -N -e start -Ttext 0x8000 -o bootblock2.o bootasm2.o 
+</span></td></tr><tr><td>71</td><td><span>	$(OBJCOPY) -S -O binary -j .text bootblock2.o bootblock2
+</span></td></tr><tr><td>72</td><td><span>
+</span></td></tr><tr><td>73</td><td><span>
+</span></td></tr><tr><td>74</td><td><span>.PRECIOUS: %.o
+</span></td></tr><tr><td>75</td><td><span>
+</span></td></tr><tr><td>76</td><td><span>clean: 
+</span></td></tr><tr><td>77</td><td><span>	rm -f *.tex *.dvi *.idx *.aux *.log *.ind *.ilg \
+</span></td></tr><tr><td>78</td><td><span>	*.o *.d *.asm *.sym vectors.S bootblock* entryother \
+</span></td></tr><tr><td>79</td><td><span>	initcode initcode.out kernel xv6.img fs.img kernelmemfs \
+</span></td></tr><tr><td>80</td><td><span>	xv6memfs.img mkfs \
+</span></td></tr><tr><td>81</td><td><span>	syscall.h syscalltable.h usys.S 
+</span></td></tr><tr><td>82</td><td><span>
+</span></td></tr><tr><td>83</td><td><span># run in emulators
+</span></td></tr><tr><td>84</td><td><span>
+</span></td></tr><tr><td>85</td><td><span># try to generate a unique GDB port
+</span></td></tr><tr><td>86</td><td><span>GDBPORT = $(shell expr `id -u` % 5000 + 25000)
+</span></td></tr><tr><td>87</td><td><span># QEMU&#39;s gdb stub command line changed in 0.11
+</span></td></tr><tr><td>88</td><td><span>QEMUGDB = $(shell if $(QEMU) -help | grep -q &#39;^-gdb&#39;; \
+</span></td></tr><tr><td>89</td><td><span>	then echo &quot;-gdb tcp::$(GDBPORT)&quot;; \
+</span></td></tr><tr><td>90</td><td><span>	else echo &quot;-s -p $(GDBPORT)&quot;; fi)
+</span></td></tr><tr><td>91</td><td><span>ifndef CPUS
+</span></td></tr><tr><td>92</td><td><span>CPUS := 1
+</span></td></tr><tr><td>93</td><td><span>endif
+</span></td></tr><tr><td>94</td><td><span>QEMUOPTS = -drive file=xv6.img,index=0,media=disk,format=raw -smp $(CPUS) -m 512 $(QEMUEXTRA)
+</span></td></tr><tr><td>95</td><td><span>
+</span></td></tr><tr><td>96</td><td><span>qemu: xv6.img
+</span></td></tr><tr><td>97</td><td><span>	$(QEMU) -vga std -serial mon:stdio $(QEMUOPTS)
+</span></td></tr><tr><td>98</td><td><span>
+</span></td></tr><tr><td>99</td><td><span>qemu-gdb: xv6.img 
+</span></td></tr><tr><td>100</td><td><span>	@echo &quot;*** Now run &#39;gdb&#39;.&quot; 1&gt;&amp;2
+</span></td></tr><tr><td>101</td><td><span>	$(QEMU) -vga std -serial mon:stdio $(QEMUOPTS) -S -gdb tcp::1234
+</span></td></tr><tr><td>102</td><td><span>
+</span></td></tr><tr><td>103</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<button type="button" class="collapsible button">Toggle &quot;sign.pl</button>
+<pre data-linenos style="background-color:#2b303b;color:#c0c5ce;"><code><table><tbody><tr><td>1</td><td><span>#!/usr/bin/perl
+</span></td></tr><tr><td>2</td><td><span>
+</span></td></tr><tr><td>3</td><td><span>open(SIG, $ARGV[0]) || die &quot;open $ARGV[0]: $!&quot;;
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span>$n = sysread(SIG, $buf, 1000);
+</span></td></tr><tr><td>6</td><td><span>
+</span></td></tr><tr><td>7</td><td><span>if($n &gt; 510){
+</span></td></tr><tr><td>8</td><td><span>  print STDERR &quot;boot block too large: $n bytes (max 510)\n&quot;;
+</span></td></tr><tr><td>9</td><td><span>  exit 1;
+</span></td></tr><tr><td>10</td><td><span>}
+</span></td></tr><tr><td>11</td><td><span>
+</span></td></tr><tr><td>12</td><td><span>print STDERR &quot;boot block is $n bytes (max 510)\n&quot;;
+</span></td></tr><tr><td>13</td><td><span>
+</span></td></tr><tr><td>14</td><td><span>$buf .= &quot;\0&quot; x (510-$n);
+</span></td></tr><tr><td>15</td><td><span>$buf .= &quot;\x55\xAA&quot;;
+</span></td></tr><tr><td>16</td><td><span>
+</span></td></tr><tr><td>17</td><td><span>open(SIG, &quot;&gt;$ARGV[0]&quot;) || die &quot;open &gt;$ARGV[0]: $!&quot;;
+</span></td></tr><tr><td>18</td><td><span>print SIG $buf;
+</span></td></tr><tr><td>19</td><td><span>close SIG;
+</span></td></tr><tr><td>20</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<p>First bootloader stage. Some of this file was provided as a starting point/template however most of the
+implemented functionality (read from disk, cons_write, checking disk) and formatting is mine.</p>
+<button type="button" class="collapsible button">Toggle &quot;bootasm.S</button>
+<pre data-linenos data-lang="asm" style="background-color:#2b303b;color:#c0c5ce;" class="language-asm "><code class="language-asm" data-lang="asm"><table><tbody><tr><td>1</td><td><span style="color:#8fa1b3;"># When the PC starts</span><span>, </span><span style="color:#8fa1b3;">the processor is essentially emulating an </span><span style="color:#d08770;">8086 </span><span style="color:#8fa1b3;">processor</span><span>, </span><span style="color:#8fa1b3;">i.e. 
+</span></td></tr><tr><td>2</td><td><span style="color:#8fa1b3;"># a </span><span style="color:#d08770;">16</span><span>-</span><span style="color:#8fa1b3;">bit processor.  So our initial boot loader code is </span><span style="color:#d08770;">16</span><span>-</span><span style="color:#8fa1b3;">bit code th</span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">will 
+</span></td></tr><tr><td>3</td><td><span style="color:#8fa1b3;"># eventually switch the processor </span><span style="color:#b48ead;">into </span><span style="color:#d08770;">32</span><span>-</span><span style="color:#8fa1b3;">bit mode.
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#8fa1b3;"># This code is linked to assume a starting address of </span><span style="color:#d08770;">0x7C00 </span><span style="color:#8fa1b3;">which is where the BIOS
+</span></td></tr><tr><td>6</td><td><span style="color:#8fa1b3;"># will load a boot segment.
+</span></td></tr><tr><td>7</td><td><span>
+</span></td></tr><tr><td>8</td><td><span style="color:#8fa1b3;">.code16                         # Assemble for </span><span style="color:#d08770;">16</span><span>-</span><span style="color:#8fa1b3;">bit mode
+</span></td></tr><tr><td>9</td><td><span style="color:#8fa1b3;">.globl start
+</span></td></tr><tr><td>10</td><td><span style="color:#8fa1b3;">start:
+</span></td></tr><tr><td>11</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">real_start
+</span></td></tr><tr><td>12</td><td><span>
+</span></td></tr><tr><td>13</td><td><span style="color:#8fa1b3;"># Write to the console using BIOS.
+</span></td></tr><tr><td>14</td><td><span style="color:#8fa1b3;"># 
+</span></td></tr><tr><td>15</td><td><span style="color:#8fa1b3;"># Input: </span><span style="color:#bf616a;">SI </span><span style="color:#8fa1b3;">contains the address of the null</span><span>-</span><span style="color:#8fa1b3;">terminated string to be displayed
+</span></td></tr><tr><td>16</td><td><span>
+</span></td></tr><tr><td>17</td><td><span style="color:#8fa1b3;">#</span><span>-------------------------------------------------------------
+</span></td></tr><tr><td>18</td><td><span>
+</span></td></tr><tr><td>19</td><td><span style="color:#8fa1b3;">cons_write:
+</span></td></tr><tr><td>20</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0e</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah           </span><span style="color:#8fa1b3;"># </span><span style="color:#d08770;">0x0e </span><span style="color:#8fa1b3;">is the </span><span style="color:#b48ead;">INT </span><span style="color:#d08770;">10h </span><span style="color:#8fa1b3;">BIOS </span><span style="color:#b48ead;">call </span><span style="color:#8fa1b3;">to output the value contained </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">AL </span><span style="color:#8fa1b3;">to screen
+</span></td></tr><tr><td>21</td><td><span>
+</span></td></tr><tr><td>22</td><td><span style="color:#8fa1b3;">cons_write_rpt:
+</span></td></tr><tr><td>23</td><td><span style="color:#8fa1b3;">    movb    (%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al          </span><span style="color:#8fa1b3;"># Load the </span><span style="color:#96b5b4;">byte at </span><span style="color:#8fa1b3;">the location contained </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">the </span><span style="color:#bf616a;">SI </span><span style="color:#8fa1b3;">register </span><span style="color:#b48ead;">into </span><span style="color:#bf616a;">AL   
+</span></td></tr><tr><td>24</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                 </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Add </span><span style="color:#d08770;">1 </span><span style="color:#8fa1b3;">to the value </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">SI
+</span></td></tr><tr><td>25</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al             </span><span style="color:#8fa1b3;"># Compare the value </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">AL </span><span style="color:#8fa1b3;">with </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>26</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jz      </span><span style="color:#8fa1b3;">cons_write_done     # If it is zero</span><span>, </span><span style="color:#8fa1b3;">then we are done
+</span></td></tr><tr><td>27</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10               </span><span style="color:#8fa1b3;"># Output the character </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">AL </span><span style="color:#8fa1b3;">to the screen
+</span></td></tr><tr><td>28</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">cons_write_rpt      # </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">continue
+</span></td></tr><tr><td>29</td><td><span>
+</span></td></tr><tr><td>30</td><td><span style="color:#8fa1b3;">cons_write_done:                # Something th</span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">is called will never return 
+</span></td></tr><tr><td>31</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret                         </span><span style="color:#8fa1b3;"># until a </span><span style="color:#a3be8c;">&#39;ret&#39; </span><span style="color:#8fa1b3;">instruction is encountered.  Labels </span><span style="color:#96b5b4;">do 
+</span></td></tr><tr><td>32</td><td><span style="color:#8fa1b3;">                                # </span><span style="color:#b48ead;">not </span><span style="color:#8fa1b3;">give a program any structure.  They just give a 
+</span></td></tr><tr><td>33</td><td><span style="color:#8fa1b3;">                                # memory location a name th</span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">we can use </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">our code. 
+</span></td></tr><tr><td>34</td><td><span>
+</span></td></tr><tr><td>35</td><td><span style="color:#8fa1b3;">cons_write_crlf:
+</span></td></tr><tr><td>36</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0e</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah          </span><span style="color:#8fa1b3;"># Setup output char code to %</span><span style="color:#bf616a;">ah </span><span style="color:#8fa1b3;">before </span><span style="color:#b48ead;">loop </span><span style="color:#8fa1b3;">starts. Is used with </span><span style="color:#b48ead;">int </span><span style="color:#d08770;">0x10 </span><span style="color:#b48ead;">call</span><span style="color:#8fa1b3;">.
+</span></td></tr><tr><td>37</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0d</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>38</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10
+</span></td></tr><tr><td>39</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0a</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al          </span><span style="color:#8fa1b3;"># Output LF
+</span></td></tr><tr><td>40</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10
+</span></td></tr><tr><td>41</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>42</td><td><span>
+</span></td></tr><tr><td>43</td><td><span style="color:#8fa1b3;">cons_writeline:
+</span></td></tr><tr><td>44</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write
+</span></td></tr><tr><td>45</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf
+</span></td></tr><tr><td>46</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>47</td><td><span>
+</span></td></tr><tr><td>48</td><td><span style="color:#8fa1b3;">#</span><span>-------------------------------------------------------------
+</span></td></tr><tr><td>49</td><td><span>
+</span></td></tr><tr><td>50</td><td><span style="color:#8fa1b3;">real_start:
+</span></td></tr><tr><td>51</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cli                              </span><span style="color:#8fa1b3;"># BIOS enabled interrupts</span><span style="color:#65737e;">; disable
+</span></td></tr><tr><td>52</td><td><span>
+</span></td></tr><tr><td>53</td><td><span style="color:#8fa1b3;">    # Zero data segment registers </span><span style="color:#bf616a;">DS</span><span>, </span><span style="color:#bf616a;">ES</span><span>, </span><span style="color:#b48ead;">and </span><span style="color:#bf616a;">SS</span><span style="color:#8fa1b3;">.
+</span></td></tr><tr><td>54</td><td><span style="color:#8fa1b3;">    xorw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                    </span><span style="color:#8fa1b3;"># Set %</span><span style="color:#bf616a;">ax </span><span style="color:#8fa1b3;">to zero
+</span></td></tr><tr><td>55</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ds                    </span><span style="color:#8fa1b3;"># </span><span>-</span><span style="color:#8fa1b3;">&gt; Data Segment
+</span></td></tr><tr><td>56</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">es                    </span><span style="color:#8fa1b3;"># </span><span>-</span><span style="color:#8fa1b3;">&gt; Extra Segment
+</span></td></tr><tr><td>57</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ss                    </span><span style="color:#8fa1b3;"># </span><span>-</span><span style="color:#8fa1b3;">&gt; Stack Segment
+</span></td></tr><tr><td>58</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp                     </span><span style="color:#8fa1b3;"># Set the stack to the top of the segment
+</span></td></tr><tr><td>59</td><td><span>
+</span></td></tr><tr><td>60</td><td><span style="color:#8fa1b3;">    movb    %</span><span style="color:#bf616a;">dl</span><span>, </span><span style="color:#8fa1b3;">(boot_device)          # Boot device number is passed </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">DL </span><span style="color:#8fa1b3;">from BIOS. Save it here since </span><span style="color:#bf616a;">DL </span><span style="color:#8fa1b3;">might get trashed
+</span></td></tr><tr><td>61</td><td><span>
+</span></td></tr><tr><td>62</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_boot_message</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si      </span><span style="color:#8fa1b3;"># Display our boot message
+</span></td></tr><tr><td>63</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline
+</span></td></tr><tr><td>64</td><td><span>
+</span></td></tr><tr><td>65</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">disk_address_packet</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si   </span><span style="color:#8fa1b3;"># Move address of the disk address packet </span><span style="color:#b48ead;">into </span><span style="color:#bf616a;">SI
+</span></td></tr><tr><td>66</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">7</span><span>, </span><span style="color:#d08770;">2</span><span style="color:#8fa1b3;">(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)                  # Set the number of blocks to read to be </span><span style="color:#d08770;">7
+</span></td></tr><tr><td>67</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x8000</span><span>, </span><span style="color:#d08770;">4</span><span style="color:#8fa1b3;">(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)             # Set the adddress to read </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">to be </span><span style="color:#d08770;">0x8000
+</span></td></tr><tr><td>68</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">8</span><span style="color:#8fa1b3;">(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)                  # Set the first block to read to be block </span><span style="color:#d08770;">1
+</span></td></tr><tr><td>69</td><td><span style="color:#8fa1b3;">    
+</span></td></tr><tr><td>70</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x42</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah                  </span><span style="color:#8fa1b3;"># </span><span style="color:#d08770;">0x42 </span><span style="color:#8fa1b3;">is the </span><span style="color:#b48ead;">int </span><span style="color:#d08770;">13h </span><span style="color:#8fa1b3;">BIOS function to read the disk using LBA addressing
+</span></td></tr><tr><td>71</td><td><span style="color:#8fa1b3;">	movb	(boot_device)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">dl          </span><span style="color:#8fa1b3;"># Retrieve the ID of our boot device </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">put </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">DL	
+</span></td></tr><tr><td>72</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x13                       </span><span style="color:#8fa1b3;"># Read the disk
+</span></td></tr><tr><td>73</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jc      </span><span style="color:#8fa1b3;">read_failed	                # The carry flag will be set if an error occured
+</span></td></tr><tr><td>74</td><td><span>
+</span></td></tr><tr><td>75</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x00</span><span>, </span><span style="color:#8fa1b3;">(</span><span style="color:#d08770;">0x8000</span><span style="color:#8fa1b3;">)             # Check if loaded data doesn&#39;t equal </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>76</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jz      </span><span style="color:#8fa1b3;">read_empty                  # Output error message if so
+</span></td></tr><tr><td>77</td><td><span>
+</span></td></tr><tr><td>78</td><td><span style="color:#8fa1b3;">	movb	(boot_device)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">dl	        </span><span style="color:#8fa1b3;"># Pass boot device ID to second stage
+</span></td></tr><tr><td>79</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x8000</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                </span><span style="color:#8fa1b3;"># Jump to stage </span><span style="color:#d08770;">2
+</span></td></tr><tr><td>80</td><td><span>
+</span></td></tr><tr><td>81</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span>*</span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax
+</span></td></tr><tr><td>82</td><td><span>
+</span></td></tr><tr><td>83</td><td><span style="color:#8fa1b3;">#</span><span>-------------------------------------------------------------
+</span></td></tr><tr><td>84</td><td><span>
+</span></td></tr><tr><td>85</td><td><span style="color:#8fa1b3;">read_failed:	                      # Display error messages
+</span></td></tr><tr><td>86</td><td><span style="color:#8fa1b3;">	movw 	</span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_read_failed</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>87</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline
+</span></td></tr><tr><td>88</td><td><span style="color:#8fa1b3;">	
+</span></td></tr><tr><td>89</td><td><span style="color:#8fa1b3;">	</span><span style="color:#b48ead;">mov 	</span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_cannot_continue</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si	
+</span></td></tr><tr><td>90</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline
+</span></td></tr><tr><td>91</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">endless_loop
+</span></td></tr><tr><td>92</td><td><span>
+</span></td></tr><tr><td>93</td><td><span style="color:#8fa1b3;">read_empty:
+</span></td></tr><tr><td>94</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_read_empty</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>95</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline
+</span></td></tr><tr><td>96</td><td><span style="color:#8fa1b3;">	
+</span></td></tr><tr><td>97</td><td><span style="color:#8fa1b3;">endless_loop:                         # </span><span style="color:#b48ead;">Loop </span><span style="color:#8fa1b3;">forever more
+</span></td></tr><tr><td>98</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">endless_loop    
+</span></td></tr><tr><td>99</td><td><span>
+</span></td></tr><tr><td>100</td><td><span style="color:#8fa1b3;">#</span><span>-------------------------------------------------------------
+</span></td></tr><tr><td>101</td><td><span>
+</span></td></tr><tr><td>102</td><td><span style="color:#8fa1b3;"># Program data
+</span></td></tr><tr><td>103</td><td><span>
+</span></td></tr><tr><td>104</td><td><span style="color:#8fa1b3;">boot_device:
+</span></td></tr><tr><td>105</td><td><span style="color:#8fa1b3;">    .</span><span style="color:#96b5b4;">byte   </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>106</td><td><span>
+</span></td></tr><tr><td>107</td><td><span style="color:#8fa1b3;"># Form</span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">of disk address packet
+</span></td></tr><tr><td>108</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>109</td><td><span style="color:#8fa1b3;"># Offset	Size	Description
+</span></td></tr><tr><td>110</td><td><span style="color:#8fa1b3;">#  </span><span style="color:#d08770;">0          1     </span><span style="color:#8fa1b3;">size of packet (</span><span style="color:#d08770;">16 </span><span style="color:#8fa1b3;">bytes)
+</span></td></tr><tr><td>111</td><td><span style="color:#8fa1b3;">#  </span><span style="color:#d08770;">1          1     </span><span style="color:#8fa1b3;">always </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>112</td><td><span style="color:#8fa1b3;">#  </span><span style="color:#d08770;">2          2     </span><span style="color:#8fa1b3;">number of sectors to transfer (max </span><span style="color:#d08770;">127 </span><span style="color:#8fa1b3;">on some BIOSes)
+</span></td></tr><tr><td>113</td><td><span style="color:#8fa1b3;">#  </span><span style="color:#d08770;">4          4     </span><span style="color:#8fa1b3;">transfer buffer (first </span><span style="color:#d08770;">2 </span><span style="color:#8fa1b3;">bytes is </span><span style="color:#d08770;">16</span><span>-</span><span style="color:#8fa1b3;">bit offset</span><span>, </span><span style="color:#8fa1b3;">next </span><span style="color:#d08770;">2 </span><span style="color:#8fa1b3;">bytes is </span><span style="color:#d08770;">16 </span><span style="color:#8fa1b3;">bit segment)
+</span></td></tr><tr><td>114</td><td><span style="color:#8fa1b3;">#  </span><span style="color:#d08770;">8          4     </span><span style="color:#8fa1b3;">lower </span><span style="color:#d08770;">32</span><span>-</span><span style="color:#8fa1b3;">bits of </span><span style="color:#d08770;">48</span><span>-</span><span style="color:#8fa1b3;">bit starting LBA (starting from </span><span style="color:#d08770;">0</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>115</td><td><span style="color:#8fa1b3;">#  </span><span style="color:#d08770;">12         4     </span><span style="color:#8fa1b3;">upper </span><span style="color:#d08770;">16</span><span>-</span><span style="color:#8fa1b3;">bits of </span><span style="color:#d08770;">48</span><span>-</span><span style="color:#8fa1b3;">bit starting LBA (will always be </span><span style="color:#d08770;">0 </span><span style="color:#8fa1b3;">for us)
+</span></td></tr><tr><td>116</td><td><span>
+</span></td></tr><tr><td>117</td><td><span style="color:#8fa1b3;">disk_address_packet:
+</span></td></tr><tr><td>118</td><td><span style="color:#8fa1b3;">    .</span><span style="color:#96b5b4;">byte   </span><span style="color:#d08770;">0x10
+</span></td></tr><tr><td>119</td><td><span style="color:#8fa1b3;">    .</span><span style="color:#96b5b4;">byte   </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>120</td><td><span style="color:#8fa1b3;">    .</span><span style="color:#96b5b4;">word   </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>121</td><td><span style="color:#8fa1b3;">    .long   </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>122</td><td><span style="color:#8fa1b3;">    .long   </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>123</td><td><span style="color:#8fa1b3;">    .long   </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>124</td><td><span>
+</span></td></tr><tr><td>125</td><td><span style="color:#8fa1b3;">#</span><span>-------------------------------------------------------------
+</span></td></tr><tr><td>126</td><td><span>
+</span></td></tr><tr><td>127</td><td><span style="color:#8fa1b3;">msg_boot_message:       .string </span><span style="color:#a3be8c;">&quot;Boot Loader V1.0&quot;             
+</span></td></tr><tr><td>128</td><td><span style="color:#8fa1b3;">msg_read_failed:        .string </span><span style="color:#a3be8c;">&quot;Unable to read stage 2 of the boot process&quot;
+</span></td></tr><tr><td>129</td><td><span style="color:#8fa1b3;">msg_cannot_continue:    .string </span><span style="color:#a3be8c;">&quot;Cannot continue boot process&quot;
+</span></td></tr><tr><td>130</td><td><span style="color:#8fa1b3;">msg_read_empty:         .string </span><span style="color:#a3be8c;">&quot;Read stage 2 is empty&quot;
+</span></td></tr><tr><td>131</td><td><span>
+</span></td></tr><tr><td>132</td><td><span style="color:#8fa1b3;">#</span><span>-------------------------------------------------------------
+</span></td></tr><tr><td>133</td><td><span>
+</span></td></tr></tbody></table></code></pre>
+<p>Main bulk of the code. This is all my own work.</p>
+<button type="button" class="collapsible button">Toggle &quot;bootasm2.S</button>
+<pre data-linenos data-lang="asm" style="background-color:#2b303b;color:#c0c5ce;" class="language-asm "><code class="language-asm" data-lang="asm"><table><tbody><tr><td>1</td><td><span style="color:#8fa1b3;">.code16
+</span></td></tr><tr><td>2</td><td><span style="color:#8fa1b3;">start:
+</span></td></tr><tr><td>3</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">main
+</span></td></tr><tr><td>4</td><td><span>
+</span></td></tr><tr><td>5</td><td><span style="color:#8fa1b3;">#===================================================================
+</span></td></tr><tr><td>6</td><td><span style="color:#8fa1b3;">#Main Console display functions
+</span></td></tr><tr><td>7</td><td><span>
+</span></td></tr><tr><td>8</td><td><span style="color:#8fa1b3;">cons_write:
+</span></td></tr><tr><td>9</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0e</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah           </span><span style="color:#8fa1b3;"># </span><span style="color:#d08770;">0x0e </span><span style="color:#8fa1b3;">is the </span><span style="color:#b48ead;">INT </span><span style="color:#d08770;">10h </span><span style="color:#8fa1b3;">BIOS </span><span style="color:#b48ead;">call </span><span style="color:#8fa1b3;">to output the value contained </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">AL </span><span style="color:#8fa1b3;">to screen
+</span></td></tr><tr><td>10</td><td><span style="color:#8fa1b3;">    movb    foreground_color</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bl
+</span></td></tr><tr><td>11</td><td><span>
+</span></td></tr><tr><td>12</td><td><span style="color:#8fa1b3;">cons_write_rpt:
+</span></td></tr><tr><td>13</td><td><span style="color:#8fa1b3;">    movb    (%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al          </span><span style="color:#8fa1b3;"># Load the </span><span style="color:#96b5b4;">byte at </span><span style="color:#8fa1b3;">the location contained </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">the </span><span style="color:#bf616a;">SI </span><span style="color:#8fa1b3;">register </span><span style="color:#b48ead;">into </span><span style="color:#bf616a;">AL   
+</span></td></tr><tr><td>14</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                 </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Add </span><span style="color:#d08770;">1 </span><span style="color:#8fa1b3;">to the value </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">SI
+</span></td></tr><tr><td>15</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al             </span><span style="color:#8fa1b3;"># Compare the value </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">AL </span><span style="color:#8fa1b3;">with </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>16</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jz      </span><span style="color:#8fa1b3;">cons_write_done     # If it is zero</span><span>, </span><span style="color:#8fa1b3;">then we are done
+</span></td></tr><tr><td>17</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10               </span><span style="color:#8fa1b3;"># Output the character </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">AL </span><span style="color:#8fa1b3;">to the screen
+</span></td></tr><tr><td>18</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">cons_write_rpt      # </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">continue
+</span></td></tr><tr><td>19</td><td><span>
+</span></td></tr><tr><td>20</td><td><span style="color:#8fa1b3;">cons_write_done:
+</span></td></tr><tr><td>21</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret          
+</span></td></tr><tr><td>22</td><td><span>
+</span></td></tr><tr><td>23</td><td><span style="color:#8fa1b3;">#</span><span>--------------------------------------------      
+</span></td></tr><tr><td>24</td><td><span>
+</span></td></tr><tr><td>25</td><td><span style="color:#8fa1b3;">cons_write_crlf:
+</span></td></tr><tr><td>26</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0e</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah          </span><span style="color:#8fa1b3;"># Setup output char code to %</span><span style="color:#bf616a;">ah </span><span style="color:#8fa1b3;">before </span><span style="color:#b48ead;">loop </span><span style="color:#8fa1b3;">starts. Is used with </span><span style="color:#b48ead;">int </span><span style="color:#d08770;">0x10 </span><span style="color:#b48ead;">call</span><span style="color:#8fa1b3;">.
+</span></td></tr><tr><td>27</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0d</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>28</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10
+</span></td></tr><tr><td>29</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0a</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al          </span><span style="color:#8fa1b3;"># Output LF
+</span></td></tr><tr><td>30</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10
+</span></td></tr><tr><td>31</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>32</td><td><span>
+</span></td></tr><tr><td>33</td><td><span style="color:#8fa1b3;"># Write to the screen </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">create new line
+</span></td></tr><tr><td>34</td><td><span style="color:#8fa1b3;">cons_writeline:
+</span></td></tr><tr><td>35</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write
+</span></td></tr><tr><td>36</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf
+</span></td></tr><tr><td>37</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>38</td><td><span>
+</span></td></tr><tr><td>39</td><td><span style="color:#8fa1b3;">#</span><span>--------------------------------------------
+</span></td></tr><tr><td>40</td><td><span>
+</span></td></tr><tr><td>41</td><td><span style="color:#8fa1b3;">cons_write_space:
+</span></td></tr><tr><td>42</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0e</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah
+</span></td></tr><tr><td>43</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x20</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>44</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10
+</span></td></tr><tr><td>45</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>46</td><td><span>
+</span></td></tr><tr><td>47</td><td><span style="color:#8fa1b3;">cons_write_debug:
+</span></td></tr><tr><td>48</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0e</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah
+</span></td></tr><tr><td>49</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">219</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>50</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10
+</span></td></tr><tr><td>51</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>52</td><td><span>
+</span></td></tr><tr><td>53</td><td><span style="color:#8fa1b3;"># Takes char parameter </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>54</td><td><span style="color:#8fa1b3;">cons_write_char:
+</span></td></tr><tr><td>55</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0e</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah           </span><span style="color:#8fa1b3;"># </span><span style="color:#d08770;">0x0e </span><span style="color:#8fa1b3;">is the </span><span style="color:#b48ead;">INT </span><span style="color:#d08770;">10h </span><span style="color:#8fa1b3;">BIOS </span><span style="color:#b48ead;">call </span><span style="color:#8fa1b3;">to output the value contained </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">AL </span><span style="color:#8fa1b3;">to screen
+</span></td></tr><tr><td>56</td><td><span style="color:#8fa1b3;">    movb    foreground_color</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bl
+</span></td></tr><tr><td>57</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10
+</span></td></tr><tr><td>58</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>59</td><td><span>
+</span></td></tr><tr><td>60</td><td><span style="color:#8fa1b3;">#</span><span>--------------------------------------------
+</span></td></tr><tr><td>61</td><td><span>
+</span></td></tr><tr><td>62</td><td><span style="color:#8fa1b3;"># Output the value </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">BX </span><span style="color:#8fa1b3;">as an unsigned integer
+</span></td></tr><tr><td>63</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>64</td><td><span style="color:#8fa1b3;"># Input: </span><span style="color:#bf616a;">BX </span><span style="color:#8fa1b3;">= Value to output
+</span></td></tr><tr><td>65</td><td><span>
+</span></td></tr><tr><td>66</td><td><span style="color:#8fa1b3;">cons_write_int:
+</span></td></tr><tr><td>67</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx
+</span></td></tr><tr><td>68</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>69</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>70</td><td><span>
+</span></td></tr><tr><td>71</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">IntBuffer </span><span>+ </span><span style="color:#d08770;">4</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>72</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">bx</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax
+</span></td></tr><tr><td>73</td><td><span style="color:#8fa1b3;">	
+</span></td></tr><tr><td>74</td><td><span style="color:#8fa1b3;">cwi_getdigit:
+</span></td></tr><tr><td>75</td><td><span style="color:#8fa1b3;">	</span><span style="color:#b48ead;">xor		</span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">dx</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">dx
+</span></td></tr><tr><td>76</td><td><span style="color:#8fa1b3;">	movw	</span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">10</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>77</td><td><span style="color:#8fa1b3;">	</span><span style="color:#b48ead;">div		</span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>78</td><td><span style="color:#8fa1b3;">	addb	</span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">48</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">dl
+</span></td></tr><tr><td>79</td><td><span style="color:#8fa1b3;">	movb	%</span><span style="color:#bf616a;">dl</span><span>, </span><span style="color:#8fa1b3;">(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>80</td><td><span style="color:#8fa1b3;">	</span><span style="color:#b48ead;">dec		</span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>81</td><td><span style="color:#8fa1b3;">	</span><span style="color:#b48ead;">cmp		</span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax
+</span></td></tr><tr><td>82</td><td><span style="color:#8fa1b3;">	</span><span style="color:#b48ead;">jne		</span><span style="color:#8fa1b3;">cwi_getdigit
+</span></td></tr><tr><td>83</td><td><span style="color:#8fa1b3;">	</span><span style="color:#b48ead;">inc		</span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>84</td><td><span style="color:#8fa1b3;">	</span><span style="color:#b48ead;">call	</span><span style="color:#8fa1b3;">cons_write
+</span></td></tr><tr><td>85</td><td><span>
+</span></td></tr><tr><td>86</td><td><span style="color:#8fa1b3;">cwi_end:
+</span></td></tr><tr><td>87</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>88</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>89</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx
+</span></td></tr><tr><td>90</td><td><span style="color:#8fa1b3;">	</span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>91</td><td><span style="color:#8fa1b3;">	
+</span></td></tr><tr><td>92</td><td><span style="color:#8fa1b3;">IntBuffer:   .string </span><span style="color:#a3be8c;">&quot;     &quot;
+</span></td></tr><tr><td>93</td><td><span>
+</span></td></tr><tr><td>94</td><td><span style="color:#8fa1b3;">#===================================================================
+</span></td></tr><tr><td>95</td><td><span style="color:#8fa1b3;">#Functions for outputting a line of hex to the screen
+</span></td></tr><tr><td>96</td><td><span>
+</span></td></tr><tr><td>97</td><td><span style="color:#8fa1b3;"># Display </span><span style="color:#d08770;">16 </span><span style="color:#8fa1b3;">bytes of data as hexidecimal
+</span></td></tr><tr><td>98</td><td><span style="color:#8fa1b3;"># Starts </span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">the current address </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>99</td><td><span>
+</span></td></tr><tr><td>100</td><td><span style="color:#8fa1b3;">cons_write_hex_line:
+</span></td></tr><tr><td>101</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx             </span><span style="color:#8fa1b3;"># Store the registers we&#39;ll use
+</span></td></tr><tr><td>102</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx             
+</span></td></tr><tr><td>103</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>104</td><td><span>
+</span></td></tr><tr><td>105</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">8</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx         </span><span style="color:#8fa1b3;"># Prep </span><span style="color:#b48ead;">loop </span><span style="color:#8fa1b3;">over row of data
+</span></td></tr><tr><td>106</td><td><span>
+</span></td></tr><tr><td>107</td><td><span style="color:#8fa1b3;">cons_write_hex_line_loop:
+</span></td></tr><tr><td>108</td><td><span style="color:#8fa1b3;">    movw    (%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">dx
+</span></td></tr><tr><td>109</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">rol     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">8</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">dx                     </span><span style="color:#8fa1b3;"># Swap bytes for endian
+</span></td></tr><tr><td>110</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_hex
+</span></td></tr><tr><td>111</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_space            # </span><span style="color:#b48ead;">Add </span><span style="color:#8fa1b3;">space between hex values
+</span></td></tr><tr><td>112</td><td><span>
+</span></td></tr><tr><td>113</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">add     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">2</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                     </span><span style="color:#8fa1b3;"># Displaying </span><span style="color:#d08770;">2 </span><span style="color:#8fa1b3;">bytes </span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">a time so </span><span style="color:#b48ead;">add </span><span style="color:#d08770;">2 </span><span style="color:#8fa1b3;">to </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>114</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">loop    </span><span style="color:#8fa1b3;">cons_write_hex_line_loop    
+</span></td></tr><tr><td>115</td><td><span>
+</span></td></tr><tr><td>116</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>117</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>118</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx
+</span></td></tr><tr><td>119</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>120</td><td><span>
+</span></td></tr><tr><td>121</td><td><span style="color:#8fa1b3;">#</span><span>--------------------------------------------
+</span></td></tr><tr><td>122</td><td><span>
+</span></td></tr><tr><td>123</td><td><span style="color:#8fa1b3;">HexChars:	.ascii </span><span style="color:#a3be8c;">&quot;0123456789abcdef&quot;
+</span></td></tr><tr><td>124</td><td><span>
+</span></td></tr><tr><td>125</td><td><span style="color:#8fa1b3;"># Displays character </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">dx </span><span style="color:#8fa1b3;">as hex
+</span></td></tr><tr><td>126</td><td><span style="color:#8fa1b3;"># Changed from </span><span style="color:#bf616a;">bx </span><span>-</span><span style="color:#8fa1b3;">&gt; </span><span style="color:#bf616a;">dx </span><span style="color:#8fa1b3;">as </span><span style="color:#bf616a;">bx </span><span style="color:#8fa1b3;">is needed to dispay character color
+</span></td></tr><tr><td>127</td><td><span>
+</span></td></tr><tr><td>128</td><td><span style="color:#8fa1b3;">cons_write_hex:
+</span></td></tr><tr><td>129</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx                     </span><span style="color:#8fa1b3;"># Don&#39;t trash </span><span style="color:#bf616a;">cx </span><span style="color:#b48ead;">or </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>130</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>131</td><td><span>
+</span></td></tr><tr><td>132</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">4</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx                 </span><span style="color:#8fa1b3;"># Prep </span><span style="color:#b48ead;">loop
+</span></td></tr><tr><td>133</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0e</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah              </span><span style="color:#8fa1b3;"># Prep </span><span style="color:#b48ead;">int call
+</span></td></tr><tr><td>134</td><td><span style="color:#8fa1b3;">    movb    foreground_color</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bl   </span><span style="color:#8fa1b3;"># Prep character color
+</span></td></tr><tr><td>135</td><td><span>
+</span></td></tr><tr><td>136</td><td><span style="color:#8fa1b3;">cons_write_hex_loop:
+</span></td></tr><tr><td>137</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">rol     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">4</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">dx                 </span><span style="color:#8fa1b3;"># roll next numbers to be displayed to the lower end of </span><span style="color:#bf616a;">dx
+</span></td></tr><tr><td>138</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">dx</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>139</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">and     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x000F</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si            </span><span style="color:#8fa1b3;"># Only use the lowest </span><span style="color:#d08770;">4 </span><span style="color:#8fa1b3;">bits
+</span></td></tr><tr><td>140</td><td><span style="color:#8fa1b3;">    movb    HexChars(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al      </span><span style="color:#8fa1b3;"># Move the character </span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">that index </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">HexChars </span><span style="color:#b48ead;">into </span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>141</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10                   </span><span style="color:#8fa1b3;"># Display th</span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">character
+</span></td></tr><tr><td>142</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">loop    </span><span style="color:#8fa1b3;">cons_write_hex_loop     # Repe</span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">until </span><span style="color:#d08770;">2 </span><span style="color:#8fa1b3;">bytes displayed
+</span></td></tr><tr><td>143</td><td><span>
+</span></td></tr><tr><td>144</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                     </span><span style="color:#8fa1b3;"># restore </span><span style="color:#bf616a;">cx </span><span style="color:#b48ead;">and </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>145</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>146</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>147</td><td><span>
+</span></td></tr><tr><td>148</td><td><span style="color:#8fa1b3;">#===================================================================
+</span></td></tr><tr><td>149</td><td><span style="color:#8fa1b3;">#Functions for outputting a line of ascii to the screen
+</span></td></tr><tr><td>150</td><td><span>
+</span></td></tr><tr><td>151</td><td><span style="color:#8fa1b3;"># Cons Write Ascii Line (cwal)
+</span></td></tr><tr><td>152</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>153</td><td><span style="color:#8fa1b3;"># Display </span><span style="color:#d08770;">16 </span><span style="color:#8fa1b3;">bytes of data as ascii
+</span></td></tr><tr><td>154</td><td><span style="color:#8fa1b3;"># Starts </span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">the current address </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>155</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>156</td><td><span style="color:#8fa1b3;"># Parameters
+</span></td></tr><tr><td>157</td><td><span style="color:#8fa1b3;">    #define cwal_sector_offset  </span><span style="color:#d08770;">4
+</span></td></tr><tr><td>158</td><td><span style="color:#8fa1b3;"># Local Variables
+</span></td></tr><tr><td>159</td><td><span style="color:#8fa1b3;">    ##define cwal_
+</span></td></tr><tr><td>160</td><td><span style="color:#8fa1b3;">cons_write_ascii_line:
+</span></td></tr><tr><td>161</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>162</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>163</td><td><span>
+</span></td></tr><tr><td>164</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx
+</span></td></tr><tr><td>165</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>166</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>167</td><td><span>
+</span></td></tr><tr><td>168</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">16</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx                    </span><span style="color:#8fa1b3;"># Prep </span><span style="color:#b48ead;">loop
+</span></td></tr><tr><td>169</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x0e</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah                  </span><span style="color:#8fa1b3;"># Prep </span><span style="color:#b48ead;">int </span><span style="color:#d08770;">10 </span><span style="color:#b48ead;">call
+</span></td></tr><tr><td>170</td><td><span style="color:#8fa1b3;">    #movb    foreground_color</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bl       </span><span style="color:#8fa1b3;"># Prep character color
+</span></td></tr><tr><td>171</td><td><span>
+</span></td></tr><tr><td>172</td><td><span style="color:#8fa1b3;">cwal_rpt:
+</span></td></tr><tr><td>173</td><td><span style="color:#8fa1b3;">    movb    (%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                  </span><span style="color:#8fa1b3;"># Load the </span><span style="color:#96b5b4;">byte at </span><span style="color:#8fa1b3;">the location contained </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">the </span><span style="color:#bf616a;">SI </span><span style="color:#8fa1b3;">register </span><span style="color:#b48ead;">into </span><span style="color:#bf616a;">AL   
+</span></td></tr><tr><td>174</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                         </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Add </span><span style="color:#d08770;">1 </span><span style="color:#8fa1b3;">to the value </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">SI
+</span></td></tr><tr><td>175</td><td><span>
+</span></td></tr><tr><td>176</td><td><span style="color:#8fa1b3;">cwal_set_color:
+</span></td></tr><tr><td>177</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>178</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">user_search_result_array</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>179</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">add     </span><span style="color:#8fa1b3;">cwal_sector_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>180</td><td><span style="color:#8fa1b3;">    movb    (%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bl                      </span><span style="color:#8fa1b3;"># Move color </span><span style="color:#b48ead;">into </span><span style="color:#bf616a;">bl
+</span></td></tr><tr><td>181</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">cwal_sector_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)         # Always increment offset </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">sector
+</span></td></tr><tr><td>182</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>183</td><td><span>
+</span></td></tr><tr><td>184</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">32</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>185</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jge     </span><span style="color:#8fa1b3;">cwal_print
+</span></td></tr><tr><td>186</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">95</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                    </span><span style="color:#8fa1b3;"># Don&#39;t print ascii characters lower than </span><span style="color:#d08770;">32
+</span></td></tr><tr><td>187</td><td><span>
+</span></td></tr><tr><td>188</td><td><span style="color:#8fa1b3;">cwal_print:
+</span></td></tr><tr><td>189</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10                       </span><span style="color:#8fa1b3;"># Output the character </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">AL </span><span style="color:#8fa1b3;">to the screen
+</span></td></tr><tr><td>190</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">loop    </span><span style="color:#8fa1b3;">cwal_rpt
+</span></td></tr><tr><td>191</td><td><span>
+</span></td></tr><tr><td>192</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x7</span><span>, </span><span style="color:#8fa1b3;">(foreground_color)    
+</span></td></tr><tr><td>193</td><td><span>
+</span></td></tr><tr><td>194</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>195</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>196</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx
+</span></td></tr><tr><td>197</td><td><span>
+</span></td></tr><tr><td>198</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp
+</span></td></tr><tr><td>199</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>200</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">2
+</span></td></tr><tr><td>201</td><td><span>
+</span></td></tr><tr><td>202</td><td><span style="color:#8fa1b3;">#===================================================================
+</span></td></tr><tr><td>203</td><td><span>
+</span></td></tr><tr><td>204</td><td><span style="color:#8fa1b3;"># Read </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">Display Disk Sectors (rdds)
+</span></td></tr><tr><td>205</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>206</td><td><span style="color:#8fa1b3;"># Main parent function for taking user input data </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">calling functions for reading
+</span></td></tr><tr><td>207</td><td><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">displaying data </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">chunks (via read_disk_sector </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">display_disk_sectors)
+</span></td></tr><tr><td>208</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>209</td><td><span style="color:#8fa1b3;"># Parameters
+</span></td></tr><tr><td>210</td><td><span style="color:#8fa1b3;">    #define rdds_starting_block     </span><span style="color:#d08770;">6
+</span></td></tr><tr><td>211</td><td><span style="color:#8fa1b3;">    #define rdds_sectors_to_read    </span><span style="color:#d08770;">4
+</span></td></tr><tr><td>212</td><td><span style="color:#8fa1b3;"># Local variables
+</span></td></tr><tr><td>213</td><td><span style="color:#8fa1b3;">    #define rdds_remaining_sectors_to_read  </span><span>-</span><span style="color:#d08770;">2
+</span></td></tr><tr><td>214</td><td><span style="color:#8fa1b3;">    #define rdds_current_sectors_to_read    </span><span>-</span><span style="color:#d08770;">4
+</span></td></tr><tr><td>215</td><td><span style="color:#8fa1b3;">    #define rdds_block_offset               </span><span>-</span><span style="color:#d08770;">6
+</span></td></tr><tr><td>216</td><td><span>
+</span></td></tr><tr><td>217</td><td><span style="color:#8fa1b3;">read_and_display_disk_sectors:
+</span></td></tr><tr><td>218</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp                                     </span><span style="color:#8fa1b3;"># Prep stack frame
+</span></td></tr><tr><td>219</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>220</td><td><span style="color:#8fa1b3;">    subw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">6</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp
+</span></td></tr><tr><td>221</td><td><span>
+</span></td></tr><tr><td>222</td><td><span style="color:#8fa1b3;">    cmpw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">rdds_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)           # Check if sectors to read isn&#39;t </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>223</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">je      </span><span style="color:#8fa1b3;">rdds_end
+</span></td></tr><tr><td>224</td><td><span>
+</span></td></tr><tr><td>225</td><td><span style="color:#8fa1b3;">    movw    rdds_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax              </span><span style="color:#8fa1b3;"># Init local variables
+</span></td></tr><tr><td>226</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">rdds_remaining_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>227</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">rdds_block_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>228</td><td><span>
+</span></td></tr><tr><td>229</td><td><span style="color:#8fa1b3;">rdds_main_loop:
+</span></td></tr><tr><td>230</td><td><span style="color:#8fa1b3;">    movw    rdds_remaining_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax    </span><span style="color:#8fa1b3;"># Set current sectors to read to sectors to read
+</span></td></tr><tr><td>231</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">rdds_current_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>232</td><td><span>
+</span></td></tr><tr><td>233</td><td><span style="color:#8fa1b3;">    cmpw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">30</span><span>, </span><span style="color:#8fa1b3;">rdds_remaining_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)    # If sectors to read is too big</span><span>, </span><span style="color:#8fa1b3;">read them </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">chunks
+</span></td></tr><tr><td>234</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jle     </span><span style="color:#8fa1b3;">rdds_read                                   # sectors to read is small enough
+</span></td></tr><tr><td>235</td><td><span>
+</span></td></tr><tr><td>236</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">30</span><span>, </span><span style="color:#8fa1b3;">rdds_current_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)      # sectors too big</span><span>, </span><span style="color:#8fa1b3;">read </span><span style="color:#d08770;">30 </span><span style="color:#8fa1b3;">this iteration
+</span></td></tr><tr><td>237</td><td><span>
+</span></td></tr><tr><td>238</td><td><span style="color:#8fa1b3;">rdds_read:
+</span></td></tr><tr><td>239</td><td><span style="color:#8fa1b3;">    movw    rdds_current_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax      </span><span style="color:#8fa1b3;"># Subtract amount to be read from sectors to read
+</span></td></tr><tr><td>240</td><td><span style="color:#8fa1b3;">    subw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">rdds_remaining_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>241</td><td><span>
+</span></td></tr><tr><td>242</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">rdds_current_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)           # </span><span style="color:#b48ead;">Push </span><span style="color:#8fa1b3;">how many sectors we&#39;re reading   
+</span></td></tr><tr><td>243</td><td><span style="color:#8fa1b3;">    movw    rdds_starting_block(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax               </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Push </span><span style="color:#8fa1b3;">the current block to read
+</span></td></tr><tr><td>244</td><td><span style="color:#8fa1b3;">    addw    rdds_block_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax
+</span></td></tr><tr><td>245</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                                         </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Push </span><span style="color:#8fa1b3;">the starting block (starting block </span><span>+ </span><span style="color:#8fa1b3;">offset)
+</span></td></tr><tr><td>246</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">read_disk_sector
+</span></td></tr><tr><td>247</td><td><span>
+</span></td></tr><tr><td>248</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">rdds_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)                   # </span><span style="color:#b48ead;">Push </span><span style="color:#8fa1b3;">overall total sectors to display
+</span></td></tr><tr><td>249</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">rdds_block_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)                      # </span><span style="color:#b48ead;">Push </span><span style="color:#8fa1b3;">offset </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">sectors (total sectors processed already)
+</span></td></tr><tr><td>250</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">display_disk_sectors                        # Uses sectors parameter from prev function
+</span></td></tr><tr><td>251</td><td><span>
+</span></td></tr><tr><td>252</td><td><span style="color:#8fa1b3;">    movw    rdds_current_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax      </span><span style="color:#8fa1b3;"># Increment the starting block offset
+</span></td></tr><tr><td>253</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">add     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">rdds_block_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>254</td><td><span>
+</span></td></tr><tr><td>255</td><td><span style="color:#8fa1b3;">    cmpw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">rdds_remaining_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)     # If there are sectors still to read</span><span>, </span><span style="color:#b48ead;">loop
+</span></td></tr><tr><td>256</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jne     </span><span style="color:#8fa1b3;">rdds_main_loop
+</span></td></tr><tr><td>257</td><td><span>
+</span></td></tr><tr><td>258</td><td><span style="color:#8fa1b3;">rdds_end:
+</span></td></tr><tr><td>259</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp
+</span></td></tr><tr><td>260</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>261</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">4
+</span></td></tr><tr><td>262</td><td><span>
+</span></td></tr><tr><td>263</td><td><span style="color:#8fa1b3;">#===================================================================
+</span></td></tr><tr><td>264</td><td><span>
+</span></td></tr><tr><td>265</td><td><span style="color:#8fa1b3;"># Read Disk Sector (rds)
+</span></td></tr><tr><td>266</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>267</td><td><span style="color:#8fa1b3;"># Read a given amount of data from the disk to the pre</span><span>-</span><span style="color:#8fa1b3;">defined address.
+</span></td></tr><tr><td>268</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>269</td><td><span style="color:#8fa1b3;"># Pre</span><span>-</span><span style="color:#8fa1b3;">defined Values
+</span></td></tr><tr><td>270</td><td><span style="color:#8fa1b3;">    #define disk_transfer_address   </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x9000
+</span></td></tr><tr><td>271</td><td><span style="color:#8fa1b3;"># Parameters
+</span></td></tr><tr><td>272</td><td><span style="color:#8fa1b3;">    #define rds_disk_sector_count   </span><span style="color:#d08770;">6
+</span></td></tr><tr><td>273</td><td><span style="color:#8fa1b3;">    #define rds_start_block         </span><span style="color:#d08770;">4
+</span></td></tr><tr><td>274</td><td><span style="color:#8fa1b3;">read_disk_sector:
+</span></td></tr><tr><td>275</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp             </span><span style="color:#8fa1b3;"># Setup Stack Frame
+</span></td></tr><tr><td>276</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>277</td><td><span>
+</span></td></tr><tr><td>278</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si             </span><span style="color:#8fa1b3;"># Save </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>279</td><td><span>
+</span></td></tr><tr><td>280</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_reading_sectors</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si       </span><span style="color:#8fa1b3;"># Display message whenever reading new data from disk
+</span></td></tr><tr><td>281</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline
+</span></td></tr><tr><td>282</td><td><span>
+</span></td></tr><tr><td>283</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">disk_address_packet</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si           </span><span style="color:#8fa1b3;"># Load disk packet address </span><span style="color:#b48ead;">into </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>284</td><td><span>
+</span></td></tr><tr><td>285</td><td><span style="color:#8fa1b3;">    movw    rds_disk_sector_count(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax     </span><span style="color:#8fa1b3;"># Move number of sectors </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">disk packet
+</span></td></tr><tr><td>286</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#d08770;">2</span><span style="color:#8fa1b3;">(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>287</td><td><span style="color:#8fa1b3;">    movw    disk_transfer_address</span><span>, </span><span style="color:#d08770;">4</span><span style="color:#8fa1b3;">(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)       # Set address to read data </span><span style="color:#b48ead;">into
+</span></td></tr><tr><td>288</td><td><span style="color:#8fa1b3;">    movw    rds_start_block(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax           </span><span style="color:#8fa1b3;"># Move start block </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">disk packet 
+</span></td></tr><tr><td>289</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#d08770;">8</span><span style="color:#8fa1b3;">(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>290</td><td><span>
+</span></td></tr><tr><td>291</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x42</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah              </span><span style="color:#8fa1b3;"># Prep read disk </span><span style="color:#b48ead;">call
+</span></td></tr><tr><td>292</td><td><span style="color:#8fa1b3;">    movb    (boot_device)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">dl      </span><span style="color:#8fa1b3;"># Move boot device to make sure we&#39;re reading from the right disk
+</span></td></tr><tr><td>293</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x13                   </span><span style="color:#8fa1b3;"># Read from disk
+</span></td></tr><tr><td>294</td><td><span>
+</span></td></tr><tr><td>295</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jc      </span><span style="color:#8fa1b3;">rds_read_failed         # Check if read success
+</span></td></tr><tr><td>296</td><td><span>
+</span></td></tr><tr><td>297</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                     </span><span style="color:#8fa1b3;"># Restore </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>298</td><td><span>
+</span></td></tr><tr><td>299</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp                </span><span style="color:#8fa1b3;"># End Stack Frame
+</span></td></tr><tr><td>300</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>301</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">2                      </span><span style="color:#8fa1b3;"># Only remove start block parameter
+</span></td></tr><tr><td>302</td><td><span>
+</span></td></tr><tr><td>303</td><td><span style="color:#8fa1b3;">rds_read_failed:
+</span></td></tr><tr><td>304</td><td><span style="color:#8fa1b3;">    movw 	</span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_read_failed</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>305</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline
+</span></td></tr><tr><td>306</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">endless_loop
+</span></td></tr><tr><td>307</td><td><span>
+</span></td></tr><tr><td>308</td><td><span style="color:#8fa1b3;">#===================================================================
+</span></td></tr><tr><td>309</td><td><span>
+</span></td></tr><tr><td>310</td><td><span style="color:#8fa1b3;"># Display Disk Sectors (dds)
+</span></td></tr><tr><td>311</td><td><span style="color:#8fa1b3;"># 
+</span></td></tr><tr><td>312</td><td><span style="color:#8fa1b3;"># Displays all of the currently loaded sectors </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">displays wh</span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">sector
+</span></td></tr><tr><td>313</td><td><span style="color:#8fa1b3;"># we&#39;re currently displaying.
+</span></td></tr><tr><td>314</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>315</td><td><span style="color:#8fa1b3;"># Parameters
+</span></td></tr><tr><td>316</td><td><span style="color:#8fa1b3;">    #define dds_sectors_to_read         </span><span style="color:#d08770;">8
+</span></td></tr><tr><td>317</td><td><span style="color:#8fa1b3;">    #define dds_total_sectors           </span><span style="color:#d08770;">6
+</span></td></tr><tr><td>318</td><td><span style="color:#8fa1b3;">    #define dds_sector_display_offset   </span><span style="color:#d08770;">4
+</span></td></tr><tr><td>319</td><td><span>
+</span></td></tr><tr><td>320</td><td><span style="color:#8fa1b3;">display_disk_sectors:
+</span></td></tr><tr><td>321</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp         </span><span style="color:#8fa1b3;"># Prep stack frame
+</span></td></tr><tr><td>322</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp    </span><span style="color:#8fa1b3;"># Move stack pointer </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">base pointer
+</span></td></tr><tr><td>323</td><td><span>
+</span></td></tr><tr><td>324</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx         </span><span style="color:#8fa1b3;"># Store used registers
+</span></td></tr><tr><td>325</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>326</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>327</td><td><span>
+</span></td></tr><tr><td>328</td><td><span style="color:#8fa1b3;">    movw    dds_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx   </span><span style="color:#8fa1b3;"># Set how many sectors to read
+</span></td></tr><tr><td>329</td><td><span style="color:#8fa1b3;">    movw    disk_transfer_address</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si      </span><span style="color:#8fa1b3;"># Set sectors start read address
+</span></td></tr><tr><td>330</td><td><span style="color:#8fa1b3;">    #movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x7c00</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si        </span><span style="color:#8fa1b3;"># DEBUG to read through running program memory
+</span></td></tr><tr><td>331</td><td><span>
+</span></td></tr><tr><td>332</td><td><span style="color:#8fa1b3;">dds_loop:
+</span></td></tr><tr><td>333</td><td><span style="color:#8fa1b3;">    # Output current sector message
+</span></td></tr><tr><td>334</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>335</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_sector</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>336</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write
+</span></td></tr><tr><td>337</td><td><span>
+</span></td></tr><tr><td>338</td><td><span style="color:#8fa1b3;">    movw    dds_sector_display_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx     </span><span style="color:#8fa1b3;"># Move offset </span><span style="color:#b48ead;">into </span><span style="color:#bf616a;">bx
+</span></td></tr><tr><td>339</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">add     </span><span style="color:#8fa1b3;">dds_sectors_to_read(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx           </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Add </span><span style="color:#8fa1b3;">how many sectors we&#39;re currently displaying
+</span></td></tr><tr><td>340</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">sub     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx                                </span><span style="color:#8fa1b3;"># Subtract how many loops still to go
+</span></td></tr><tr><td>341</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx                                     </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Add </span><span style="color:#d08770;">1 </span><span style="color:#8fa1b3;">so </span><span style="color:#d08770;">0</span><span style="color:#8fa1b3;">/</span><span style="color:#d08770;">10 </span><span>-</span><span style="color:#8fa1b3;">&gt; </span><span style="color:#d08770;">1</span><span style="color:#8fa1b3;">/</span><span style="color:#d08770;">10
+</span></td></tr><tr><td>342</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_int                          # display sector number
+</span></td></tr><tr><td>343</td><td><span>
+</span></td></tr><tr><td>344</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_out_of</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                        </span><span style="color:#8fa1b3;"># display </span><span style="color:#a3be8c;">&quot; / &quot;
+</span></td></tr><tr><td>345</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write
+</span></td></tr><tr><td>346</td><td><span>
+</span></td></tr><tr><td>347</td><td><span style="color:#8fa1b3;">    movw    dds_total_sectors(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx         </span><span style="color:#8fa1b3;"># Display total sectors
+</span></td></tr><tr><td>348</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_int
+</span></td></tr><tr><td>349</td><td><span>
+</span></td></tr><tr><td>350</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf                     # Make space for sector data
+</span></td></tr><tr><td>351</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf
+</span></td></tr><tr><td>352</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>353</td><td><span>
+</span></td></tr><tr><td>354</td><td><span style="color:#8fa1b3;">    # Now display the current sector data
+</span></td></tr><tr><td>355</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">scan_single_sector
+</span></td></tr><tr><td>356</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">display_disk_single_sector          # Uses address set </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>357</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf
+</span></td></tr><tr><td>358</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">loop    </span><span style="color:#8fa1b3;">dds_loop
+</span></td></tr><tr><td>359</td><td><span>
+</span></td></tr><tr><td>360</td><td><span style="color:#8fa1b3;">dds_end:
+</span></td></tr><tr><td>361</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si     </span><span style="color:#8fa1b3;"># Retrieve stored registers
+</span></td></tr><tr><td>362</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>363</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx
+</span></td></tr><tr><td>364</td><td><span style="color:#8fa1b3;">    
+</span></td></tr><tr><td>365</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp            </span><span style="color:#8fa1b3;"># End stack frame
+</span></td></tr><tr><td>366</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>367</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">6
+</span></td></tr><tr><td>368</td><td><span>
+</span></td></tr><tr><td>369</td><td><span style="color:#8fa1b3;">#</span><span>--------------------------------------------
+</span></td></tr><tr><td>370</td><td><span>
+</span></td></tr><tr><td>371</td><td><span style="color:#8fa1b3;"># Scan Single Sector (sss)
+</span></td></tr><tr><td>372</td><td><span style="color:#8fa1b3;"># 
+</span></td></tr><tr><td>373</td><td><span style="color:#8fa1b3;"># Local Variables are start_index for the start of the </span><span style="color:#96b5b4;">section </span><span style="color:#8fa1b3;">we&#39;re checking </span><span style="color:#b48ead;">and
+</span></td></tr><tr><td>374</td><td><span style="color:#8fa1b3;"># current_index for the 
+</span></td></tr><tr><td>375</td><td><span style="color:#8fa1b3;"># 
+</span></td></tr><tr><td>376</td><td><span style="color:#8fa1b3;"># Local Variables
+</span></td></tr><tr><td>377</td><td><span style="color:#8fa1b3;">    #define sss_sector_start_addr       </span><span>-</span><span style="color:#d08770;">2
+</span></td></tr><tr><td>378</td><td><span style="color:#8fa1b3;">    #define sss_start_index             </span><span>-</span><span style="color:#d08770;">4
+</span></td></tr><tr><td>379</td><td><span style="color:#8fa1b3;">    #define sss_search_current_index    </span><span>-</span><span style="color:#d08770;">6
+</span></td></tr><tr><td>380</td><td><span style="color:#8fa1b3;">    #define sss_sector_index            </span><span>-</span><span style="color:#d08770;">8
+</span></td></tr><tr><td>381</td><td><span>
+</span></td></tr><tr><td>382</td><td><span style="color:#8fa1b3;">scan_single_sector:
+</span></td></tr><tr><td>383</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp         </span><span style="color:#8fa1b3;"># Prep stack frame
+</span></td></tr><tr><td>384</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp    </span><span style="color:#8fa1b3;"># Move stack pointer </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">base pointer
+</span></td></tr><tr><td>385</td><td><span style="color:#8fa1b3;">    subw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">8</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp     </span><span style="color:#8fa1b3;"># Reserve space for local variables
+</span></td></tr><tr><td>386</td><td><span>
+</span></td></tr><tr><td>387</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx         </span><span style="color:#8fa1b3;"># Don&#39;t trash </span><span style="color:#bf616a;">si </span><span style="color:#b48ead;">or </span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>388</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>389</td><td><span>
+</span></td></tr><tr><td>390</td><td><span style="color:#8fa1b3;">    cmpw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">UserSearchBufferLen     # Check if user entered anything to search for
+</span></td></tr><tr><td>391</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">je      </span><span style="color:#8fa1b3;">sss_end                     # End function if </span><span style="color:#b48ead;">not
+</span></td></tr><tr><td>392</td><td><span>
+</span></td></tr><tr><td>393</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">si</span><span>, </span><span style="color:#8fa1b3;">sss_sector_start_addr(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>394</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">sss_start_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)        # Init local variables
+</span></td></tr><tr><td>395</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">sss_search_current_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>396</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">sss_sector_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>397</td><td><span>
+</span></td></tr><tr><td>398</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">clear_user_search_array
+</span></td></tr><tr><td>399</td><td><span>
+</span></td></tr><tr><td>400</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">512</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx                   </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Loop </span><span style="color:#8fa1b3;">through entire sector
+</span></td></tr><tr><td>401</td><td><span style="color:#8fa1b3;">    #movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">50</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx        </span><span style="color:#8fa1b3;"># DEBUG </span><span>- </span><span style="color:#8fa1b3;">ONLY CHECK FIRST </span><span style="color:#d08770;">50 </span><span style="color:#8fa1b3;">BYTES
+</span></td></tr><tr><td>402</td><td><span>
+</span></td></tr><tr><td>403</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">sss_end                     # DEBUG
+</span></td></tr><tr><td>404</td><td><span>
+</span></td></tr><tr><td>405</td><td><span style="color:#8fa1b3;"># Search functionality starts here
+</span></td></tr><tr><td>406</td><td><span style="color:#8fa1b3;">sss_loop:               
+</span></td></tr><tr><td>407</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>408</td><td><span style="color:#8fa1b3;">    movw    sss_search_current_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>409</td><td><span style="color:#8fa1b3;">    movb    UserSearchBuffer(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah          </span><span style="color:#8fa1b3;"># Get current search character we&#39;re comparing against
+</span></td></tr><tr><td>410</td><td><span>
+</span></td></tr><tr><td>411</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                     </span><span style="color:#8fa1b3;"># DEBUG </span><span>- </span><span style="color:#8fa1b3;">OUTPUT SECTOR CHARACTER
+</span></td></tr><tr><td>412</td><td><span style="color:#8fa1b3;">    #movb    %</span><span style="color:#bf616a;">ah</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                </span><span style="color:#8fa1b3;"># DEBUG </span><span>- </span><span style="color:#8fa1b3;">OUTPUT CURRENT CHARACTER
+</span></td></tr><tr><td>413</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_char         # DEBUG </span><span>- </span><span style="color:#8fa1b3;">OUTPUT SECTOR CHARACTER
+</span></td></tr><tr><td>414</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                     </span><span style="color:#8fa1b3;"># DEBUG </span><span>- </span><span style="color:#8fa1b3;">OUTPUT SECTOR CHARACTER
+</span></td></tr><tr><td>415</td><td><span>
+</span></td></tr><tr><td>416</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>417</td><td><span>
+</span></td></tr><tr><td>418</td><td><span style="color:#8fa1b3;">    movb    (%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                          </span><span style="color:#8fa1b3;"># Get character </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">sector we&#39;re comparing against
+</span></td></tr><tr><td>419</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                     </span><span style="color:#8fa1b3;"># DEBUG </span><span>- </span><span style="color:#8fa1b3;">OUTPUT SECTOR CHARACTER
+</span></td></tr><tr><td>420</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_char         # DEBUG </span><span>- </span><span style="color:#8fa1b3;">OUTPUT SECTOR CHARACTER
+</span></td></tr><tr><td>421</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                     </span><span style="color:#8fa1b3;"># DEBUG </span><span>- </span><span style="color:#8fa1b3;">OUTPUT SECTOR CHARACTER
+</span></td></tr><tr><td>422</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah
+</span></td></tr><tr><td>423</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">je      </span><span style="color:#8fa1b3;">sss_equal
+</span></td></tr><tr><td>424</td><td><span style="color:#8fa1b3;">    
+</span></td></tr><tr><td>425</td><td><span style="color:#8fa1b3;">    # </span><span style="color:#b48ead;">NOT </span><span style="color:#8fa1b3;">EQUAL CODE HERE
+</span></td></tr><tr><td>426</td><td><span style="color:#8fa1b3;">    
+</span></td></tr><tr><td>427</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">sss_search_current_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)   # Check if we&#39;re </span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">the start of a match
+</span></td></tr><tr><td>428</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">je      </span><span style="color:#8fa1b3;">sss_reset_search
+</span></td></tr><tr><td>429</td><td><span style="color:#8fa1b3;">    # </span><span style="color:#b48ead;">Not </span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">start of match
+</span></td></tr><tr><td>430</td><td><span>
+</span></td></tr><tr><td>431</td><td><span style="color:#8fa1b3;">    movw    sss_search_current_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax  </span><span style="color:#8fa1b3;"># Get how far along we were
+</span></td></tr><tr><td>432</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">dec     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                                 </span><span style="color:#8fa1b3;"># Decrement by </span><span style="color:#d08770;">1 </span><span style="color:#8fa1b3;">to get the value after where we started searching
+</span></td></tr><tr><td>433</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">add     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>434</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">sub     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>435</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">sub     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">sss_sector_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>436</td><td><span>
+</span></td></tr><tr><td>437</td><td><span style="color:#8fa1b3;">sss_reset_search:
+</span></td></tr><tr><td>438</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">sss_search_current_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)   # Reset the search index
+</span></td></tr><tr><td>439</td><td><span>
+</span></td></tr><tr><td>440</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">sss_next_loop
+</span></td></tr><tr><td>441</td><td><span>
+</span></td></tr><tr><td>442</td><td><span style="color:#8fa1b3;">sss_equal:
+</span></td></tr><tr><td>443</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">sss_end                # DEBUG </span><span>- </span><span style="color:#8fa1b3;">end here if match
+</span></td></tr><tr><td>444</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_debug       # DEBUG </span><span>- </span><span style="color:#8fa1b3;">print value if match
+</span></td></tr><tr><td>445</td><td><span>
+</span></td></tr><tr><td>446</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">sss_search_current_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)   # Check if we&#39;re </span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">the start of a match
+</span></td></tr><tr><td>447</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jne     </span><span style="color:#8fa1b3;">sss_equal_2
+</span></td></tr><tr><td>448</td><td><span>
+</span></td></tr><tr><td>449</td><td><span style="color:#8fa1b3;">    movw    sss_sector_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax          </span><span style="color:#8fa1b3;"># Store the start of the potential match
+</span></td></tr><tr><td>450</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">sss_start_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)  
+</span></td></tr><tr><td>451</td><td><span>
+</span></td></tr><tr><td>452</td><td><span style="color:#8fa1b3;">sss_equal_2:
+</span></td></tr><tr><td>453</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">sss_search_current_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)       # Move along the search index 
+</span></td></tr><tr><td>454</td><td><span>
+</span></td></tr><tr><td>455</td><td><span style="color:#8fa1b3;">    movw    sss_search_current_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax  </span><span style="color:#8fa1b3;"># Check if we&#39;ve found the entire search phrase
+</span></td></tr><tr><td>456</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#8fa1b3;">UserSearchBufferLen</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax
+</span></td></tr><tr><td>457</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">je      </span><span style="color:#8fa1b3;">sss_found_match
+</span></td></tr><tr><td>458</td><td><span>
+</span></td></tr><tr><td>459</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">sss_next_loop                       # Continue the </span><span style="color:#b48ead;">loop
+</span></td></tr><tr><td>460</td><td><span>
+</span></td></tr><tr><td>461</td><td><span style="color:#8fa1b3;">sss_found_match:
+</span></td></tr><tr><td>462</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>463</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>464</td><td><span>
+</span></td></tr><tr><td>465</td><td><span style="color:#8fa1b3;">    #movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_found_a_match</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>466</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write
+</span></td></tr><tr><td>467</td><td><span>
+</span></td></tr><tr><td>468</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">user_search_result_array</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>469</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">add     </span><span style="color:#8fa1b3;">sss_start_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>470</td><td><span style="color:#8fa1b3;">    movw    UserSearchBufferLen</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>471</td><td><span>
+</span></td></tr><tr><td>472</td><td><span style="color:#8fa1b3;">sss_found_match_loop:
+</span></td></tr><tr><td>473</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0xc</span><span>, </span><span style="color:#8fa1b3;">(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)                 # Set </span><span style="color:#d08770;">each </span><span style="color:#8fa1b3;">value </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">array to white
+</span></td></tr><tr><td>474</td><td><span>
+</span></td></tr><tr><td>475</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>476</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">loop    </span><span style="color:#8fa1b3;">sss_found_match_loop
+</span></td></tr><tr><td>477</td><td><span>
+</span></td></tr><tr><td>478</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">sss_search_current_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)   # Reset the index </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">the search phrase
+</span></td></tr><tr><td>479</td><td><span>
+</span></td></tr><tr><td>480</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>481</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>482</td><td><span>
+</span></td></tr><tr><td>483</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">sss_next_loop       # Continue the main </span><span style="color:#b48ead;">loop
+</span></td></tr><tr><td>484</td><td><span>
+</span></td></tr><tr><td>485</td><td><span style="color:#8fa1b3;">sss_next_loop:
+</span></td></tr><tr><td>486</td><td><span style="color:#8fa1b3;">    #movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah     </span><span style="color:#8fa1b3;"># DEBUG </span><span>- </span><span style="color:#b48ead;">WAIT </span><span style="color:#8fa1b3;">FOR USER INPUT TO CONTINUE
+</span></td></tr><tr><td>487</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x16
+</span></td></tr><tr><td>488</td><td><span>
+</span></td></tr><tr><td>489</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>490</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">sss_sector_index(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>491</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">loop    </span><span style="color:#8fa1b3;">sss_loop
+</span></td></tr><tr><td>492</td><td><span>
+</span></td></tr><tr><td>493</td><td><span style="color:#8fa1b3;">sss_end:
+</span></td></tr><tr><td>494</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>495</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>496</td><td><span>
+</span></td></tr><tr><td>497</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf     # DEBUG </span><span>- </span><span style="color:#8fa1b3;">NEW LINE AFTER DEBUGGING TEXT
+</span></td></tr><tr><td>498</td><td><span>
+</span></td></tr><tr><td>499</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp
+</span></td></tr><tr><td>500</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>501</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>502</td><td><span>
+</span></td></tr><tr><td>503</td><td><span style="color:#8fa1b3;">#</span><span>--------------------------------------------
+</span></td></tr><tr><td>504</td><td><span>
+</span></td></tr><tr><td>505</td><td><span style="color:#8fa1b3;">clear_user_search_array:
+</span></td></tr><tr><td>506</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>507</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">user_search_result_array</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>508</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">512</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx                           </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Loop </span><span style="color:#8fa1b3;">through entire sector
+</span></td></tr><tr><td>509</td><td><span>
+</span></td></tr><tr><td>510</td><td><span style="color:#8fa1b3;">cusa_loop:
+</span></td></tr><tr><td>511</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x7</span><span>, </span><span style="color:#8fa1b3;">(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)                         # Set </span><span style="color:#d08770;">each </span><span style="color:#8fa1b3;">value </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">array to white
+</span></td></tr><tr><td>512</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>513</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">loop    </span><span style="color:#8fa1b3;">cusa_loop
+</span></td></tr><tr><td>514</td><td><span>
+</span></td></tr><tr><td>515</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>516</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>517</td><td><span>
+</span></td></tr><tr><td>518</td><td><span style="color:#8fa1b3;">#</span><span>--------------------------------------------
+</span></td></tr><tr><td>519</td><td><span>
+</span></td></tr><tr><td>520</td><td><span style="color:#8fa1b3;"># Display Disk Single Sector (ddss)
+</span></td></tr><tr><td>521</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>522</td><td><span style="color:#8fa1b3;"># Displays a single disk sector </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">two parts</span><span>, </span><span style="color:#8fa1b3;">waiting for user input between parts.
+</span></td></tr><tr><td>523</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>524</td><td><span style="color:#8fa1b3;"># Uses pre set value </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>525</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>526</td><td><span style="color:#8fa1b3;"># Local variables
+</span></td></tr><tr><td>527</td><td><span style="color:#8fa1b3;">    #define ddss_loop_outer     </span><span>-</span><span style="color:#d08770;">2
+</span></td></tr><tr><td>528</td><td><span style="color:#8fa1b3;">    #define ddss_sector_offset  </span><span>-</span><span style="color:#d08770;">4
+</span></td></tr><tr><td>529</td><td><span>
+</span></td></tr><tr><td>530</td><td><span style="color:#8fa1b3;">display_disk_single_sector:
+</span></td></tr><tr><td>531</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp                             </span><span style="color:#8fa1b3;"># Prep stack frame
+</span></td></tr><tr><td>532</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp                        </span><span style="color:#8fa1b3;"># Move stack pointer </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">base pointer
+</span></td></tr><tr><td>533</td><td><span style="color:#8fa1b3;">    subw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">4</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp                         </span><span style="color:#8fa1b3;"># Reserve space for local variables
+</span></td></tr><tr><td>534</td><td><span>
+</span></td></tr><tr><td>535</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">2</span><span>, </span><span style="color:#8fa1b3;">ddss_loop_outer(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)        # Init local variables
+</span></td></tr><tr><td>536</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">ddss_sector_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>537</td><td><span>
+</span></td></tr><tr><td>538</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>539</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx
+</span></td></tr><tr><td>540</td><td><span>
+</span></td></tr><tr><td>541</td><td><span style="color:#8fa1b3;">ddss_outer_loop_start:
+</span></td></tr><tr><td>542</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">16</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>543</td><td><span>
+</span></td></tr><tr><td>544</td><td><span style="color:#8fa1b3;">ddss_inner_loop:
+</span></td></tr><tr><td>545</td><td><span style="color:#8fa1b3;">    movw    ddss_sector_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">dx
+</span></td></tr><tr><td>546</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_hex                  # Display offset </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">sector
+</span></td></tr><tr><td>547</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_space                
+</span></td></tr><tr><td>548</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10
+</span></td></tr><tr><td>549</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10                           </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Add </span><span style="color:#d08770;">3 </span><span style="color:#8fa1b3;">spaces after offset hex
+</span></td></tr><tr><td>550</td><td><span>
+</span></td></tr><tr><td>551</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_hex_line             # Display segment data
+</span></td></tr><tr><td>552</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">ddss_sector_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>553</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_ascii_line
+</span></td></tr><tr><td>554</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf
+</span></td></tr><tr><td>555</td><td><span>
+</span></td></tr><tr><td>556</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">add     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">16</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                        </span><span style="color:#8fa1b3;"># Move to next line
+</span></td></tr><tr><td>557</td><td><span style="color:#8fa1b3;">    addw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">16</span><span>, </span><span style="color:#8fa1b3;">ddss_sector_offset(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)    
+</span></td></tr><tr><td>558</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">loop    </span><span style="color:#8fa1b3;">ddss_inner_loop
+</span></td></tr><tr><td>559</td><td><span>
+</span></td></tr><tr><td>560</td><td><span style="color:#8fa1b3;">ddss_end:
+</span></td></tr><tr><td>561</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">await_key_press                 # </span><span style="color:#b48ead;">Wait </span><span style="color:#8fa1b3;">for user input after displaying half a sector
+</span></td></tr><tr><td>562</td><td><span>
+</span></td></tr><tr><td>563</td><td><span style="color:#8fa1b3;">    decw    ddss_loop_outer(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>564</td><td><span style="color:#8fa1b3;">    cmpw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">ddss_loop_outer(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)        # Check if we&#39;ve displayed both halves of the sector
+</span></td></tr><tr><td>565</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jg      </span><span style="color:#8fa1b3;">ddss_outer_loop_start
+</span></td></tr><tr><td>566</td><td><span>
+</span></td></tr><tr><td>567</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx                             </span><span style="color:#8fa1b3;"># Restore registers
+</span></td></tr><tr><td>568</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>569</td><td><span>
+</span></td></tr><tr><td>570</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp                        </span><span style="color:#8fa1b3;"># End stack frame
+</span></td></tr><tr><td>571</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>572</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>573</td><td><span>
+</span></td></tr><tr><td>574</td><td><span style="color:#8fa1b3;">#=============================================================================
+</span></td></tr><tr><td>575</td><td><span>
+</span></td></tr><tr><td>576</td><td><span style="color:#8fa1b3;">await_key_press:
+</span></td></tr><tr><td>577</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                     </span><span style="color:#8fa1b3;"># Don&#39;t trash </span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>578</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_press_a_key</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si    
+</span></td></tr><tr><td>579</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write              # Print user message
+</span></td></tr><tr><td>580</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>581</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah
+</span></td></tr><tr><td>582</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x16                   </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Wait </span><span style="color:#8fa1b3;">for user input
+</span></td></tr><tr><td>583</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf         # Start new line
+</span></td></tr><tr><td>584</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>585</td><td><span>
+</span></td></tr><tr><td>586</td><td><span style="color:#8fa1b3;">#=============================================================================
+</span></td></tr><tr><td>587</td><td><span>
+</span></td></tr><tr><td>588</td><td><span style="color:#8fa1b3;"># Get User Number (gun)
+</span></td></tr><tr><td>589</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>590</td><td><span style="color:#8fa1b3;"># Get a </span><span style="color:#d08770;">4 </span><span style="color:#8fa1b3;">digit number from the user </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">returns it </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">a provided stack parameter
+</span></td></tr><tr><td>591</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>592</td><td><span style="color:#8fa1b3;"># Parameters
+</span></td></tr><tr><td>593</td><td><span style="color:#8fa1b3;">    #define gun_num_out             </span><span style="color:#d08770;">4
+</span></td></tr><tr><td>594</td><td><span>
+</span></td></tr><tr><td>595</td><td><span style="color:#8fa1b3;"># Local variables
+</span></td></tr><tr><td>596</td><td><span style="color:#8fa1b3;">    #define gun_numbers_entered     </span><span>-</span><span style="color:#d08770;">2
+</span></td></tr><tr><td>597</td><td><span style="color:#8fa1b3;">    #define gun_times_by            </span><span>-</span><span style="color:#d08770;">4
+</span></td></tr><tr><td>598</td><td><span>
+</span></td></tr><tr><td>599</td><td><span style="color:#8fa1b3;">get_user_number:
+</span></td></tr><tr><td>600</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp                             </span><span style="color:#8fa1b3;"># Prep stack frame
+</span></td></tr><tr><td>601</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp                        </span><span style="color:#8fa1b3;"># Move stack pointer </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">base pointer
+</span></td></tr><tr><td>602</td><td><span style="color:#8fa1b3;">    subw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">4</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp                         </span><span style="color:#8fa1b3;"># Reserve space for local variables
+</span></td></tr><tr><td>603</td><td><span>
+</span></td></tr><tr><td>604</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx                             </span><span style="color:#8fa1b3;"># Store all used registers
+</span></td></tr><tr><td>605</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx
+</span></td></tr><tr><td>606</td><td><span>
+</span></td></tr><tr><td>607</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">gun_numbers_entered(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)    # Initialize local variables
+</span></td></tr><tr><td>608</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#8fa1b3;">gun_times_by(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>609</td><td><span>
+</span></td></tr><tr><td>610</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_get_input</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si             </span><span style="color:#8fa1b3;"># Prep input message
+</span></td></tr><tr><td>611</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write                      # Display message
+</span></td></tr><tr><td>612</td><td><span>
+</span></td></tr><tr><td>613</td><td><span style="color:#8fa1b3;">gun_input_loop:
+</span></td></tr><tr><td>614</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah
+</span></td></tr><tr><td>615</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x16                           </span><span style="color:#8fa1b3;"># Get user input
+</span></td></tr><tr><td>616</td><td><span>
+</span></td></tr><tr><td>617</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">48</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                        </span><span style="color:#8fa1b3;"># These checks make sure input is number
+</span></td></tr><tr><td>618</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jb      </span><span style="color:#8fa1b3;">gun_char_invalid
+</span></td></tr><tr><td>619</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">57</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>620</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ja      </span><span style="color:#8fa1b3;">gun_char_invalid
+</span></td></tr><tr><td>621</td><td><span>
+</span></td></tr><tr><td>622</td><td><span style="color:#8fa1b3;">gun_num_ok:
+</span></td></tr><tr><td>623</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_char                 # Display the inputted number
+</span></td></tr><tr><td>624</td><td><span>
+</span></td></tr><tr><td>625</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah                         </span><span style="color:#8fa1b3;"># Clear upper </span><span style="color:#96b5b4;">byte </span><span style="color:#8fa1b3;">for later
+</span></td></tr><tr><td>626</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">sub     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">48</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                        </span><span style="color:#8fa1b3;"># Change from ascii to base </span><span style="color:#d08770;">10
+</span></td></tr><tr><td>627</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                             </span><span style="color:#8fa1b3;"># Store for later
+</span></td></tr><tr><td>628</td><td><span>
+</span></td></tr><tr><td>629</td><td><span style="color:#8fa1b3;">    incw    gun_numbers_entered(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)        # increment total numbers
+</span></td></tr><tr><td>630</td><td><span style="color:#8fa1b3;">    cmpw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">4</span><span>, </span><span style="color:#8fa1b3;">gun_numbers_entered(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)    # Check if max numbers reached
+</span></td></tr><tr><td>631</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">je      </span><span style="color:#8fa1b3;">gun_end                         # If so</span><span>, </span><span style="color:#8fa1b3;">goto end
+</span></td></tr><tr><td>632</td><td><span>
+</span></td></tr><tr><td>633</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">gun_input_loop              
+</span></td></tr><tr><td>634</td><td><span>
+</span></td></tr><tr><td>635</td><td><span style="color:#8fa1b3;">gun_char_invalid:
+</span></td></tr><tr><td>636</td><td><span style="color:#8fa1b3;">    cmpw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">gun_numbers_entered(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)    # Don&#39;t check </span><span style="color:#b48ead;">enter </span><span style="color:#8fa1b3;">pressed if no value submitted
+</span></td></tr><tr><td>637</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">je      </span><span style="color:#8fa1b3;">gun_input_loop                  
+</span></td></tr><tr><td>638</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">13</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                        </span><span style="color:#8fa1b3;"># If input wasn&#39;t a number</span><span>, </span><span style="color:#8fa1b3;">check if it was </span><span style="color:#b48ead;">enter </span><span style="color:#8fa1b3;">pressed
+</span></td></tr><tr><td>639</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jne     </span><span style="color:#8fa1b3;">gun_input_loop                  # If it wasn&#39;t </span><span style="color:#b48ead;">enter</span><span>, </span><span style="color:#8fa1b3;">get next user input
+</span></td></tr><tr><td>640</td><td><span>
+</span></td></tr><tr><td>641</td><td><span style="color:#8fa1b3;">gun_end:
+</span></td></tr><tr><td>642</td><td><span style="color:#8fa1b3;">    movw    gun_numbers_entered(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx   </span><span style="color:#8fa1b3;"># Set </span><span style="color:#b48ead;">loop </span><span style="color:#8fa1b3;">to total numbers inputted
+</span></td></tr><tr><td>643</td><td><span style="color:#8fa1b3;">    xorw    %</span><span style="color:#bf616a;">bx</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx                        </span><span style="color:#8fa1b3;"># Store output </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">bx </span><span style="color:#8fa1b3;">so clear it first
+</span></td></tr><tr><td>644</td><td><span>
+</span></td></tr><tr><td>645</td><td><span style="color:#8fa1b3;">gun_end_loop:
+</span></td></tr><tr><td>646</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                             </span><span style="color:#8fa1b3;"># Get most rescent user input
+</span></td></tr><tr><td>647</td><td><span>
+</span></td></tr><tr><td>648</td><td><span style="color:#8fa1b3;">    mulw    gun_times_by(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)               # Multiply by either </span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">10</span><span>, </span><span style="color:#d08770;">100 </span><span style="color:#b48ead;">or </span><span style="color:#d08770;">1000
+</span></td></tr><tr><td>649</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">add     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx                        </span><span style="color:#8fa1b3;"># </span><span style="color:#b48ead;">Add </span><span style="color:#8fa1b3;">the result to </span><span style="color:#bf616a;">bx
+</span></td></tr><tr><td>650</td><td><span>
+</span></td></tr><tr><td>651</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">10</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax                        
+</span></td></tr><tr><td>652</td><td><span style="color:#8fa1b3;">    mulw    gun_times_by(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)               # </span><span style="color:#96b5b4;">Times </span><span style="color:#8fa1b3;">our multiplier by </span><span style="color:#d08770;">10</span><span style="color:#8fa1b3;">: </span><span style="color:#d08770;">1 </span><span>-</span><span style="color:#8fa1b3;">&gt; </span><span style="color:#d08770;">10</span><span>, </span><span style="color:#d08770;">10 </span><span>-</span><span style="color:#8fa1b3;">&gt; </span><span style="color:#d08770;">100</span><span>, </span><span style="color:#d08770;">100 </span><span>-</span><span style="color:#8fa1b3;">&gt; </span><span style="color:#d08770;">1000
+</span></td></tr><tr><td>653</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">gun_times_by(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)          # Store the new multiplier
+</span></td></tr><tr><td>654</td><td><span>
+</span></td></tr><tr><td>655</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">loop    </span><span style="color:#8fa1b3;">gun_end_loop                    # </span><span style="color:#b48ead;">Loop </span><span style="color:#8fa1b3;">until all user input numbers processed
+</span></td></tr><tr><td>656</td><td><span>
+</span></td></tr><tr><td>657</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx</span><span>, </span><span style="color:#8fa1b3;">gun_num_out(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)           # Store function output </span><span style="color:#b48ead;">in out </span><span style="color:#8fa1b3;">parameter
+</span></td></tr><tr><td>658</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf                 # Goto new line after function done
+</span></td></tr><tr><td>659</td><td><span>
+</span></td></tr><tr><td>660</td><td><span style="color:#8fa1b3;">gun_end_ret:
+</span></td></tr><tr><td>661</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">cx         </span><span style="color:#8fa1b3;"># Restore used registers
+</span></td></tr><tr><td>662</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bx
+</span></td></tr><tr><td>663</td><td><span>
+</span></td></tr><tr><td>664</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp    </span><span style="color:#8fa1b3;"># End stack frame
+</span></td></tr><tr><td>665</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>666</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>667</td><td><span>
+</span></td></tr><tr><td>668</td><td><span style="color:#8fa1b3;">#=============================================================================
+</span></td></tr><tr><td>669</td><td><span>
+</span></td></tr><tr><td>670</td><td><span style="color:#8fa1b3;"># Get User Search (gus)
+</span></td></tr><tr><td>671</td><td><span style="color:#8fa1b3;"># 
+</span></td></tr><tr><td>672</td><td><span style="color:#8fa1b3;"># Gets a (</span><span style="color:#d08770;">30</span><span style="color:#8fa1b3;">) length string from the user </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">store it </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">UserSearchBuffer. We also
+</span></td></tr><tr><td>673</td><td><span style="color:#8fa1b3;"># store the length of their input </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">UserSearchBufferLen.
+</span></td></tr><tr><td>674</td><td><span style="color:#8fa1b3;">#
+</span></td></tr><tr><td>675</td><td><span style="color:#8fa1b3;"># Local variables
+</span></td></tr><tr><td>676</td><td><span style="color:#8fa1b3;">    #define gus_chars_entered       </span><span>-</span><span style="color:#d08770;">2
+</span></td></tr><tr><td>677</td><td><span style="color:#8fa1b3;">    #define gus_buffer_len          </span><span>-</span><span style="color:#d08770;">4
+</span></td></tr><tr><td>678</td><td><span>
+</span></td></tr><tr><td>679</td><td><span style="color:#8fa1b3;">UserSearchBuffer:       .string     </span><span style="color:#a3be8c;">&quot;                              &quot;    </span><span style="color:#8fa1b3;"># setup here as length </span><span style="color:#d08770;">30
+</span></td></tr><tr><td>680</td><td><span style="color:#8fa1b3;">UserSearchBufferLen:    .</span><span style="color:#96b5b4;">word       </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>681</td><td><span>
+</span></td></tr><tr><td>682</td><td><span style="color:#8fa1b3;">get_user_search:
+</span></td></tr><tr><td>683</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp         </span><span style="color:#8fa1b3;"># Prep stack frame
+</span></td></tr><tr><td>684</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp    </span><span style="color:#8fa1b3;"># Move stack pointer </span><span style="color:#b48ead;">into </span><span style="color:#8fa1b3;">base pointer
+</span></td></tr><tr><td>685</td><td><span style="color:#8fa1b3;">    subw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">4</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp     </span><span style="color:#8fa1b3;"># Reserve space for local variables
+</span></td></tr><tr><td>686</td><td><span>
+</span></td></tr><tr><td>687</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si         </span><span style="color:#8fa1b3;"># Store all used registers
+</span></td></tr><tr><td>688</td><td><span>
+</span></td></tr><tr><td>689</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">gus_chars_entered(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)  # Initialize local variables
+</span></td></tr><tr><td>690</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">gus_buffer_len(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>691</td><td><span>
+</span></td></tr><tr><td>692</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_get_input</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si         </span><span style="color:#8fa1b3;"># Prep input message
+</span></td></tr><tr><td>693</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write                  # Display message
+</span></td></tr><tr><td>694</td><td><span>
+</span></td></tr><tr><td>695</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">UserSearchBuffer</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si      </span><span style="color:#8fa1b3;"># move </span><span style="color:#bf616a;">si </span><span style="color:#8fa1b3;">to start of search buffer
+</span></td></tr><tr><td>696</td><td><span>
+</span></td></tr><tr><td>697</td><td><span style="color:#8fa1b3;">gus_get_buffer_len:
+</span></td></tr><tr><td>698</td><td><span style="color:#8fa1b3;">    movb    (%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                  </span><span style="color:#8fa1b3;"># Move value </span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">si memory address </span><span style="color:#b48ead;">into </span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>699</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                     </span><span style="color:#8fa1b3;"># Check if end of buffer
+</span></td></tr><tr><td>700</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jz      </span><span style="color:#8fa1b3;">gus_finish_buffer_len       
+</span></td></tr><tr><td>701</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>702</td><td><span style="color:#8fa1b3;">    incw    gus_buffer_len(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)         # If </span><span style="color:#b48ead;">not </span><span style="color:#8fa1b3;">end of buffer</span><span>, </span><span style="color:#b48ead;">add </span><span style="color:#d08770;">1 </span><span style="color:#8fa1b3;">to length
+</span></td></tr><tr><td>703</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">gus_get_buffer_len          # Keep iterating
+</span></td></tr><tr><td>704</td><td><span>
+</span></td></tr><tr><td>705</td><td><span style="color:#8fa1b3;">gus_finish_buffer_len:
+</span></td></tr><tr><td>706</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">UserSearchBuffer</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si      </span><span style="color:#8fa1b3;"># move </span><span style="color:#bf616a;">si </span><span style="color:#8fa1b3;">to start of user input search buffer
+</span></td></tr><tr><td>707</td><td><span>
+</span></td></tr><tr><td>708</td><td><span style="color:#8fa1b3;">gus_input_loop:
+</span></td></tr><tr><td>709</td><td><span style="color:#8fa1b3;">    movb    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah
+</span></td></tr><tr><td>710</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x16                       </span><span style="color:#8fa1b3;"># Get user input
+</span></td></tr><tr><td>711</td><td><span>
+</span></td></tr><tr><td>712</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">32</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                    </span><span style="color:#8fa1b3;"># Check if input is usable character
+</span></td></tr><tr><td>713</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jb      </span><span style="color:#8fa1b3;">gus_char_invalid
+</span></td></tr><tr><td>714</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">126</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>715</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ja      </span><span style="color:#8fa1b3;">gus_char_invalid
+</span></td></tr><tr><td>716</td><td><span>
+</span></td></tr><tr><td>717</td><td><span style="color:#8fa1b3;">gus_char_ok:                            # Inputted character is a valid ascii character
+</span></td></tr><tr><td>718</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_char             # Display the character
+</span></td></tr><tr><td>719</td><td><span>
+</span></td></tr><tr><td>720</td><td><span style="color:#8fa1b3;">    movb    %</span><span style="color:#bf616a;">al</span><span>, </span><span style="color:#8fa1b3;">(%</span><span style="color:#bf616a;">si</span><span style="color:#8fa1b3;">)                  # </span><span style="color:#b48ead;">Add </span><span style="color:#8fa1b3;">character to buffer
+</span></td></tr><tr><td>721</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">inc     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                         </span><span style="color:#8fa1b3;"># Move to next empty character
+</span></td></tr><tr><td>722</td><td><span>
+</span></td></tr><tr><td>723</td><td><span style="color:#8fa1b3;">    incw    gus_chars_entered(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)          # Keep track of total characters entered
+</span></td></tr><tr><td>724</td><td><span style="color:#8fa1b3;">    movw    gus_chars_entered(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax
+</span></td></tr><tr><td>725</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#8fa1b3;">gus_buffer_len(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax        </span><span style="color:#8fa1b3;"># Check if inputted characters equals max characters
+</span></td></tr><tr><td>726</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">je      </span><span style="color:#8fa1b3;">gus_finish                      # Finish there if so
+</span></td></tr><tr><td>727</td><td><span>
+</span></td></tr><tr><td>728</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">gus_input_loop                  # Otherwise</span><span>, </span><span style="color:#8fa1b3;">continue to get user input
+</span></td></tr><tr><td>729</td><td><span>
+</span></td></tr><tr><td>730</td><td><span style="color:#8fa1b3;">gus_char_invalid:                       # Inputted character wasn&#39;t valid ascii character
+</span></td></tr><tr><td>731</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">cmp     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">13</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al                    </span><span style="color:#8fa1b3;"># Check if it was the </span><span style="color:#b48ead;">enter </span><span style="color:#8fa1b3;">key pressed
+</span></td></tr><tr><td>732</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jne     </span><span style="color:#8fa1b3;">gus_input_loop              # if it wasn&#39;t</span><span>, </span><span style="color:#8fa1b3;">continue to get user input
+</span></td></tr><tr><td>733</td><td><span>
+</span></td></tr><tr><td>734</td><td><span style="color:#8fa1b3;">gus_finish:
+</span></td></tr><tr><td>735</td><td><span style="color:#8fa1b3;">    movw    gus_chars_entered(%</span><span style="color:#bf616a;">bp</span><span style="color:#8fa1b3;">)</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ax     </span><span style="color:#8fa1b3;"># Store length of user input
+</span></td></tr><tr><td>736</td><td><span style="color:#8fa1b3;">    movw    %</span><span style="color:#bf616a;">ax</span><span>, </span><span style="color:#8fa1b3;">(UserSearchBufferLen)
+</span></td></tr><tr><td>737</td><td><span>
+</span></td></tr><tr><td>738</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf     # Move to new line away from used line
+</span></td></tr><tr><td>739</td><td><span>
+</span></td></tr><tr><td>740</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si                 </span><span style="color:#8fa1b3;"># Restore used registers
+</span></td></tr><tr><td>741</td><td><span>
+</span></td></tr><tr><td>742</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">sp            </span><span style="color:#8fa1b3;"># End stack frame
+</span></td></tr><tr><td>743</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">pop     </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">bp
+</span></td></tr><tr><td>744</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">ret
+</span></td></tr><tr><td>745</td><td><span>
+</span></td></tr><tr><td>746</td><td><span style="color:#8fa1b3;">#=============================================================================
+</span></td></tr><tr><td>747</td><td><span>
+</span></td></tr><tr><td>748</td><td><span style="color:#8fa1b3;">main:
+</span></td></tr><tr><td>749</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">ah                 </span><span style="color:#8fa1b3;"># Change to graphics mode to allow char colors
+</span></td></tr><tr><td>750</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">mov     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">al
+</span></td></tr><tr><td>751</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">int     </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0x10
+</span></td></tr><tr><td>752</td><td><span>
+</span></td></tr><tr><td>753</td><td><span style="color:#8fa1b3;">    movb    %</span><span style="color:#bf616a;">dl</span><span>, </span><span style="color:#8fa1b3;">(boot_device)      # Store boot device number </span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">case for later.
+</span></td></tr><tr><td>754</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_section_2</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si     </span><span style="color:#8fa1b3;"># Prep </span><span style="color:#96b5b4;">section </span><span style="color:#d08770;">2 </span><span style="color:#8fa1b3;">boot message
+</span></td></tr><tr><td>755</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline          # Display message
+</span></td></tr><tr><td>756</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf         # Make a new line
+</span></td></tr><tr><td>757</td><td><span>
+</span></td></tr><tr><td>758</td><td><span style="color:#8fa1b3;">main_loop:    
+</span></td></tr><tr><td>759</td><td><span style="color:#8fa1b3;">    # Get Starting Block
+</span></td></tr><tr><td>760</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_get_start_block</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>761</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline
+</span></td></tr><tr><td>762</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0                      </span><span style="color:#8fa1b3;"># Parameter </span><span style="color:#d08770;">1 </span><span>- </span><span style="color:#8fa1b3;">function output
+</span></td></tr><tr><td>763</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">get_user_number         
+</span></td></tr><tr><td>764</td><td><span>
+</span></td></tr><tr><td>765</td><td><span style="color:#8fa1b3;">    # Get Sectors to read
+</span></td></tr><tr><td>766</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_get_sector_count</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>767</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline
+</span></td></tr><tr><td>768</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">push    </span><span style="color:#96b5b4;">$</span><span style="color:#d08770;">0                      </span><span style="color:#8fa1b3;"># Parameter </span><span style="color:#d08770;">1 </span><span>- </span><span style="color:#8fa1b3;">function output
+</span></td></tr><tr><td>769</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">get_user_number
+</span></td></tr><tr><td>770</td><td><span>
+</span></td></tr><tr><td>771</td><td><span style="color:#8fa1b3;">    # Get search term
+</span></td></tr><tr><td>772</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_get_search_term</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si
+</span></td></tr><tr><td>773</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline
+</span></td></tr><tr><td>774</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">get_user_search
+</span></td></tr><tr><td>775</td><td><span>
+</span></td></tr><tr><td>776</td><td><span style="color:#8fa1b3;">    # Display Data
+</span></td></tr><tr><td>777</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">clear_user_search_array         # Clear the user search array (</span><span style="color:#b48ead;">in </span><span style="color:#8fa1b3;">case </span><span style="color:#b48ead;">not </span><span style="color:#8fa1b3;">initialized </span><span style="color:#b48ead;">or </span><span style="color:#8fa1b3;">used previously)
+</span></td></tr><tr><td>778</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">read_and_display_disk_sectors   # Uses previous two </span><span style="color:#a3be8c;">&quot;get_user_number&quot; </span><span style="color:#8fa1b3;">parameters
+</span></td></tr><tr><td>779</td><td><span>
+</span></td></tr><tr><td>780</td><td><span style="color:#8fa1b3;">    # Repe</span><span style="color:#96b5b4;">at
+</span></td></tr><tr><td>781</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_write_crlf                 # Start new line </span><span style="color:#b48ead;">and </span><span style="color:#8fa1b3;">repe</span><span style="color:#96b5b4;">at </span><span style="color:#8fa1b3;">process
+</span></td></tr><tr><td>782</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">main_loop
+</span></td></tr><tr><td>783</td><td><span>
+</span></td></tr><tr><td>784</td><td><span style="color:#8fa1b3;">    movw    </span><span style="color:#96b5b4;">$</span><span style="color:#8fa1b3;">msg_end_of_program</span><span>, </span><span style="color:#8fa1b3;">%</span><span style="color:#bf616a;">si        </span><span style="color:#8fa1b3;"># End of bootasm2
+</span></td></tr><tr><td>785</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">call    </span><span style="color:#8fa1b3;">cons_writeline
+</span></td></tr><tr><td>786</td><td><span>
+</span></td></tr><tr><td>787</td><td><span style="color:#8fa1b3;">endless_loop:
+</span></td></tr><tr><td>788</td><td><span style="color:#8fa1b3;">    #</span><span style="color:#b48ead;">hlt
+</span></td></tr><tr><td>789</td><td><span style="color:#8fa1b3;">    </span><span style="color:#b48ead;">jmp     </span><span style="color:#8fa1b3;">endless_loop
+</span></td></tr><tr><td>790</td><td><span>
+</span></td></tr><tr><td>791</td><td><span style="color:#8fa1b3;">#=============================================================================
+</span></td></tr><tr><td>792</td><td><span>
+</span></td></tr><tr><td>793</td><td><span style="color:#8fa1b3;"># Color to make text
+</span></td></tr><tr><td>794</td><td><span style="color:#8fa1b3;">foreground_color:   .</span><span style="color:#96b5b4;">byte   </span><span style="color:#d08770;">0x7
+</span></td></tr><tr><td>795</td><td><span style="color:#8fa1b3;">boot_device:    .</span><span style="color:#96b5b4;">byte   </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>796</td><td><span>
+</span></td></tr><tr><td>797</td><td><span style="color:#8fa1b3;">disk_address_packet:
+</span></td></tr><tr><td>798</td><td><span style="color:#8fa1b3;">                    # Offset    Size    Desc
+</span></td></tr><tr><td>799</td><td><span style="color:#8fa1b3;">    .</span><span style="color:#96b5b4;">byte   </span><span style="color:#d08770;">0x10    </span><span style="color:#8fa1b3;"># </span><span style="color:#d08770;">0         1       </span><span style="color:#8fa1b3;">Size of packet (</span><span style="color:#d08770;">16 </span><span style="color:#8fa1b3;">bytes)
+</span></td></tr><tr><td>800</td><td><span style="color:#8fa1b3;">    .</span><span style="color:#96b5b4;">byte   </span><span style="color:#d08770;">0       </span><span style="color:#8fa1b3;"># </span><span style="color:#d08770;">1         1       </span><span style="color:#8fa1b3;">Always </span><span style="color:#d08770;">0
+</span></td></tr><tr><td>801</td><td><span style="color:#8fa1b3;">    .</span><span style="color:#96b5b4;">word   </span><span style="color:#d08770;">0       </span><span style="color:#8fa1b3;"># </span><span style="color:#d08770;">2         2       </span><span style="color:#8fa1b3;">Number of sectors to transfer (max </span><span style="color:#d08770;">127 </span><span style="color:#8fa1b3;">on some BIOSes)
+</span></td></tr><tr><td>802</td><td><span style="color:#8fa1b3;">    .long   </span><span style="color:#d08770;">0       </span><span style="color:#8fa1b3;"># </span><span style="color:#d08770;">4         4       </span><span style="color:#8fa1b3;">Transfer buffer (first </span><span style="color:#d08770;">2 </span><span style="color:#8fa1b3;">bytes is </span><span style="color:#d08770;">16 </span><span style="color:#8fa1b3;">bit offset</span><span>, </span><span style="color:#8fa1b3;">next </span><span style="color:#d08770;">2 </span><span style="color:#8fa1b3;">bytes is </span><span style="color:#d08770;">16 </span><span style="color:#8fa1b3;">bit sector)
+</span></td></tr><tr><td>803</td><td><span style="color:#8fa1b3;">    .long   </span><span style="color:#d08770;">0       </span><span style="color:#8fa1b3;"># </span><span style="color:#d08770;">8         4       </span><span style="color:#8fa1b3;">Lower </span><span style="color:#d08770;">32 </span><span style="color:#8fa1b3;">bits of </span><span style="color:#d08770;">48 </span><span style="color:#8fa1b3;">bit starting LBA (starting from </span><span style="color:#d08770;">0</span><span style="color:#8fa1b3;">)
+</span></td></tr><tr><td>804</td><td><span style="color:#8fa1b3;">    .long   </span><span style="color:#d08770;">0       </span><span style="color:#8fa1b3;"># </span><span style="color:#d08770;">12        4       </span><span style="color:#8fa1b3;">Upper </span><span style="color:#d08770;">16 </span><span style="color:#8fa1b3;">bits of </span><span style="color:#d08770;">48 </span><span style="color:#8fa1b3;">bit starting LBA (wll always be </span><span style="color:#d08770;">0 </span><span style="color:#8fa1b3;">for us)
+</span></td></tr><tr><td>805</td><td><span>
+</span></td></tr><tr><td>806</td><td><span style="color:#8fa1b3;">user_search_result_array:   .fill   </span><span style="color:#d08770;">512
+</span></td></tr><tr><td>807</td><td><span>
+</span></td></tr><tr><td>808</td><td><span style="color:#8fa1b3;">#</span><span>--------------------------------------------
+</span></td></tr><tr><td>809</td><td><span>
+</span></td></tr><tr><td>810</td><td><span style="color:#8fa1b3;">msg_section_2:          .string </span><span style="color:#a3be8c;">&quot;Section 2 loaded and running.&quot;
+</span></td></tr><tr><td>811</td><td><span style="color:#8fa1b3;">msg_read_failed:        .string </span><span style="color:#a3be8c;">&quot;Failed to read from disk.&quot;
+</span></td></tr><tr><td>812</td><td><span style="color:#8fa1b3;">msg_reading_sectors:    .string </span><span style="color:#a3be8c;">&quot;Reading next set of sectors&quot;
+</span></td></tr><tr><td>813</td><td><span>
+</span></td></tr><tr><td>814</td><td><span style="color:#8fa1b3;">msg_get_start_block:    .string </span><span style="color:#a3be8c;">&quot;Enter starting sector&quot;
+</span></td></tr><tr><td>815</td><td><span style="color:#8fa1b3;">msg_get_sector_count:   .string </span><span style="color:#a3be8c;">&quot;Enter sectors to read&quot;
+</span></td></tr><tr><td>816</td><td><span style="color:#8fa1b3;">msg_get_search_term:    .string </span><span style="color:#a3be8c;">&quot;Enter message to search for&quot;
+</span></td></tr><tr><td>817</td><td><span style="color:#8fa1b3;">msg_get_input:          .string </span><span style="color:#a3be8c;">&quot;Input &gt; &quot;
+</span></td></tr><tr><td>818</td><td><span style="color:#8fa1b3;">msg_press_a_key:        .string </span><span style="color:#a3be8c;">&quot;Press a key to continue...&quot;
+</span></td></tr><tr><td>819</td><td><span>
+</span></td></tr><tr><td>820</td><td><span style="color:#8fa1b3;">msg_sector:             .string </span><span style="color:#a3be8c;">&quot;Sector &quot;
+</span></td></tr><tr><td>821</td><td><span style="color:#8fa1b3;">msg_out_of:             .string </span><span style="color:#a3be8c;">&quot; / &quot;
+</span></td></tr><tr><td>822</td><td><span>
+</span></td></tr><tr><td>823</td><td><span style="color:#8fa1b3;">msg_end_of_program:     .string </span><span style="color:#a3be8c;">&quot;END OF PROGRAM&quot;
+</span></td></tr><tr><td>824</td><td><span>
+</span></td></tr><tr><td>825</td><td><span style="color:#8fa1b3;">#=============================================================================
+</span></td></tr></tbody></table></code></pre>
+<p>...</p>
+<br>
+<h2 id="project-log-pdf">Project Log (pdf)</h2>
+<object data="Log.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="Log.pdf">
+        <p>This browser does not support PDFs. Find the link here: <a href="Log.pdf">PDF LINK</a>.</p>
+    </embed>
+</object>
+
+  </div>
+
+
+      </div>
+    </section>
+  </div>
+</body>

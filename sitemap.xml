@@ -10,6 +10,9 @@
         <loc>https://brackenlo.github.io/projects/abyss/</loc>
     </url>
     <url>
+        <loc>https://brackenlo.github.io/projects/asm/</loc>
+    </url>
+    <url>
         <loc>https://brackenlo.github.io/projects/astar/</loc>
     </url>
     <url>
@@ -65,6 +68,9 @@
     </url>
     <url>
         <loc>https://brackenlo.github.io/tags/</loc>
+    </url>
+    <url>
+        <loc>https://brackenlo.github.io/tags/asm/</loc>
     </url>
     <url>
         <loc>https://brackenlo.github.io/tags/bevy/</loc>
